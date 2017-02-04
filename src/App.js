@@ -5,16 +5,28 @@ import Radium from 'radium';
 import { Layer } from './proto';
 
 class App extends React.Component {
+  state = {
+    step: 0,
+  };
+
+  _onClick = () => {
+    this.setState({
+      step: this.state.step === 0 ? 1 : 0,
+    });
+  };
+
   render() {
+    let { step } = this.state;
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            width={100}
-            height={100}
-            x={40}
-            y={100}
+            width={step === 0 ? 100 : 120}
+            height={step === 0 ? 100 : 80}
+            x={step === 0 ? 40 : 100}
+            y={step === 0 ? 40 : 100}
             style={Styles.Fill}
+            onClick={this._onClick}
           />
         </div>
       </div>
