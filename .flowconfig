@@ -1,0 +1,11 @@
+[ignore]
+.*/node_modules/fbjs/lib/partitionObjectByKey.js.flow
+.*/node_modules/radium/.*
+
+[include]
+
+[libs]
+src/flow
+
+[options]
+suppress_comment= \\(.\\|\n\\)*\\$FlowIgnore
