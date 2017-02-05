@@ -2,6 +2,12 @@
 import React from 'react';
 import Radium from 'radium';
 
+import Animator from './Animator';
+
+function interpolate(from, to, t) {
+  return from + (to - from) * t;
+}
+
 class Layer extends React.Component {
   props: {
     height: number,
@@ -13,19 +19,45 @@ class Layer extends React.Component {
     onClick?: Function,
   }
   _layer: HTMLElement;
+  _animator: ?Animator;
+  _from: Object;
+  _snap: Object;
 
   componentWillReceiveProps(nextProps) {
     let { x, y, width, height } = nextProps;
-    if (x !== this.props.x || y !== this.props.y) {
-      this._layer.style.transform = `translate3d(${x}px,${y}px,0)`;
-    }
-    if (height !== this.props.height) {
-      this._layer.style.height = `${height}px`;
-    }
-    if (width !== this.props.width) {
-      this._layer.style.width = `${width}px`;
+    let changed = x !== this.props.x || y !== this.props.y || height !== this.props.height || width !== this.props.width;
+    if (changed) {
+      if (this._animator) {
+        this._animator.stop();
+      }
+      this._from = this._snap || {
+        height: this.props.height,
+        width: this.props.width,
+        x: this.props.x,
+        y: this.props.y,
+      };
+      this._animator = new Animator(this._updater, 2000);
+      this._animator.start();
     }
   }
+
+  _updater = (t) => {
+    let { x, y, width, height } = this.props;
+    this._snap = {};
+    if (this._from.x !== x || this._from.y !== y) {
+      this._snap.x = interpolate(this._from.x, x, t);
+      this._snap.y = interpolate(this._from.y, y, t);
+      this._layer.style.transform = `translate3d(${this._snap.x}px,${this._snap.y}px,0)`;
+    }
+    if (this._from.width !== width) {
+      this._snap.width = interpolate(this._from.width, width, t);
+      this._layer.style.width = `${this._snap.width}px`;
+    }
+    if (this._from.height !== height) {
+      this._snap.height = interpolate(this._from.height, height, t);
+      this._layer.style.width = `${this._snap.height}px`;
+    }
+  };
 
   shouldComponentUpdate() {
     return false;
