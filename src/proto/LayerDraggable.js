@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react';
 
+import Constraint from './Constraint';
 import Layer from './Layer';
 import Motion from './Motion';
 
@@ -19,6 +20,7 @@ export default class LayerDraggable extends React.Component {
   _dragStartX: number;
   _dragStartY: number;
   _touches: Object[];
+  _constraint: Constraint;
   _motion: Motion;
 
   constructor(props: $PropertyType<LayerDraggable, 'props'>) {
@@ -38,12 +40,18 @@ export default class LayerDraggable extends React.Component {
     this._dragStartY = this.state.y;
     this._touches = [];
     this._addTouch(this._dragStartTouch);
+    this._constraint = new Constraint({
+      minX: 0,
+      maxX: 375 - this.props.width,
+      minY: 0,
+      maxY: 667 - this.props.height,
+    });
   };
 
   _onTouchMove = (e: SyntheticTouchEvent) => {
     let touch = e.touches[0];
-    let x = this._dragStartX + (touch.clientX - this._dragStartTouch.clientX);
-    let y = this._dragStartY + (touch.clientY - this._dragStartTouch.clientY);
+    let x = this._constraint.x(this._dragStartX + (touch.clientX - this._dragStartTouch.clientX));
+    let y = this._constraint.y(this._dragStartY + (touch.clientY - this._dragStartTouch.clientY));
     this.setState({ x, y });
     this._addTouch(touch);
   };
@@ -56,16 +64,17 @@ export default class LayerDraggable extends React.Component {
         x: (lastTouch.x - secondToLastTouch.x) / (lastTouch.t - secondToLastTouch.t),
         y: (lastTouch.y - secondToLastTouch.y) / (lastTouch.t - secondToLastTouch.t),
       };
-      this._motion = new Motion(this._friction, this._updater);
-      this._motion.start(this.state, v);
+      this._motion = new Motion(this._friction);
+      this._motion.start(this.state, v, this._constraint,this._updater);
     }
   };
 
   _friction = (p: Point, v: Vector, dt: number) => {
-    return {
-      x: Math.max(v.x - 0.001 * dt, 0),
-      y: Math.max(v.y - 0.001 * dt, 0),
+    let nextV = {
+      x: v.x > 0 ? Math.max(v.x - 0.001 * dt, 0) : Math.min(v.x + 0.001 * dt, 0),
+      y: v.y > 0 ? Math.max(v.y - 0.001 * dt, 0) : Math.min(v.y + 0.001 * dt, 0),
     };
+    return [nextV, nextV.x === 0 && nextV.y === 0];
   };
 
   _addTouch = (touch: any) => {
