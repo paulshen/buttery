@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer } from './proto';
+import { LayerDraggable } from './proto';
 
 class App extends React.Component {
   state = {
@@ -20,11 +20,11 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Layer
+          <LayerDraggable
             width={step === 0 ? 100 : 120}
             height={step === 0 ? 100 : 80}
-            x={step === 0 ? 40 : 100}
-            y={step === 0 ? 40 : 100}
+            initialX={step === 0 ? 40 : 100}
+            initialY={step === 0 ? 40 : 100}
             style={Styles.Fill}
             onClick={this._onClick}
           />

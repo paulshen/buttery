@@ -10,6 +10,7 @@ function interpolate(from, to, t) {
 
 class Layer extends React.Component {
   props: {
+    animate?: boolean,
     height: number,
     width: number,
     x: number,
@@ -24,20 +25,24 @@ class Layer extends React.Component {
   _snap: Object;
 
   componentWillReceiveProps(nextProps) {
-    let { x, y, width, height } = nextProps;
+    let { x, y, width, height, animate } = nextProps;
     let changed = x !== this.props.x || y !== this.props.y || height !== this.props.height || width !== this.props.width;
     if (changed) {
       if (this._animator) {
         this._animator.stop();
       }
-      this._from = this._snap || {
-        height: this.props.height,
-        width: this.props.width,
-        x: this.props.x,
-        y: this.props.y,
-      };
-      this._animator = new Animator(this._updater, 2000);
-      this._animator.start();
+      if (animate) {
+        this._from = this._snap || {
+          height: this.props.height,
+          width: this.props.width,
+          x: this.props.x,
+          y: this.props.y,
+        };
+        this._animator = new Animator(this._updater, 2000);
+        this._animator.start();
+      } else {
+        this._layer.style.transform = `translate3d(${nextProps.x}px,${nextProps.y}px,0)`;
+      }
     }
   }
 
@@ -64,9 +69,10 @@ class Layer extends React.Component {
   }
 
   render() {
-    let { children, height, width, x, y, style, onClick } = this.props;
+    let { children, height, width, x, y, style, onClick, ...props } = this.props;
     return (
       <div
+        {...props}
         onClick={onClick}
         ref={c => this._layer = c}
         style={[Styles.Layer, {
