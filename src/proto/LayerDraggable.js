@@ -50,9 +50,11 @@ export default class LayerDraggable extends React.Component {
 
   _onTouchMove = (e: SyntheticTouchEvent) => {
     let touch = e.touches[0];
-    let x = this._constraint.x(this._dragStartX + (touch.clientX - this._dragStartTouch.clientX));
-    let y = this._constraint.y(this._dragStartY + (touch.clientY - this._dragStartTouch.clientY));
-    this.setState({ x, y });
+    let p = this._constraint.point({
+      x: this._dragStartX + (touch.clientX - this._dragStartTouch.clientX),
+      y: this._dragStartY + (touch.clientY - this._dragStartTouch.clientY),
+    });
+    this.setState(p);
     this._addTouch(touch);
   };
 

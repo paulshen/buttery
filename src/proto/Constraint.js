@@ -23,11 +23,13 @@ export default class Constraint {
     this._maxY = maxY;
   }
 
-  x(x: number) {
-    return constrain(x, this._minX, this._maxX);
+  point(p: Point) {
+    return {
+      x: constrain(p.x, this._minX, this._maxX),
+      y: constrain(p.y, this._minY, this._maxY),
+    };
   }
 
-  y(y: number) {
-    return constrain(y, this._minY, this._maxY);
+  acceleration(p: Point, v: Vector) {
   }
 }

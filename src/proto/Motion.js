@@ -35,10 +35,10 @@ export default class Motion {
   _tick = () => {
     let now = Date.now();
     let dt = now - this._lastUpdateTime;
-    this._p = {
-      x: this._c.x(this._p.x + (this._v.x * dt)),
-      y: this._c.y(this._p.y + (this._v.y * dt)),
-    };
+    this._p = this._c.point({
+      x: this._p.x + (this._v.x * dt),
+      y: this._p.y + (this._v.y * dt),
+    });
     this._updater(this._p);
     let [nextV, shouldStop] = this._a(this._p, this._v, now - this._lastUpdateTime);
     this._v = nextV;
