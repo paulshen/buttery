@@ -1,35 +1,32 @@
 /* @flow */
 function constrain(value, min, max) {
   let constrainedValue = value;
-  if (typeof min === 'number') {
-    constrainedValue = Math.max(constrainedValue, min);
+  if (typeof min === 'number' && constrainedValue < min) {
+    constrainedValue = min - Math.pow(Math.abs(constrainedValue - min), 0.85);
   }
-  if (typeof max === 'number') {
-    constrainedValue = Math.min(constrainedValue, max);
+  if (typeof max === 'number' && constrainedValue > max) {
+    constrainedValue = max + Math.pow(Math.abs(constrainedValue - max), 0.85);
   }
   return constrainedValue;
 }
 
 export default class Constraint {
-  _minX: ?number;
-  _maxX: ?number;
-  _minY: ?number;
-  _maxY: ?number;
+  minX: ?number;
+  maxX: ?number;
+  minY: ?number;
+  maxY: ?number;
 
   constructor({ minX, maxX, minY, maxY }: { minX?: number, maxX?: number, minY?: number, maxY?: number }) {
-    this._minX = minX;
-    this._maxX = maxX;
-    this._minY = minY;
-    this._maxY = maxY;
+    this.minX = minX;
+    this.maxX = maxX;
+    this.minY = minY;
+    this.maxY = maxY;
   }
 
   point(p: Point) {
     return {
-      x: constrain(p.x, this._minX, this._maxX),
-      y: constrain(p.y, this._minY, this._maxY),
+      x: constrain(p.x, this.minX, this.maxX),
+      y: constrain(p.y, this.minY, this.maxY),
     };
-  }
-
-  acceleration(p: Point, v: Vector) {
   }
 }

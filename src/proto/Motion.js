@@ -32,15 +32,19 @@ export default class Motion {
     cancelAnimationFrame(this._raf);
   }
 
+  _setAccelerationFunction = (a: (p: Point, v: Vector, dt: number) => [Vector, boolean]) => {
+    this._a = a;
+  };
+
   _tick = () => {
     let now = Date.now();
     let dt = now - this._lastUpdateTime;
-    this._p = this._c.point({
+    this._p = {
       x: this._p.x + (this._v.x * dt),
       y: this._p.y + (this._v.y * dt),
-    });
+    };
     this._updater(this._p);
-    let [nextV, shouldStop] = this._a(this._p, this._v, now - this._lastUpdateTime);
+    let [nextV, shouldStop] = this._a(this._p, this._v, dt);
     this._v = nextV;
     this._lastUpdateTime = now;
     if (!shouldStop) {

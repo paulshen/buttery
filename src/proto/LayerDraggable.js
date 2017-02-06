@@ -4,6 +4,7 @@ import React from 'react';
 import Constraint from './Constraint';
 import Layer from './Layer';
 import Motion from './Motion';
+import createScroll from './motion/createScroll';
 
 export default class LayerDraggable extends React.Component {
   props: {
@@ -66,17 +67,9 @@ export default class LayerDraggable extends React.Component {
         x: (lastTouch.x - secondToLastTouch.x) / (lastTouch.t - secondToLastTouch.t),
         y: (lastTouch.y - secondToLastTouch.y) / (lastTouch.t - secondToLastTouch.t),
       };
-      this._motion = new Motion(this._friction);
-      this._motion.start(this.state, v, this._constraint,this._updater);
+      this._motion = new Motion(createScroll(this._constraint));
+      this._motion.start(this.state, v, this._constraint, this._updater);
     }
-  };
-
-  _friction = (p: Point, v: Vector, dt: number) => {
-    let nextV = {
-      x: v.x > 0 ? Math.max(v.x - 0.001 * dt, 0) : Math.min(v.x + 0.001 * dt, 0),
-      y: v.y > 0 ? Math.max(v.y - 0.001 * dt, 0) : Math.min(v.y + 0.001 * dt, 0),
-    };
-    return [nextV, nextV.x === 0 && nextV.y === 0];
   };
 
   _addTouch = (touch: any) => {
