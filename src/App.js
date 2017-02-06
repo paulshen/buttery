@@ -21,10 +21,14 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <LayerDraggable
-            width={step === 0 ? 100 : 120}
-            height={step === 0 ? 100 : 80}
-            initialX={step === 0 ? 40 : 100}
-            initialY={step === 0 ? 40 : 100}
+            properties={{
+              width: 120,
+              height: 80,
+              x: 0,
+              y: 0,
+            }}
+            initialX={100}
+            initialY={100}
             style={Styles.Fill}
             onClick={this._onClick}
           />

@@ -5,7 +5,6 @@ export default class Motion {
   _start: Point;
   _p: Point;
   _v: Vector;
-  _c: Constraint;
   _a: (p: Point, v: Vector, dt: number) => [Vector, boolean];
   _updater: (p: Point) => void;
   _startTime: number;
@@ -16,11 +15,10 @@ export default class Motion {
     this._a = a;
   }
 
-  start(start: Point, v: Vector, c: Constraint, updater: (p: Point) => void) {
+  start(start: Point, v: Vector, updater: (p: Point) => void) {
     this._start = start;
     this._p = start;
     this._v = v;
-    this._c = c;
     this._updater = updater;
 
     this._startTime = Date.now();
