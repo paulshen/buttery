@@ -47,7 +47,6 @@ class Layer extends React.Component {
   _layer: HTMLElement;
   _properties: LayerProperties;
   _animator: ?Object;
-  _from: Object;
   _properties: Object;
 
   constructor(props) {
@@ -66,8 +65,7 @@ class Layer extends React.Component {
         this._animator.stop();
       }
       if (animator) {
-        this._from = this._properties || { ...properties };
-        animator.start(this._updater);
+        animator.start(this._properties || this.props.properties, properties, this._updater);
         this._animator = animator;
       } else {
         applyProperties(this._layer, properties);
@@ -78,9 +76,9 @@ class Layer extends React.Component {
     }
   }
 
-  _updater = (t) => {
-    this._properties = interpolateProperties(this._from, this.props.properties, t);
-    applyProperties(this._layer, this._properties);
+  _updater = (properties) => {
+    this._properties = properties;
+    applyProperties(this._layer, properties);
   };
 
   shouldComponentUpdate(nextProps) {
