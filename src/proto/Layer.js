@@ -2,7 +2,6 @@
 import React from 'react';
 import Radium from 'radium';
 
-import Animator from './Animator';
 import { applyProperties, arePropertiesSame, interpolateProperties } from './LayerProperties';
 
 function interpolate(from, to, t) {
@@ -39,7 +38,7 @@ export function getChildrenDimensions(children: any): ?Rect {
 class Layer extends React.Component {
   props: {
     properties: LayerProperties,
-    animate?: boolean,
+    animator?: Object,
     children?: any,
     style?: any,
     onClick?: Function,
@@ -47,7 +46,7 @@ class Layer extends React.Component {
   }
   _layer: HTMLElement;
   _properties: LayerProperties;
-  _animator: ?Animator;
+  _animator: ?Object;
   _from: Object;
   _properties: Object;
 
@@ -61,15 +60,15 @@ class Layer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let { animate, properties } = nextProps;
+    let { animator, properties } = nextProps;
     if (!arePropertiesSame(properties, this.props.properties)) {
       if (this._animator) {
         this._animator.stop();
       }
-      if (animate) {
+      if (animator) {
         this._from = this._properties || { ...properties };
-        this._animator = new Animator(this._updater, 2000);
-        this._animator.start();
+        animator.start(this._updater);
+        this._animator = animator;
       } else {
         applyProperties(this._layer, properties);
         if (this.props.onMove) {
@@ -89,7 +88,7 @@ class Layer extends React.Component {
   }
 
   render() {
-    let { children, properties, style, onClick, ...props } = this.props;
+    let { children, animator, properties, style, onClick, ...props } = this.props;
     return (
       <div
         {...props}
