@@ -13,13 +13,13 @@ class ScrollMotion {
     this._constraint = constraint;
   }
 
-  getAccelerationFunction(x: number) {
+  getAccelerationFunction(x: number, min: ?number, max: ?number) {
     if (this._accelerationFunction === Friction) {
-      if (typeof this._constraint.minY === 'number' && x < this._constraint.minY) {
-        this._accelerationFunction = createSpring(this._constraint.minY);
+      if (typeof min === 'number' && x < min) {
+        this._accelerationFunction = createSpring(min);
       }
-      if (typeof this._constraint.maxY === 'number' && x > this._constraint.maxY) {
-        this._accelerationFunction = createSpring(this._constraint.maxY);
+      if (typeof max === 'number' && x > max) {
+        this._accelerationFunction = createSpring(max);
       }
     }
     return this._accelerationFunction;
@@ -28,11 +28,7 @@ class ScrollMotion {
 
 export default function createScroll(constraint: Constraint) {
   let s = new ScrollMotion(constraint);
-  return function(p: Point, v: Vector, dt: number) {
-    let [v_y, shouldStop_y] = s.getAccelerationFunction(p.y)(p.y, v.y, dt);
-    return [{
-      x: 0, // TODO
-      y: v_y,
-    }, shouldStop_y];
+  return function(x: number, v: number, dt: number) {
+    return s.getAccelerationFunction(x, constraint.min, constraint.max)(x, v, dt);
   };
 }

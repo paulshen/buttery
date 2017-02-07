@@ -18,7 +18,7 @@ export default class LayerDraggable extends React.Component {
   };
   _dragStart: Point;
   _touches: Object[];
-  _constraint: Constraint;
+  _constraintY: Constraint;
   _motion: Motion;
 
   constructor(props: $PropertyType<LayerDraggable, 'props'>) {
@@ -36,20 +36,18 @@ export default class LayerDraggable extends React.Component {
     this._dragStart = { x: this.state.x, y: this.state.y };
     this._touches = [];
     this._addTouch(e.touches[0]);
-    this._constraint = new Constraint({
-      minX: 0,
-      maxX: 375 - this.props.properties.width,
-      minY: 0,
-      maxY: 667 - this.props.properties.height,
+    this._constraintY = new Constraint({
+      min: 0,
+      max: 667 - this.props.properties.height,
     });
   };
 
   _onTouchMove = (e: SyntheticTouchEvent) => {
     let touch = e.touches[0];
-    let p = this._constraint.point({
+    let p = {
       x: this._dragStart.x + (touch.clientX - this._touches[0].clientX),
-      y: this._dragStart.y + (touch.clientY - this._touches[0].clientY),
-    });
+      y: this._constraintY.point(this._dragStart.y + (touch.clientY - this._touches[0].clientY)),
+    };
     this.setState(p);
     this._addTouch(touch);
   };
@@ -62,7 +60,11 @@ export default class LayerDraggable extends React.Component {
         x: (lastTouch.clientX - secondToLastTouch.clientX) / (lastTouch.t - secondToLastTouch.t),
         y: (lastTouch.clientY - secondToLastTouch.clientY) / (lastTouch.t - secondToLastTouch.t),
       };
-      this._motion = new Motion(createScroll(this._constraint));
+      let scrollY = createScroll(this._constraintY);
+      this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
+        let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
+        return [{ x: 0, y: v_y }, shouldStop_y];
+      });
       this._motion.start({ x: this.state.x, y: this.state.y }, v, this._updater);
     }
   };

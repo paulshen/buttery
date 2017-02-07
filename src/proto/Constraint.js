@@ -11,22 +11,15 @@ function constrain(value, min, max) {
 }
 
 export default class Constraint {
-  minX: ?number;
-  maxX: ?number;
-  minY: ?number;
-  maxY: ?number;
+  min: ?number;
+  max: ?number;
 
-  constructor({ minX, maxX, minY, maxY }: { minX?: number, maxX?: number, minY?: number, maxY?: number }) {
-    this.minX = minX;
-    this.maxX = maxX;
-    this.minY = minY;
-    this.maxY = maxY;
+  constructor({ min, max }: { min?: number, max?: number }) {
+    this.min = min;
+    this.max = max;
   }
 
-  point(p: Point) {
-    return {
-      x: constrain(p.x, this.minX, this.maxX),
-      y: constrain(p.y, this.minY, this.maxY),
-    };
+  point(x: number) {
+    return constrain(x, this.min, this.max);
   }
 }
