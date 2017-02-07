@@ -13,4 +13,5 @@ type LayerProperties = {
   y: number,
   width: number,
   height: number,
+  backgroundColor?: string,
 };
