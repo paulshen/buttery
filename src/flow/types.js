@@ -21,4 +21,5 @@ type LayerProperties = {
   width: number,
   height: number,
   backgroundColor?: string,
+  opacity?: number,
 };

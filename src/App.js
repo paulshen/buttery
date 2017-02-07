@@ -1,13 +1,14 @@
 /* @flow */
 import React from 'react';
 import Radium from 'radium';
+import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerDraggable, SpringAnimator, LinearAnimator } from './proto';
+import { Layer, LayerDraggable, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
 
 const Steps = [
-  { backgroundColor: '#438DED', width: 100, height: 100, x: 100, y: 100, },
-  { backgroundColor: '#438DED', width: 80, height: 120, x: 110, y: 90, },
-  { backgroundColor: '#438DED', width: 60, height: 60, x: 90, y: 180, },
+  { backgroundColor: '#438DED', width: 10, height: 10, x: 100, y: 100, opacity: 0 },
+  { backgroundColor: '#438DED', width: 10, height: 12, x: 110, y: 90, opacity: 1 },
+  { backgroundColor: '#438DED', width: 60, height: 60, x: 90, y: 180, opacity: 0 },
 ];
 
 const Animators = [
@@ -18,20 +19,35 @@ const Animators = [
 
 class App extends React.Component {
   state = {
-    step: 0,
+    clicks: 0,
   };
 
   _onClick = () => {
     this.setState({
-      step: (this.state.step + 1) % 3,
+      clicks: this.state.clicks + 14,
     });
   };
 
   render() {
+    let children = [];
+    for (let i = 0; i < this.state.clicks; i++) {
+      children.push(
+        <LayerTransitionChild
+          enterProperties={Steps[0]}
+          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(i / 20), y: Steps[1].y + 20 * (i % 20)}}
+          exitProperties={Steps[2]}
+          animator={new SpringAnimator(1000)}
+          key={i}
+        />
+      );
+    }
+
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Layer properties={Steps[this.state.step]} animator={Animators[this.state.step]} />
+          <ReactTransitionGroup>
+            {children}
+          </ReactTransitionGroup>
           <Layer
             properties={{
               backgroundColor: '#97B2C9',

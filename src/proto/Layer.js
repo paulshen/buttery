@@ -87,6 +87,12 @@ class Layer extends React.Component {
     return React.Children.count(nextProps.children) > 0 || React.Children.count(this.props.children) > 0;
   }
 
+  componentWillUnmount() {
+    if (this._animator) {
+      this._animator.stop();
+    }
+  }
+
   render() {
     let { children, animator, properties, style, onClick, ...props } = this.props;
     return (

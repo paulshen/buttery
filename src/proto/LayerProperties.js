@@ -7,6 +7,9 @@ export function applyProperties(node: HTMLElement, properties: LayerProperties) 
   if (properties.backgroundColor) {
     node.style.backgroundColor = properties.backgroundColor;
   }
+  if (typeof properties.opacity !== 'undefined') {
+    node.style.opacity = `${properties.opacity}`;
+  }
 }
 
 export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
@@ -15,22 +18,19 @@ export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
     a.y === b.y &&
     a.width === b.width &&
     a.height === b.height &&
-    a.backgroundColor === b.backgroundColor
+    a.backgroundColor === b.backgroundColor &&
+    a.opacity === b.opacity
   );
 }
 
-function interp(from, to, t) {
+function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
 export function interpolateProperties(from: LayerProperties, to: LayerProperties, t: number): LayerProperties {
-  return ['x', 'y', 'width', 'height'].reduce((hash, prop) => {
-    hash[prop] = interp(from[prop], to[prop], t);
+  return ['x', 'y', 'width', 'height', 'opacity'].reduce((hash, prop) => {
+    if (typeof from[prop] !== 'undefined' && typeof to[prop] !== 'undefined') {
+      hash[prop] = interp(from[prop], to[prop], t);
+    }
     return hash;
-  }, {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    backgroundColor: to.backgroundColor,
-  });
+  }, { ...to });
 }
