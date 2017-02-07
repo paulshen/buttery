@@ -5,76 +5,35 @@ import ReactTransitionGroup from 'react-addons-transition-group';
 
 import { Layer, LayerDraggable, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
 
-const Steps = [
-  { backgroundColor: '#438DED', width: 10, height: 10, x: 100, y: 100, opacity: 0 },
-  { backgroundColor: '#438DED', width: 10, height: 12, x: 110, y: 90, opacity: 1 },
-  { backgroundColor: '#438DED', width: 10, height: 10, x: 90, y: 180, opacity: 0 },
-];
-
-const Animators = [
-  new SpringAnimator(2000),
-  new LinearAnimator(300),
-  new SpringAnimator(300),
-];
-
 class App extends React.Component {
   state = {
-    addClicks: 0,
-    subtractClicks: 0,
+    numClicks: 0,
   };
 
-  _onAddClick = () => {
+  _onClick = () => {
     this.setState({
-      addClicks: this.state.addClicks + 14,
-    });
-  };
-
-  _onSubtractClick = () => {
-    this.setState({
-      subtractClicks: this.state.subtractClicks + 8,
+      numClicks: this.state.numClicks + 1,
     });
   };
 
   render() {
-    let children = [];
-    for (let i = this.state.subtractClicks; i < this.state.addClicks; i++) {
-      let position = i - this.state.subtractClicks;
-      children.push(
-        <LayerTransitionChild
-          enterProperties={Steps[0]}
-          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(position / 20), y: Steps[1].y + 20 * (position % 20)}}
-          exitProperties={Steps[2]}
-          animator={new SpringAnimator(1000)}
-          key={i}
-        />
-      );
-    }
-
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <ReactTransitionGroup>
-            {children}
-          </ReactTransitionGroup>
           <Layer
             properties={{
-              backgroundColor: '#97B2C9',
-              width: 50,
-              height: 50,
-              x: 200,
-              y: 500,
+              x: 100,
+              y: 200,
+              width: 80,
+              height: 80,
+              backgroundColor: '#FE9D63',
+              rotation: this.state.numClicks * 120,
+              scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
+              scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
+              borderRadius: this.state.numClicks % 2 === 0 ? 2 : 10,
             }}
-            onClick={this._onAddClick}
-          />
-          <Layer
-            properties={{
-              backgroundColor: '#97B2C9',
-              width: 50,
-              height: 50,
-              x: 300,
-              y: 500,
-            }}
-            onClick={this._onSubtractClick}
+            animator={new SpringAnimator(1000)}
+            onClick={this._onClick}
           />
         </div>
       </div>

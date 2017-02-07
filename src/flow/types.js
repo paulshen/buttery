@@ -22,4 +22,8 @@ type LayerProperties = {
   height: number,
   backgroundColor?: string,
   opacity?: number,
+  rotation?: number,
+  scaleX?: number,
+  scaleY?: number,
+  borderRadius?: number,
 };
