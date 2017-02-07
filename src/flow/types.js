@@ -26,4 +26,9 @@ type LayerProperties = {
   scaleX?: number,
   scaleY?: number,
   borderRadius?: number,
+  shadowX?: ?number,
+  shadowY?: ?number,
+  shadowBlur?: ?number,
+  shadowColor?: ?string,
+  shadowSpread?: ?number,
 };

@@ -31,6 +31,9 @@ class App extends React.Component {
               scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
               scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
               borderRadius: this.state.numClicks % 2 === 0 ? 2 : 10,
+              shadowColor: 'rgba(0,0,0,0.15)',
+              shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
+              shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
             }}
             animator={new SpringAnimator(1000)}
             onClick={this._onClick}

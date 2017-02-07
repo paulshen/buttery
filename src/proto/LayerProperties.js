@@ -23,6 +23,9 @@ export function applyProperties(node: HTMLElement, properties: LayerProperties) 
   if (typeof properties.borderRadius !== 'undefined') {
     node.style.borderRadius = `${properties.borderRadius}px`;
   }
+  if (properties.shadowColor) {
+    node.style.boxShadow = `${properties.shadowX || 0}px ${properties.shadowY || 0}px ${properties.shadowBlur || 0}px ${properties.shadowSpread || 0}px ${properties.shadowColor}`;
+  }
 }
 
 export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
@@ -36,7 +39,12 @@ export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
     a.rotation === b.rotation &&
     a.scaleX === b.scaleX &&
     a.scaleY === b.scaleY &&
-    a.borderRadius === b.borderRadius
+    a.borderRadius === b.borderRadius &&
+    a.shadowX == b.shadowX &&
+    a.shadowY == b.shadowY &&
+    a.shadowBlur == b.shadowBlur &&
+    a.shadowColor == b.shadowColor &&
+    a.shadowSpread == b.shadowSpread
   );
 }
 
@@ -44,8 +52,8 @@ function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
 export function interpolateProperties(from: LayerProperties, to: LayerProperties, t: number): LayerProperties {
-  return ['x', 'y', 'width', 'height', 'opacity', 'rotation', 'scaleX', 'scaleY', 'borderRadius'].reduce((hash, prop) => {
-    if (typeof from[prop] !== 'undefined' && typeof to[prop] !== 'undefined') {
+  return ['x', 'y', 'width', 'height', 'opacity', 'rotation', 'scaleX', 'scaleY', 'borderRadius', 'shadowX', 'shadowY', 'shadowBlur', 'shadowSpread'].reduce((hash, prop) => {
+    if (from[prop] != null && to[prop] != null) {
       hash[prop] = interp(from[prop], to[prop], t);
     }
     return hash;
