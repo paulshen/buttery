@@ -8,7 +8,7 @@ import { Layer, LayerDraggable, LayerTransitionChild, SpringAnimator, LinearAnim
 const Steps = [
   { backgroundColor: '#438DED', width: 10, height: 10, x: 100, y: 100, opacity: 0 },
   { backgroundColor: '#438DED', width: 10, height: 12, x: 110, y: 90, opacity: 1 },
-  { backgroundColor: '#438DED', width: 60, height: 60, x: 90, y: 180, opacity: 0 },
+  { backgroundColor: '#438DED', width: 10, height: 10, x: 90, y: 180, opacity: 0 },
 ];
 
 const Animators = [
@@ -19,22 +19,30 @@ const Animators = [
 
 class App extends React.Component {
   state = {
-    clicks: 0,
+    addClicks: 0,
+    subtractClicks: 0,
   };
 
-  _onClick = () => {
+  _onAddClick = () => {
     this.setState({
-      clicks: this.state.clicks + 14,
+      addClicks: this.state.addClicks + 14,
+    });
+  };
+
+  _onSubtractClick = () => {
+    this.setState({
+      subtractClicks: this.state.subtractClicks + 8,
     });
   };
 
   render() {
     let children = [];
-    for (let i = 0; i < this.state.clicks; i++) {
+    for (let i = this.state.subtractClicks; i < this.state.addClicks; i++) {
+      let position = i - this.state.subtractClicks;
       children.push(
         <LayerTransitionChild
           enterProperties={Steps[0]}
-          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(i / 20), y: Steps[1].y + 20 * (i % 20)}}
+          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(position / 20), y: Steps[1].y + 20 * (position % 20)}}
           exitProperties={Steps[2]}
           animator={new SpringAnimator(1000)}
           key={i}
@@ -56,7 +64,17 @@ class App extends React.Component {
               x: 200,
               y: 500,
             }}
-            onClick={this._onClick}
+            onClick={this._onAddClick}
+          />
+          <Layer
+            properties={{
+              backgroundColor: '#97B2C9',
+              width: 50,
+              height: 50,
+              x: 300,
+              y: 500,
+            }}
+            onClick={this._onSubtractClick}
           />
         </div>
       </div>
