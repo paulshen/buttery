@@ -43,6 +43,7 @@ class Layer extends React.Component {
     children?: any,
     style?: any,
     onClick?: Function,
+    onMove?: (p: Point) => void,
   }
   _layer: HTMLElement;
   _properties: LayerProperties;
@@ -71,6 +72,9 @@ class Layer extends React.Component {
         this._animator.start();
       } else {
         applyProperties(this._layer, properties);
+        if (this.props.onMove) {
+          this.props.onMove(properties);
+        }
       }
     }
   }
@@ -80,8 +84,8 @@ class Layer extends React.Component {
     applyProperties(this._layer, this._properties);
   };
 
-  shouldComponentUpdate() {
-    return false;
+  shouldComponentUpdate(nextProps) {
+    return React.Children.count(nextProps.children) > 0 || React.Children.count(this.props.children) > 0;
   }
 
   render() {
