@@ -3,6 +3,7 @@ import { interpolateProperties } from '../LayerProperties';
 
 export default class LinearAnimator {
   _updater: (p: LayerProperties) => void;
+  _onEnd: ?() => void;
   _duration: number;
   _start: number;
   _from: LayerProperties;
@@ -13,11 +14,12 @@ export default class LinearAnimator {
     this._duration = duration;
   }
 
-  start(from: LayerProperties, to: LayerProperties, updater: (p: LayerProperties) => void) {
+  start(from: LayerProperties, to: LayerProperties, updater: (p: LayerProperties) => void, onEnd: ?() => void) {
     this._start = Date.now();
     this._from = { ...from };
     this._to = { ...to };
     this._updater = updater;
+    this._onEnd = onEnd;
     this._tick();
   }
 
@@ -31,6 +33,8 @@ export default class LinearAnimator {
     this._updater(interpolateProperties(this._from, this._to, t));
     if (t < 1) {
       this._raf = requestAnimationFrame(this._tick);
+    } else {
+      this._onEnd && this._onEnd();
     }
   };
 }

@@ -43,6 +43,7 @@ class Layer extends React.Component {
     style?: any,
     onClick?: Function,
     onMove?: (p: Point) => void,
+    onAnimationEnd?: () => void,
   }
   _layer: HTMLElement;
   _properties: LayerProperties;
@@ -65,7 +66,7 @@ class Layer extends React.Component {
         this._animator.stop();
       }
       if (animator) {
-        animator.start(this._properties || this.props.properties, properties, this._updater);
+        animator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
         this._animator = animator;
       } else {
         applyProperties(this._layer, properties);
@@ -79,6 +80,10 @@ class Layer extends React.Component {
   _updater = (properties) => {
     this._properties = properties;
     applyProperties(this._layer, properties);
+  };
+
+  _onAnimationEnd = () => {
+    this.props.onAnimationEnd && this.props.onAnimationEnd();
   };
 
   shouldComponentUpdate(nextProps) {

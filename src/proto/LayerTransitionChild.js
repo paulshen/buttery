@@ -16,6 +16,7 @@ export default class LayerTransitionChild extends React.Component {
   } = {
     stage: 'entering',
   };
+  _exitCallback: ?Function;
 
   componentWillEnter(callback: Function) {
     this.setState({
@@ -28,8 +29,13 @@ export default class LayerTransitionChild extends React.Component {
     this.setState({
       stage: 'exiting',
     });
-    setTimeout(callback, 2100); // TODO
+    this._exitCallback = callback;
   }
+
+  _onAnimationEnd = () => {
+    this._exitCallback && this._exitCallback();
+    this._exitCallback = null;
+  };
 
   render() {
     let { stage } = this.state;
@@ -50,6 +56,7 @@ export default class LayerTransitionChild extends React.Component {
       <Layer
         {...props}
         properties={p}
+        onAnimationEnd={this._onAnimationEnd}
       />
     );
   }
