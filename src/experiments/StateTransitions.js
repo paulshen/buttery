@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, LayerDraggable, SpringAnimator, LinearAnimator } from '../proto';
+import { Layer, SpringAnimator, LinearAnimator } from '../proto';
 
 const Steps = [
   { backgroundColor: '#438DED', width: 100, height: 100, x: 100, y: 100, },

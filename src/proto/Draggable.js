@@ -1,47 +1,53 @@
 /* @flow */
-import React from 'react';
 
 import Constraint from './Constraint';
-import Layer from './Layer';
 import Motion from './Motion';
 import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
 
-export default class LayerDraggable extends React.Component {
+export default class Draggable {
   props: {
-    properties: LayerProperties,
-    initialX: number,
-    initialY: number,
     viewportSize?: { width: number, height: number },
     pageSize?: number,
   };
-  state: {
-    x: number,
-    y: number,
-  };
+  layerProperties: LayerProperties;
+
+  _layer: HTMLElement;
+  _p: Point;
   _dragStart: Point;
   _touches: Object[];
   _constraintX: Constraint;
   _motion: Motion;
+  _layerUpdater: (p: Point) => void;
 
-  constructor(props: $PropertyType<LayerDraggable, 'props'>) {
-    super();
-    this.state = {
-      x: props.initialX,
-      y: props.initialY,
-    };
+  start(layer: HTMLElement, initialPoint: Point, updater: (p: Point) => void) {
+    this._layer = layer;
+    this._p = initialPoint;
+    this._layerUpdater = updater;
+    this._layer.addEventListener('touchstart', this._onTouchStart, false);
+    this._layer.addEventListener('touchmove', this._onTouchMove, false);
+    this._layer.addEventListener('touchend', this._onTouchEnd, false);
   }
 
-  _onTouchStart = (e: SyntheticTouchEvent) => {
+  stop() {
     if (this._motion) {
       this._motion.stop();
     }
-    this._dragStart = { x: this.state.x, y: this.state.y };
+    this._layer.removeEventListener('touchstart', this._onTouchStart);
+    this._layer.removeEventListener('touchmove', this._onTouchMove);
+    this._layer.removeEventListener('touchend', this._onTouchEnd);
+  }
+
+  _onTouchStart = (e: TouchEvent) => {
+    if (this._motion) {
+      this._motion.stop();
+    }
+    this._dragStart = { ...this._p };
     this._touches = [];
     this._addTouch(e.touches[0]);
     if (this.props.viewportSize) {
       this._constraintX = new Constraint({
-        min: -(this.props.properties.width - this.props.viewportSize.width),
+        min: -(this.layerProperties.width - this.props.viewportSize.width),
         max: 0,
       });
     } else {
@@ -49,17 +55,17 @@ export default class LayerDraggable extends React.Component {
     }
   };
 
-  _onTouchMove = (e: SyntheticTouchEvent) => {
+  _onTouchMove = (e: TouchEvent) => {
     let touch = e.touches[0];
-    let p = {
+    this._p = {
       x: this._constraintX.point(this._dragStart.x + (touch.clientX - this._touches[0].clientX)),
       y: this._dragStart.y, // + (touch.clientY - this._touches[0].clientY),
     };
-    this.setState(p);
+    this._updater(this._p);
     this._addTouch(touch);
   };
 
-  _onTouchEnd = (e: SyntheticTouchEvent) => {
+  _onTouchEnd = (e: TouchEvent) => {
     if (this._touches.length > 2) {
       let v = { x: 0, y: 0 };
       let lastTouch = this._touches[this._touches.length - 1];
@@ -73,20 +79,20 @@ export default class LayerDraggable extends React.Component {
       const { pageSize } = this.props;
       if (pageSize) {
         // $FlowAssert
-        let targetX = Math.min(Math.max(Math.round(this.state.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), this._constraintX.min / pageSize), this._constraintX.max / pageSize) * pageSize;
+        let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), this._constraintX.min / pageSize), this._constraintX.max / pageSize) * pageSize;
         let springX = createSpring(targetX);
         this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
           let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
           return [{ x: v_x, y: 0 }, shouldStop_x];
         });
-        this._motion.start({ x: this.state.x, y: this.state.y }, v, this._updater);
+        this._motion.start(this._p, v, this._updater);
       } else {
         let scrollX = createScroll(this._constraintX);
         this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
           let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
           return [{ x: v_x, y: 0 }, shouldStop_x];
         });
-        this._motion.start({ x: this.state.x, y: this.state.y }, v, this._updater);
+        this._motion.start(this._p, v, this._updater);
       }
     }
   };
@@ -100,27 +106,7 @@ export default class LayerDraggable extends React.Component {
   };
 
   _updater = (p: Point) => {
-    this.setState({
-      x: p.x,
-      y: p.y,
-    });
+    this._p = p;
+    this._layerUpdater(p);
   };
-
-  render() {
-    let { initialX, initialY, properties, ...props } = this.props;
-
-    return (
-      <Layer
-        {...props}
-        properties={{
-          ...properties,
-          x: this.state.x,
-          y: this.state.y,
-        }}
-        onTouchStart={this._onTouchStart}
-        onTouchMove={this._onTouchMove}
-        onTouchEnd={this._onTouchEnd}
-      />
-    );
-  }
 }

@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, LayerDraggable } from '../proto';
+import { Layer } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -20,18 +20,19 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <LayerDraggable
+          <Layer
             properties={{
               width: 1125,
               height: 667,
               x: 0,
               y: 0,
             }}
-            initialX={0}
-            initialY={0}
             onMove={this._onMove}
-            viewportSize={{ width: 375, height: 667 }}
-            pageSize={375}>
+            draggable={true}
+            draggableProperties={{
+              viewportSize: { width: 375, height: 667 },
+              pageSize: 375,
+            }}>
             <Layer
               properties={{
                 width: 375,
@@ -59,7 +60,7 @@ class App extends React.Component {
                 backgroundColor: `rgb(${colorValue},220,220)`,
               }}
             />
-          </LayerDraggable>
+          </Layer>
         </div>
       </div>
     );

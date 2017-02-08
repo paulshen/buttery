@@ -16,8 +16,8 @@ export default class Motion {
   }
 
   start(start: Point, v: Vector, updater: (p: Point) => void) {
-    this._start = start;
-    this._p = start;
+    this._start = { ...start };
+    this._p = this._start;
     this._v = v;
     this._updater = updater;
 

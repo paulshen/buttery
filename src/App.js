@@ -1,74 +1,66 @@
 /* @flow */
 import React from 'react';
 import Radium from 'radium';
-import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerDraggable, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
+import { Layer } from './proto';
 
 class App extends React.Component {
   state = {
-    numClicks: 0,
+    x: 0,
   };
 
-  _onClick = () => {
+  _onMove = ({ x, y }) => {
     this.setState({
-      numClicks: (this.state.numClicks + 1) % 4,
+      x,
     });
   };
 
   render() {
-    let fromBottom = this.state.numClicks < 2;
-
+    let colorValue = Math.round(Math.max(Math.min(-this.state.x / 750, 1), 0) * 255);
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
             properties={{
-              x: 100,
-              y: 200,
-              width: 80,
-              height: 80,
-              backgroundColor: '#FE9D63',
-              rotation: this.state.numClicks * 120,
-              scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
-              scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
-              borderRadius: this.state.numClicks % 2 === 0 ? 2 : 10,
-              shadowColor: 'rgba(0,0,0,0.15)',
-              shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
-              shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
+              width: 1125,
+              height: 667,
+              x: 0,
+              y: 0,
             }}
-            animator={new SpringAnimator()}
-            onClick={this._onClick}
-          />
-          <ReactTransitionGroup>
-            {this.state.numClicks % 2 === 1 &&
-              <LayerTransitionChild
-                enterProperties={{
-                  backgroundColor: 'blue',
-                  x: fromBottom ? 0 : 375,
-                  y: fromBottom ? 667 : 0,
-                  width: 375,
-                  height: 667,
-                }}
-                properties={{
-                  backgroundColor: 'blue',
-                  x: 0,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
-                exitProperties={{
-                  backgroundColor: 'blue',
-                  x: fromBottom ? 0 : 375,
-                  y: fromBottom ? 667 : 0,
-                  width: 375,
-                  height: 667,
-                }}
-                animator={new SpringAnimator(0.0005, 0.05)}
-                onClick={this._onClick}
-                key={fromBottom}
-              />}
-          </ReactTransitionGroup>
+            onMove={this._onMove}
+            draggable={true}
+            draggableProperties={{
+              viewportSize: { width: 375, height: 667 },
+              pageSize: 375,
+            }}>
+            <Layer
+              properties={{
+                width: 375,
+                height: 667,
+                x: 0,
+                y: 0,
+                backgroundColor: `rgb(220,220,${colorValue})`,
+              }}
+            />
+            <Layer
+              properties={{
+                width: 375,
+                height: 667,
+                x: 375,
+                y: 0,
+                backgroundColor: `rgb(220,${colorValue},220)`,
+              }}
+            />
+            <Layer
+              properties={{
+                width: 375,
+                height: 667,
+                x: 750,
+                y: 0,
+                backgroundColor: `rgb(${colorValue},220,220)`,
+              }}
+            />
+          </Layer>
         </div>
       </div>
     );

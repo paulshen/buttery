@@ -3,42 +3,14 @@ import React from 'react';
 import Radium from 'radium';
 
 import { applyProperties, arePropertiesSame, interpolateProperties } from './LayerProperties';
-
-function interpolate(from, to, t) {
-  return from + (to - from) * t;
-}
-
-export function getChildrenDimensions(children: any): ?Rect {
-  let bound;
-  React.Children.forEach(children, (child) => {
-    if (!bound) {
-      bound = {
-        x: child.props.properties.x,
-        y: child.props.properties.y,
-        x2: child.props.properties.x + child.props.properties.width,
-        y2: child.props.properties.y + child.props.properties.height,
-      };
-    } else {
-      bound = {
-        x: Math.min(bound.x, child.props.properties.x),
-        y: Math.min(bound.y, child.props.properties.y),
-        x2: Math.max(bound.x2, child.props.properties.x + child.props.properties.width),
-        y2: Math.max(bound.y2, child.props.properties.y + child.props.properties.height),
-      };
-    }
-  });
-  return bound && {
-    x: bound.x,
-    y: bound.y,
-    width: bound.x2 - bound.x,
-    height: bound.y2 - bound.y,
-  };
-}
+import Draggable from './Draggable';
 
 class Layer extends React.Component {
   props: {
     properties: LayerProperties,
     animator?: Object,
+    draggable?: boolean,
+    draggableProperties?: $PropertyType<Draggable, 'props'>;
     children?: any,
     style?: any,
     onClick?: Function,
@@ -48,7 +20,8 @@ class Layer extends React.Component {
   _layer: HTMLElement;
   _properties: LayerProperties;
   _animator: ?Object;
-  _properties: Object;
+  _pointFromDraggable: ?Point;
+  _draggable: ?Draggable;
 
   constructor(props) {
     super();
@@ -56,11 +29,14 @@ class Layer extends React.Component {
   }
 
   componentDidMount() {
-    applyProperties(this._layer, this.props.properties);
+    this._applyProperties(this.props.properties);
+    if (this.props.draggable) {
+      this._createDraggable(this.props);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    let { animator, properties } = nextProps;
+    let { animator, properties, draggable } = nextProps;
     if (!arePropertiesSame(properties, this.props.properties)) {
       if (this._animator) {
         this._animator.stop();
@@ -69,17 +45,56 @@ class Layer extends React.Component {
         animator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
         this._animator = animator;
       } else {
-        applyProperties(this._layer, properties);
-        if (this.props.onMove) {
-          this.props.onMove(properties);
-        }
+        this._applyProperties(properties);
       }
+    }
+    if (draggable !== this.props.draggable) {
+      if (draggable) {
+        this._createDraggable(nextProps);
+      } else if (this._draggable) {
+        this._draggable.stop();
+        this._draggable = null;
+      }
+    }
+    if (this._draggable) {
+      // $FlowAssert
+      this._draggable.props = nextProps.draggableProperties;
+      this._draggable.layerProperties = properties;
     }
   }
 
-  _updater = (properties) => {
+  _createDraggable = (props) => {
+    let { properties, draggableProperties } = props;
+    this._pointFromDraggable = { x: properties.x, y: properties.y };
+    this._draggable = new Draggable();
+    // TODO: draggable={true} requires draggableProperties
+    // $FlowAssert
+    this._draggable.props = draggableProperties;
+    this._draggable.layerProperties = properties;
+    this._draggable.start(this._layer, this._pointFromDraggable, this._pointUpdater);
+  };
+
+  _updater = (properties: LayerProperties) => {
     this._properties = properties;
+    this._applyProperties(properties);
+  };
+
+  _pointUpdater = (p: Point) => {
+    this._pointFromDraggable = p;
+    this._applyProperties(this.props.properties);
+  };
+
+  _applyProperties = (properties) => {
+    if (this._draggable) {
+      properties = {
+        ...properties,
+        ...this._pointFromDraggable,
+      }
+    }
     applyProperties(this._layer, properties);
+    if (this.props.onMove) {
+      this.props.onMove(properties);
+    }
   };
 
   _onAnimationEnd = () => {
@@ -93,6 +108,9 @@ class Layer extends React.Component {
   componentWillUnmount() {
     if (this._animator) {
       this._animator.stop();
+    }
+    if (this._draggable) {
+      this._draggable.stop();
     }
   }
 
