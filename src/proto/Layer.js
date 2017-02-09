@@ -16,6 +16,8 @@ class Layer extends React.Component {
     onClick?: Function,
     onMove?: (p: Point) => void,
     onAnimationEnd?: () => void,
+    onDrag?: (p: Point) => void,
+    onDragEnd?: (p: Point) => void,
   }
   _layer: HTMLElement;
   _properties: LayerProperties;
@@ -38,15 +40,7 @@ class Layer extends React.Component {
   componentWillReceiveProps(nextProps) {
     let { animator, properties, draggable } = nextProps;
     if (!arePropertiesSame(properties, this.props.properties)) {
-      if (this._animator) {
-        this._animator.stop();
-      }
-      if (animator) {
-        animator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
-        this._animator = animator;
-      } else {
-        this._applyProperties(properties);
-      }
+      this._handlePropertiesChange(properties, animator);
     }
     if (draggable !== this.props.draggable) {
       if (draggable) {
@@ -57,21 +51,30 @@ class Layer extends React.Component {
       }
     }
     if (this._draggable) {
-      // $FlowAssert
       this._draggable.props = nextProps.draggableProperties;
       this._draggable.layerProperties = properties;
     }
   }
 
+  _handlePropertiesChange = (properties, animator) => {
+    if (this._animator) {
+      this._animator.stop();
+    }
+    if (animator) {
+      animator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
+      this._animator = animator;
+    } else {
+      this._applyProperties(properties);
+    }
+  };
+
   _createDraggable = (props) => {
     let { properties, draggableProperties } = props;
     this._pointFromDraggable = { x: properties.x, y: properties.y };
     this._draggable = new Draggable();
-    // TODO: draggable={true} requires draggableProperties
-    // $FlowAssert
     this._draggable.props = draggableProperties;
     this._draggable.layerProperties = properties;
-    this._draggable.start(this._layer, this._pointFromDraggable, this._pointUpdater);
+    this._draggable.start(this._layer, this._pointFromDraggable, this._onDragStart, this._dragUpdater, this._onDragEnd);
   };
 
   _updater = (properties: LayerProperties) => {
@@ -79,16 +82,27 @@ class Layer extends React.Component {
     this._applyProperties(properties);
   };
 
-  _pointUpdater = (p: Point) => {
+  _onDragStart = () => {
+    if (this._animator) {
+      this._animator.stop();
+    }
+  };
+
+  _dragUpdater = (p: Point) => {
     this._pointFromDraggable = p;
     this._applyProperties(this.props.properties);
+    this.props && this.props.onDrag && this.props.onDrag(p);
   };
 
   _applyProperties = (properties) => {
     if (this._draggable) {
-      properties = {
-        ...properties,
-        ...this._pointFromDraggable,
+      if (this._draggable.isDragging) {
+        properties = {
+          ...properties,
+          ...this._pointFromDraggable,
+        };
+      } else {
+        this._draggable.setPoint({ x: properties.x, y: properties.y });
       }
     }
     applyProperties(this._layer, properties);
@@ -99,6 +113,15 @@ class Layer extends React.Component {
 
   _onAnimationEnd = () => {
     this.props.onAnimationEnd && this.props.onAnimationEnd();
+  };
+
+  _onDragEnd = (p: Point) => {
+    this._properties = {
+      ...this._properties,
+      ...p,
+    };
+    this.props.onDragEnd && this.props.onDragEnd(p);
+    this._handlePropertiesChange(this.props.properties, this.props.animator);
   };
 
   shouldComponentUpdate(nextProps) {
@@ -115,7 +138,7 @@ class Layer extends React.Component {
   }
 
   render() {
-    let { children, animator, properties, style, onClick, ...props } = this.props;
+    let { children, animator, properties, draggable, draggableProperties, style, onClick, onMove, onDrag, onDragEnd, ...props } = this.props;
     return (
       <div
         {...props}

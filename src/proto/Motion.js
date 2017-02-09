@@ -7,6 +7,7 @@ export default class Motion {
   _v: Vector;
   _a: (p: Point, v: Vector, dt: number) => [Vector, boolean];
   _updater: (p: Point) => void;
+  _onEnd: ?(p: Point) => void;
   _startTime: number;
   _lastUpdateTime: number;
   _raf: number;
@@ -15,11 +16,12 @@ export default class Motion {
     this._a = a;
   }
 
-  start(start: Point, v: Vector, updater: (p: Point) => void) {
+  start(start: Point, v: Vector, updater: (p: Point) => void, onEnd: ?(p: Point) => void) {
     this._start = { ...start };
     this._p = this._start;
     this._v = v;
     this._updater = updater;
+    this._onEnd = onEnd;
 
     this._startTime = Date.now();
     this._lastUpdateTime = this._startTime;
@@ -47,6 +49,8 @@ export default class Motion {
     this._lastUpdateTime = now;
     if (!shouldStop) {
       this._raf = requestAnimationFrame(this._tick);
+    } else {
+      this._onEnd && this._onEnd(this._p);
     }
   };
 }
