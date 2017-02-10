@@ -129,6 +129,4 @@ const Styles = {
     height: '667px',
     width: '375px',
   },
-}
-
-document.addEventListener('touchmove', (e) => e.preventDefault());
+};
