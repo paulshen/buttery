@@ -7,108 +7,43 @@ import { Constraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator
 
 class App extends React.Component {
   state = {
-    numClicks: 0,
-    showMenu: false,
-    menuX: -375,
-  };
-
-  _onClick = () => {
-    this.setState({
-      numClicks: (this.state.numClicks + 1) % 2,
-      showMenu: !this.state.showMenu,
-    });
-  };
-
-  _onDrag = (p: Point) => {
-  };
-
-  _onMove = (p: Point) => {
-    this.setState({
-      menuX: p.x,
-    });
+    scrollY: 0,
   };
 
   _onDragEnd = (p: Point) => {
-    if (p.x < -80) {
-      this.setState({
-        showMenu: false,
-      });
-    }
+    this.setState({
+      scrollY: p.y,
+    });
   };
 
   render() {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Layer
-            properties={{
-              x: 100,
-              y: 200,
-              width: 80,
-              height: 80,
-              backgroundColor: '#FE9D63',
-              rotation: this.state.numClicks * 120,
-              scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
-              scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
-              borderRadius: this.state.numClicks % 2 === 0 ? 2 : 10,
-              shadowColor: 'rgba(0,0,0,0.15)',
-              shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
-              shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
-            }}
-            animator={new SpringAnimator()}
-            onClick={this._onClick}
-          />
-          {this.state.showMenu &&
-            <Layer properties={{
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              x: 0,
-              y: 0,
-              width: 375,
-              height: 667,
-              opacity: Math.max(Math.min(this.state.menuX / 175 + 1, 1), 0),
-            }} />
-          }
-          <ReactTransitionGroup>
-            {this.state.showMenu &&
-              <LayerTransitionChild
-                enterProperties={{
-                  x: -375,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
-                properties={{
-                  x: 0,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
-                exitProperties={{
-                  x: -375,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
-                draggable={true}
-                draggableProperties={{
-                  constraintX: new Constraint({ min: -375, max: 0 }),
-                }}
-                animator={new SpringAnimator(0.0005, 0.05)}
-                onDrag={this._onDrag}
-                onMove={this._onMove}
-                onDragEnd={this._onDragEnd}
-                key="menu">
-                <Layer
-                  properties={{
-                    backgroundColor: 'black',
-                    x: 0,
-                    y: 0,
-                    width: 200,
-                    height: 667,
-                  }}
-                />
-              </LayerTransitionChild>}
-          </ReactTransitionGroup>
+          <Layer properties={{ x: 0, y: 0, width: 375, height: 80, backgroundColor: '#ADD8C7' }} />
+          <Layer properties={{ x: 0, y: 80, width: 375, height: 587, backgroundColor: '#FCFBE3' }} style={{ overflow: 'hidden' }}>
+            <Layer
+              properties={{ x: 0, y: this.state.scrollY, width: 375, height: 2000 }}
+              draggable={true}
+              draggableProperties={{
+                constraintX: new Constraint({ min: 0, max: 0 }),
+                constraintY: new Constraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
+                momentum: true,
+              }}
+              onDragEnd={this._onDragEnd}
+              animator={new SpringAnimator()}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id massa libero. Etiam efficitur diam a purus consequat venenatis. Ut sit amet libero arcu. Vivamus orci metus, ornare in volutpat ut, varius eu massa. Sed ut sagittis lorem, sed viverra velit. Sed id viverra neque. Maecenas nec neque id turpis laoreet mollis tincidunt eget ante. Maecenas dapibus neque egestas euismod finibus. Nunc et finibus nunc. Donec nec libero justo.
+
+Pellentesque iaculis rutrum leo, sit amet placerat neque consectetur eget. Sed sapien enim, pellentesque nec dui id, tristique fringilla neque. Donec hendrerit convallis purus vitae dictum. Praesent at felis nec mauris vulputate elementum ut ac metus. Curabitur porttitor fermentum rutrum. Etiam bibendum diam at sollicitudin pharetra. In fringilla finibus ligula nec gravida. Aliquam quis mauris facilisis, sagittis quam eu, bibendum orci. In iaculis non nisi in facilisis. Donec ligula urna, blandit eu placerat nec, malesuada sed eros. Pellentesque quis metus sollicitudin, maximus augue eu, tincidunt felis. Fusce elementum augue ante, vel luctus nisi cursus ut.
+
+Nam quis sollicitudin arcu. Nunc a varius quam. Nunc velit arcu, rutrum sed volutpat eu, sodales id nulla. Morbi imperdiet ut orci nec ultricies. Fusce mattis nibh elementum, fermentum diam sit amet, bibendum turpis. Duis vulputate, tellus eu maximus vulputate, enim augue varius ex, sed fermentum diam arcu a turpis. In lacinia venenatis magna id vulputate. Nullam luctus sit amet ante vel lobortis. In justo dui, accumsan et mi sit amet, suscipit eleifend ligula. Ut eu nisl tempor, maximus eros id, vestibulum est. Integer ligula justo, suscipit quis dolor non, sagittis cursus nisl. Phasellus mattis, nulla pellentesque egestas elementum, nulla est varius orci, eu auctor urna purus hendrerit erat. Integer consequat ornare est, et consequat ligula bibendum id.
+
+Curabitur quis ultricies quam, eget gravida purus. Pellentesque nisi orci, laoreet sed sapien quis, eleifend consequat risus. Duis sit amet enim erat. Ut finibus, nisi et suscipit vehicula, ipsum lectus imperdiet diam, in semper augue odio ut sapien. Nulla iaculis, dui a aliquet vestibulum, nisi elit venenatis lorem, quis mollis neque nisl eu lectus. Phasellus ante sem, consectetur laoreet varius quis, malesuada quis libero. Sed suscipit, orci eu dapibus faucibus, purus tortor eleifend dolor, sed posuere odio magna eu augue.
+
+Vestibulum bibendum lorem diam, vel commodo dui maximus condimentum. Aliquam scelerisque mi a porttitor placerat. Vestibulum et erat quam. Maecenas scelerisque est consequat, sagittis elit et, egestas nisi. Nam suscipit erat risus, at iaculis dolor ultrices sit amet. Vivamus eu tempus dui, sit amet pellentesque mauris. Pellentesque est diam, aliquam vel nibh a, scelerisque ultrices felis. Ut laoreet quam ut lacus scelerisque, vel venenatis dui luctus.
+            </Layer>
+          </Layer>
         </div>
       </div>
     );

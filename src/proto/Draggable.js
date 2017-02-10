@@ -4,11 +4,13 @@ import Constraint from './Constraint';
 import Motion from './Motion';
 import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
+import Friction from './motion/Friction';
 
 export default class Draggable {
   props: ?{
     momentum?: boolean,
     constraintX?: Constraint,
+    constraintY?: Constraint,
     pageSize?: number,
   };
   layerProperties: LayerProperties;
@@ -62,9 +64,10 @@ export default class Draggable {
   _onTouchMove = (e: TouchEvent) => {
     let touch = e.touches[0];
     let x = this._dragStart.x + (touch.clientX - this._touches[0].clientX);
+    let y = this._dragStart.y + (touch.clientY - this._touches[0].clientY);
     this._p = {
       x: this.props && this.props.constraintX ? this.props.constraintX.point(x) : x,
-      y: this._dragStart.y, // + (touch.clientY - this._touches[0].clientY),
+      y: this.props && this.props.constraintY ? this.props.constraintY.point(y) : y,
     };
     this._updater(this._p);
     this._addTouch(touch);
@@ -86,6 +89,7 @@ export default class Draggable {
       if (pageSize) {
         // $FlowAssert
         let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), this.props.constraintX.min / pageSize), this.props.constraintX.max / pageSize) * pageSize;
+        // TODO: y
         let springX = createSpring(targetX);
         this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
           let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
@@ -94,10 +98,13 @@ export default class Draggable {
         this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       } else if (momentum) {
         // $FlowAssert
-        let scrollX = createScroll(this.props.constraintX);
+        let props: Object = this.props;
+        let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
+        let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
         this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
           let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
-          return [{ x: v_x, y: 0 }, shouldStop_x];
+          let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
+          return [{ x: v_x, y: v_y }, shouldStop_x && shouldStop_y];
         });
         this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       } else {
