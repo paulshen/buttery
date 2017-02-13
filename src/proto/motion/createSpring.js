@@ -6,6 +6,6 @@ export default function createSpring(target: number) {
     if (x !== target) {
       v -= ((x - target) * SpringK + FrictionK * v) * dt;
     }
-    return [v, x === target && v === 0];
+    return [v, Math.abs(x - target) < 0.01 && Math.abs(v) < 0.01];
   }
 }
