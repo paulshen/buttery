@@ -96,7 +96,7 @@ class Layer extends React.Component {
 
   _applyProperties = (properties) => {
     if (this._draggable) {
-      if (this._draggable.isDragging) {
+      if (this._draggable.isControlledByDraggable) {
         properties = {
           ...properties,
           ...this._pointFromDraggable,

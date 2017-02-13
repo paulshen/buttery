@@ -14,7 +14,7 @@ export default class Draggable {
     pageSize?: number,
   };
   layerProperties: LayerProperties;
-  isDragging = false;
+  isControlledByDraggable = false;
 
   _layer: HTMLElement;
   _p: Point;
@@ -41,7 +41,7 @@ export default class Draggable {
   }
 
   stop() {
-    this.isDragging = false;
+    this.isControlledByDraggable = false;
     if (this._motion) {
       this._motion.stop();
     }
@@ -54,7 +54,7 @@ export default class Draggable {
     if (this._motion) {
       this._motion.stop();
     }
-    this.isDragging = true;
+    this.isControlledByDraggable = true;
     this._dragStart = { ...this._p };
     this._touches = [];
     this._addTouch(e.touches[0]);
@@ -75,40 +75,51 @@ export default class Draggable {
 
   _onTouchEnd = (e: TouchEvent) => {
     if (this._touches.length > 2) {
-      let v = { x: 0, y: 0 };
-      let lastTouch = this._touches[this._touches.length - 1];
-      if (Date.now() - lastTouch.t < 50) {
-        let secondToLastTouch = this._touches[this._touches.length - 2];
-        v = {
-          x: (lastTouch.clientX - secondToLastTouch.clientX) / (lastTouch.t - secondToLastTouch.t),
-          y: (lastTouch.clientY - secondToLastTouch.clientY) / (lastTouch.t - secondToLastTouch.t),
-        };
-      }
-      let pageSize = this.props && this.props.pageSize;
-      let momentum = this.props && this.props.momentum;
-      if (pageSize) {
-        // $FlowAssert
-        let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), this.props.constraintX.min / pageSize), this.props.constraintX.max / pageSize) * pageSize;
-        // TODO: y
-        let springX = createSpring(targetX);
-        this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
-          let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
-          return [{ x: v_x, y: 0 }, shouldStop_x];
-        });
-        this._motion.start(this._p, v, this._updater, this._onMotionEnd);
-      } else if (momentum) {
-        // $FlowAssert
-        let props: Object = this.props;
-        let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
-        let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
-        this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
-          let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
-          let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
-          return [{ x: v_x, y: v_y }, shouldStop_x && shouldStop_y];
-        });
-        this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+      const props = this.props;
+      if (props) {
+        let pageSize = props.pageSize;
+        let momentum = props.momentum;
+
+        if (pageSize || momentum) {
+          let v = { x: 0, y: 0 };
+          let lastTouch = this._touches[this._touches.length - 1];
+          if (Date.now() - lastTouch.t < 50) {
+            let secondToLastTouch = this._touches[this._touches.length - 2];
+            let dt = lastTouch.t - secondToLastTouch.t;
+            v = {
+              x: (lastTouch.clientX - secondToLastTouch.clientX) / dt,
+              y: (lastTouch.clientY - secondToLastTouch.clientY) / dt,
+            };
+            if (props.constraintX && props.constraintX.min != null && props.constraintX.min === props.constraintX.max) {
+              v.x = 0;
+            }
+            if (props.constraintY && props.constraintY.min != null && props.constraintY.min === props.constraintY.max) {
+              v.y = 0;
+            }
+          }
+          if (pageSize) {
+            // $FlowAssert
+            let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), props.constraintX.min / pageSize), props.constraintX.max / pageSize) * pageSize;
+            // TODO: y
+            let springX = createSpring(targetX);
+            this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
+              let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
+              return [{ x: v_x, y: 0 }, shouldStop_x];
+            });
+            this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+          } else if (momentum) {
+            let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
+            let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
+            this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
+              let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
+              let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
+              return [{ x: v_x, y: v_y }, shouldStop_x && shouldStop_y];
+            });
+            this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+          }
+        }
       } else {
-        this.isDragging = false;
+        this.isControlledByDraggable = false;
         this._onDragEnd && this._onDragEnd(this._p);
       }
     }
@@ -128,7 +139,7 @@ export default class Draggable {
   };
 
   _onMotionEnd = (p: Point) => {
-    this.isDragging = false;
+    this.isControlledByDraggable = false;
     this._onDragEnd && this._onDragEnd(p);
   };
 }
