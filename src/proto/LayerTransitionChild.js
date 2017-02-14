@@ -11,6 +11,7 @@ export default class LayerTransitionChild extends React.Component {
     draggable?: boolean,
     animator?: Object,
     onEnter?: Function,
+    onExit?: Function,
   };
   state: {
     stage: 'entering' | 'show' | 'shown' | 'exiting',
@@ -55,12 +56,13 @@ export default class LayerTransitionChild extends React.Component {
     } else if (stage === 'exiting' && this._exitCallback) {
       this._exitCallback();
       this._exitCallback = null;
+      this.props.onExit && this.props.onExit();
     }
   };
 
   render() {
     let { stage } = this.state;
-    let { enterProperties, properties, exitProperties, onEnter, draggable, ...props } = this.props;
+    let { enterProperties, properties, exitProperties, onEnter, onExit, draggable, ...props } = this.props;
     let p;
     switch (stage) {
     case 'entering':

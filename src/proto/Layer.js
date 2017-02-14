@@ -30,6 +30,10 @@ class Layer extends React.Component {
     this._properties = { ...props.properties };
   }
 
+  getProperties = () => {
+    return { ...this._properties };
+  }
+
   componentDidMount() {
     this._applyProperties(this.props.properties);
     if (this.props.draggable) {
