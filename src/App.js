@@ -71,7 +71,8 @@ class App extends React.Component {
             />
             {!this.state.transitionLayerProperties &&
               <Layer
-                properties={{ x: 0 , y: 600, width: 375, height: 300, backgroundColor: `rgb(153,255,153)` }}
+                properties={{ x: 0 , y: 600, width: 375, height: 300 }}
+                style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
                 onClick={this._onClick}
                 ref={c => this._transitionLayer = c}
               />}
@@ -89,6 +90,7 @@ class App extends React.Component {
                 properties={{ ...this.state.transitionLayerProperties, y: 0, height: 200 }}
                 exitProperties={this.state.transitionLayerProperties}
                 animator={new SpringAnimator()}
+                style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
                 onClick={this._onClick}
                 onExit={this._onExit}
               />}

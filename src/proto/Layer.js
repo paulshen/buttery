@@ -159,5 +159,7 @@ export default Radium(Layer);
 const Styles = {
   Layer: {
     position: 'absolute',
+    backgroundSize: 'cover',
+    backgroundPosition: '50% 50%',
   },
 };
