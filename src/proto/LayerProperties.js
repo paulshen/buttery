@@ -11,6 +11,9 @@ export function applyProperties(node: HTMLElement, properties: LayerProperties) 
   if (typeof properties.scaleY !== 'undefined') {
     transformString += ` scaleY(${properties.scaleY})`;
   }
+  if (typeof properties.scale !== 'undefined') {
+    transformString += ` scale(${properties.scale})`;
+  }
   node.style.transform = transformString;
   node.style.width = `${properties.width}px`;
   node.style.height = `${properties.height}px`;
@@ -39,6 +42,7 @@ export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
     a.rotation === b.rotation &&
     a.scaleX === b.scaleX &&
     a.scaleY === b.scaleY &&
+    a.scale === b.scale &&
     a.borderRadius === b.borderRadius &&
     a.shadowX == b.shadowX &&
     a.shadowY == b.shadowY &&
@@ -52,7 +56,7 @@ function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
 export function interpolateProperties(from: LayerProperties, to: LayerProperties, t: number): LayerProperties {
-  return ['x', 'y', 'width', 'height', 'opacity', 'rotation', 'scaleX', 'scaleY', 'borderRadius', 'shadowX', 'shadowY', 'shadowBlur', 'shadowSpread'].reduce((hash, prop) => {
+  return ['x', 'y', 'width', 'height', 'opacity', 'rotation', 'scaleX', 'scaleY', 'scale', 'borderRadius', 'shadowX', 'shadowY', 'shadowBlur', 'shadowSpread'].reduce((hash, prop) => {
     if (from[prop] != null && to[prop] != null) {
       hash[prop] = interp(from[prop], to[prop], t);
     }

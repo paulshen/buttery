@@ -25,6 +25,7 @@ type LayerProperties = {
   rotation?: number,
   scaleX?: number,
   scaleY?: number,
+  scale?: number,
   borderRadius?: number,
   shadowX?: ?number,
   shadowY?: ?number,
