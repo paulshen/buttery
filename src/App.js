@@ -68,7 +68,9 @@ class App extends React.Component {
             />
             <Layer
               properties={{ x: 0 , y: 300, width: 375, height: 300, backgroundColor: `rgb(200,153,153)` }}
-            />
+              style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+              <div>Hello!</div>
+            </Layer>
             {!this.state.transitionLayerProperties &&
               <Layer
                 properties={{ x: 0 , y: 600, width: 375, height: 300 }}
