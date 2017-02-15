@@ -19,7 +19,7 @@ export default class Draggable {
 
   _layer: HTMLElement;
   _p: Point;
-  _dragStart: Point;
+  _dragStart: ?Point;
   _touches: Object[];
   _motion: Motion;
   _onDragStart: ?() => void;
@@ -36,6 +36,9 @@ export default class Draggable {
     this._layer.addEventListener('touchstart', this._onTouchStart, false);
     this._layer.addEventListener('touchmove', this._onTouchMove, false);
     this._layer.addEventListener('touchend', this._onTouchEnd, false);
+    this._layer.addEventListener('mousedown', this._onTouchStart, false);
+    this._layer.addEventListener('mousemove', this._onTouchMove, false);
+    this._layer.addEventListener('mouseup', this._onTouchEnd, false);
   }
 
   setPoint(p: Point) {
@@ -50,23 +53,30 @@ export default class Draggable {
     this._layer.removeEventListener('touchstart', this._onTouchStart);
     this._layer.removeEventListener('touchmove', this._onTouchMove);
     this._layer.removeEventListener('touchend', this._onTouchEnd);
+    this._layer.removeEventListener('mousedown', this._onTouchStart);
+    this._layer.removeEventListener('mousemove', this._onTouchMove);
+    this._layer.removeEventListener('mouseup', this._onTouchEnd);
   }
 
-  _onTouchStart = (e: TouchEvent) => {
+  _onTouchStart = (e: Event) => {
     if (this._motion) {
       this._motion.stop();
     }
     this.isControlledByDraggable = true;
     this._dragStart = { ...this._p };
     this._touches = [];
-    this._addTouch(e.touches[0]);
+    this._addTouch(this._getTouch(e));
     this._onDragStart && this._onDragStart();
   };
 
-  _onTouchMove = (e: TouchEvent) => {
-    let touch = e.touches[0];
-    let x = this._dragStart.x + (touch.clientX - this._touches[0].clientX);
-    let y = this._dragStart.y + (touch.clientY - this._touches[0].clientY);
+  _onTouchMove = (e: Event) => {
+    const dragStart = this._dragStart;
+    if (!dragStart) {
+      return;
+    }
+    let touch = this._getTouch(e);
+    let x = dragStart.x + (touch.clientX - this._touches[0].clientX);
+    let y = dragStart.y + (touch.clientY - this._touches[0].clientY);
     this._p = {
       x: this.props && this.props.constraintX ? this.props.constraintX.point(x) : x,
       y: this.props && this.props.constraintY ? this.props.constraintY.point(y) : y,
@@ -75,12 +85,27 @@ export default class Draggable {
     this._addTouch(touch);
   };
 
-  _onTouchEnd = (e: TouchEvent) => {
+  _onTouchEnd = (e: Event) => {
+    if (!this._dragStart) {
+      return;
+    }
     if (this._touches.length > 2) {
       this.props && this.props.onTouchEnd && this.props.onTouchEnd(this._p);
       // splitting this allows clients to modify props on touchend
       requestAnimationFrame(this._onTouchEndMotion);
     }
+    this._dragStart = null;
+  };
+
+  _getTouch = (e: Event) => {
+    if (e.type.indexOf('mouse') !== -1) {
+      // $FlowAssert
+      let mouseEvent: MouseEvent = e;
+      return { clientX: mouseEvent.clientX, clientY: mouseEvent.clientY };
+    }
+    // $FlowAssert
+    let touchEvent: TouchEvent = e;
+    return touchEvent.touches[0];
   };
 
   _onTouchEndMotion = () => {
