@@ -5,71 +5,75 @@ import ReactTransitionGroup from 'react-addons-transition-group';
 
 import { Constraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
 
+function Screen({ index, x, backgroundColor }) {
+  return (
+    <Layer
+      properties={{
+        x: x > -375 * index ? (375 * index) + x : Math.max((x + 375 * index) / 4, -375),
+        y: 0,
+        width: 375,
+        height: 667,
+        opacity: x > -375 * index ? 1 : 1 - Math.max((x + 375 * index) / -375, 0),
+        scale: x > -375 * index ? 1 : 1 - Math.max((x + 375 * index) / -10000, 0),
+        backgroundColor,
+      }}
+    />
+  );
+}
+
 class App extends React.Component {
-  state: {
-    constraintY: Constraint,
-    scrollY: number,
-    y: number,
-    imageHeight: number,
-  } = {
-    constraintY: new Constraint({ min: 667 - 60 - 2000, max: 140, edge: 'bounce' }),
-    scrollY: 140,
-    y: 140,
-    imageHeight: 200,
+  state = {
+    x: 0,
+    scrollX: 0,
+  };
+
+  _onDragEnd = (p: Point) => {
+    this.setState({
+      scrollX: p.x,
+    });
   };
 
   _onMove = (p: Point) => {
     this.setState({
-      y: p.y,
+      x: p.x,
     });
-  };
-
-  _onDragEnd = (p: Point) => {
-    this.setState({ scrollY: p.y });
-  };
-
-  _getTextY = () => {
-    let { y } = this.state;
-    if (y < 140) {
-      return Math.max(84 - (140 - y) / 2, 14);
-    }
-    return 84 + (y - 140) / 2;
   };
 
   render() {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Layer
-            properties={{ x: 0, y: 0, width: 375, height: 200, scale: Math.max(1 + (this.state.y - 140) / 200, 1) }}
-            style={{
-              backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w400/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)',
-              transformOrigin: '50% 0%',
-            }}
+          <Screen
+            x={this.state.x}
+            index={0}
+            backgroundColor="#ADD8C7"
+          />
+          <Screen
+            x={this.state.x}
+            index={1}
+            backgroundColor="#FBB829"
+          />
+          <Screen
+            x={this.state.x}
+            index={2}
+            backgroundColor="#FF9999"
           />
           <Layer
-            properties={{ x: 0, y: this._getTextY(), width: 375, height: 40, scale: Math.min(Math.max(1 + (this.state.y - 140) / 240, 0.5), 1.5) }}
-            style={{ color: '#ffffff', fontSize: '32px', textAlign: 'center', textShadow: '0 1px 5px rgba(0,0,0,0.4)' }}>
-            Iceland
-          </Layer>
-          <Layer
-            properties={{ x: 0, y: 60, width: 375, height: 607 }}
-            style={{ overflow: 'hidden', pointerEvents: 'none' }}>
-            <Layer
-              properties={{ x: 0, y: this.state.scrollY, width: 375, height: 2000 }}
-              style={{ backgroundImage: 'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)', pointerEvents: 'all' }}
-              draggable={true}
-              draggableProperties={{
-                constraintX: new Constraint({ min: 0, max: 0 }),
-                constraintY: this.state.constraintY,
-                momentum: true,
-              }}
-              onMove={this._onMove}
-              onDragEnd={this._onDragEnd}
-              animator={new SpringAnimator(0.0001, 0.02)}
-            >
-            </Layer>
-          </Layer>
+            properties={{
+              x: this.state.scrollX,
+              y: 0,
+              width: 375 * 3,
+              height: 667,
+            }}
+            draggable={true}
+            draggableProperties={{
+              constraintY: new Constraint({ min: 0, max: 0 }),
+              constraintX: new Constraint({ min: -375 * 2, max: 0, edge: 'bounce' }),
+              pageSize: 375,
+            }}
+            onDragEnd={this._onDragEnd}
+            onMove={this._onMove}
+          />
         </div>
       </div>
     );
