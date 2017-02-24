@@ -1,5 +1,5 @@
 /* @flow */
-import type Constraint from './Constraint';
+import type DragConstraint from './DragConstraint';
 
 export default class Motion {
   _start: Point;

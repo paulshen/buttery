@@ -1,15 +1,15 @@
 /* @flow */
-import Constraint from '../Constraint';
+import DragConstraint from '../DragConstraint';
 import Motion from '../Motion';
 import Friction from './Friction';
 import createSpring from './createSpring';
 
 class ScrollMotion {
-  _constraint: Constraint;
+  _constraint: DragConstraint;
   _target: Point;
   _accelerationFunction = Friction;
 
-  constructor(constraint: Constraint) {
+  constructor(constraint: DragConstraint) {
     this._constraint = constraint;
   }
 
@@ -26,7 +26,7 @@ class ScrollMotion {
   }
 }
 
-export default function createScroll(constraint: Constraint) {
+export default function createScroll(constraint: DragConstraint) {
   let s = new ScrollMotion(constraint);
   return function(x: number, v: number, dt: number) {
     return s.getAccelerationFunction(x, constraint.min, constraint.max)(x, v, dt);

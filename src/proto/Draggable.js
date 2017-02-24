@@ -1,6 +1,6 @@
 /* @flow */
 
-import Constraint from './Constraint';
+import DragConstraint from './DragConstraint';
 import Motion from './Motion';
 import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
@@ -9,8 +9,8 @@ import Friction from './motion/Friction';
 export default class Draggable {
   props: ?{
     momentum?: boolean,
-    constraintX?: Constraint,
-    constraintY?: Constraint,
+    constraintX?: DragConstraint,
+    constraintY?: DragConstraint,
     pageSize?: number,
     onTouchEnd?: (p: Point) => void,
   };

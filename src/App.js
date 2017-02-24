@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Constraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
 
 function Screen({ index, x, backgroundColor }) {
   return (
@@ -67,8 +67,8 @@ class App extends React.Component {
             }}
             draggable={true}
             draggableProperties={{
-              constraintY: new Constraint({ min: 0, max: 0 }),
-              constraintX: new Constraint({ min: -375 * 2, max: 0, edge: 'bounce' }),
+              constraintY: new DragConstraint({ min: 0, max: 0 }),
+              constraintX: new DragConstraint({ min: -375 * 2, max: 0, edge: 'bounce' }),
               pageSize: 375,
             }}
             onDragEnd={this._onDragEnd}

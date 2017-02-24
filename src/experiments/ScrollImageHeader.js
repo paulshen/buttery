@@ -3,16 +3,16 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Constraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
 
 class App extends React.Component {
   state: {
-    constraintY: Constraint,
+    constraintY: DragConstraint,
     scrollY: number,
     y: number,
     imageHeight: number,
   } = {
-    constraintY: new Constraint({ min: 667 - 60 - 2000, max: 140, edge: 'bounce' }),
+    constraintY: new DragConstraint({ min: 667 - 60 - 2000, max: 140, edge: 'bounce' }),
     scrollY: 140,
     y: 140,
     imageHeight: 200,
@@ -60,7 +60,7 @@ class App extends React.Component {
               style={{ backgroundImage: 'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)', pointerEvents: 'all' }}
               draggable={true}
               draggableProperties={{
-                constraintX: new Constraint({ min: 0, max: 0 }),
+                constraintX: new DragConstraint({ min: 0, max: 0 }),
                 constraintY: this.state.constraintY,
                 momentum: true,
               }}

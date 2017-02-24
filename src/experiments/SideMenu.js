@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Constraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -91,7 +91,7 @@ class App extends React.Component {
                 }}
                 draggable={true}
                 draggableProperties={{
-                  constraintX: new Constraint({ min: -375, max: 0 }),
+                  constraintX: new DragConstraint({ min: -375, max: 0 }),
                 }}
                 animator={new SpringAnimator(0.0005, 0.05)}
                 onDrag={this._onDrag}

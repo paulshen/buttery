@@ -3,11 +3,11 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Constraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
 
 class App extends React.Component {
   state = {
-    constraintY: new Constraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
+    constraintY: new DragConstraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
     y: 0,
     scrollY: 0,
     isRefreshing: false,
@@ -16,7 +16,7 @@ class App extends React.Component {
   _onTouchEnd = (p: Point) => {
     if (!this.state.isRefreshing && p.y > 80) {
       this.setState({
-        constraintY: new Constraint({ min: 587 - 2000, max: 80, edge: 'bounce' }),
+        constraintY: new DragConstraint({ min: 587 - 2000, max: 80, edge: 'bounce' }),
         scrollY: 80,
         isRefreshing: true,
       });
@@ -26,7 +26,7 @@ class App extends React.Component {
   _onAnimationEnd = () => {
     if (this.state.isRefreshing) {
       this.setState({
-        constraintY: new Constraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
+        constraintY: new DragConstraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
         scrollY: 0,
         isRefreshing: false,
       });
@@ -53,7 +53,7 @@ class App extends React.Component {
               properties={{ x: 0, y: this.state.scrollY, width: 375, height: 2000 }}
               draggable={true}
               draggableProperties={{
-                constraintX: new Constraint({ min: 0, max: 0 }),
+                constraintX: new DragConstraint({ min: 0, max: 0 }),
                 constraintY: this.state.constraintY,
                 momentum: true,
                 onTouchEnd: this._onTouchEnd,

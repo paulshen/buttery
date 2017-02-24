@@ -21,7 +21,7 @@ function constrain(value, min, max) {
   return constrainedValue;
 }
 
-export default class Constraint {
+export default class DragConstraint {
   min: ?number;
   max: ?number;
   edge: 'hard' | 'bounce';
