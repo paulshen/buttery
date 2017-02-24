@@ -68,7 +68,7 @@ class App extends React.Component {
             draggable={true}
             draggableProperties={{
               constraintY: new DragConstraint({ min: 0, max: 0 }),
-              constraintX: new DragConstraint({ min: -375 * 2, max: 0, edge: 'bounce' }),
+              constraintX: new DragConstraint({ min: -375 * 2, max: 0, type: 'bounce' }),
               pageSize: 375,
             }}
             onDragEnd={this._onDragEnd}

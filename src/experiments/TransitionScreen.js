@@ -12,7 +12,7 @@ class App extends React.Component {
     transitionLayerProperties: ?LayerProperties,
     transitionExit: boolean,
   } = {
-    constraintY: new DragConstraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
+    constraintY: new DragConstraint({ min: 587 - 2000, max: 0, type: 'bounce' }),
     scrollY: 0,
     transitionLayerProperties: null,
     transitionExit: false,

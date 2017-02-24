@@ -7,7 +7,7 @@ import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnim
 
 class App extends React.Component {
   state = {
-    constraintY: new DragConstraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
+    constraintY: new DragConstraint({ min: 587 - 2000, max: 0, type: 'bounce' }),
     y: 0,
     scrollY: 0,
     isRefreshing: false,
@@ -16,7 +16,7 @@ class App extends React.Component {
   _onTouchEnd = (p: Point) => {
     if (!this.state.isRefreshing && p.y > 80) {
       this.setState({
-        constraintY: new DragConstraint({ min: 587 - 2000, max: 80, edge: 'bounce' }),
+        constraintY: new DragConstraint({ min: 587 - 2000, max: 80, type: 'bounce' }),
         scrollY: 80,
         isRefreshing: true,
       });
@@ -26,7 +26,7 @@ class App extends React.Component {
   _onAnimationEnd = () => {
     if (this.state.isRefreshing) {
       this.setState({
-        constraintY: new DragConstraint({ min: 587 - 2000, max: 0, edge: 'bounce' }),
+        constraintY: new DragConstraint({ min: 587 - 2000, max: 0, type: 'bounce' }),
         scrollY: 0,
         isRefreshing: false,
       });

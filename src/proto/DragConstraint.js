@@ -24,16 +24,16 @@ function constrain(value, min, max) {
 export default class DragConstraint {
   min: ?number;
   max: ?number;
-  edge: 'hard' | 'bounce';
+  type: 'hard' | 'bounce';
 
-  constructor({ min, max, edge }: { min?: number, max?: number, edge?: 'hard' | 'bounce' }) {
+  constructor({ min, max, type }: { min?: number, max?: number, type?: 'hard' | 'bounce' }) {
     this.min = min;
     this.max = max;
-    this.edge = edge || 'hard';
+    this.type = type || 'hard';
   }
 
   point(x: number): number {
-    switch (this.edge) {
+    switch (this.type) {
     case 'bounce':
       return constrainWithBounce(x, this.min, this.max);
     default:
