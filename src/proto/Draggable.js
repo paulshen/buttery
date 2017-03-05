@@ -67,6 +67,7 @@ export default class Draggable {
     this._touches = [];
     this._addTouch(this._getTouch(e));
     this._onDragStart && this._onDragStart();
+    e.stopPropagation();
   };
 
   _onTouchMove = (e: Event) => {
@@ -110,41 +111,38 @@ export default class Draggable {
 
   _onTouchEndMotion = () => {
     const props = this.props;
-    if (props) {
-      let pageSize = props.pageSize;
-      let momentum = props.momentum;
-
-      if (pageSize || momentum) {
-        let v = { x: 0, y: 0 };
-        let lastTouch = this._touches[this._touches.length - 1];
-        if (Date.now() - lastTouch.t < 50) {
-          let secondToLastTouch = this._touches[this._touches.length - 2];
-          let dt = lastTouch.t - secondToLastTouch.t;
-          v = {
-            x: (lastTouch.clientX - secondToLastTouch.clientX) / dt,
-            y: (lastTouch.clientY - secondToLastTouch.clientY) / dt,
-          };
-        }
-        if (pageSize) {
-          // $FlowAssert
-          let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), props.constraintX.min / pageSize), props.constraintX.max / pageSize) * pageSize;
-          // TODO: y
-          let springX = createSpring(targetX);
-          this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
-            let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
-            return [{ x: v_x, y: 0 }, shouldStop_x];
-          });
-          this._motion.start(this._p, v, this._updater, this._onMotionEnd);
-        } else if (momentum) {
-          let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
-          let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
-          this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
-            let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
-            let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
-            return [{ x: v_x, y: v_y }, shouldStop_x && shouldStop_y];
-          });
-          this._motion.start(this._p, v, this._updater, this._onMotionEnd);
-        }
+    let pageSize = props && props.pageSize;
+    let momentum = props && props.momentum;
+    if (props && (pageSize || momentum)) {
+      let v = { x: 0, y: 0 };
+      let lastTouch = this._touches[this._touches.length - 1];
+      if (Date.now() - lastTouch.t < 50) {
+        let secondToLastTouch = this._touches[this._touches.length - 2];
+        let dt = lastTouch.t - secondToLastTouch.t;
+        v = {
+          x: (lastTouch.clientX - secondToLastTouch.clientX) / dt,
+          y: (lastTouch.clientY - secondToLastTouch.clientY) / dt,
+        };
+      }
+      if (pageSize) {
+        // $FlowAssert
+        let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), props.constraintX.min / pageSize), props.constraintX.max / pageSize) * pageSize;
+        // TODO: y
+        let springX = createSpring(targetX);
+        this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
+          let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
+          return [{ x: v_x, y: 0 }, shouldStop_x];
+        });
+        this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+      } else if (momentum) {
+        let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
+        let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
+        this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
+          let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
+          let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
+          return [{ x: v_x, y: v_y }, shouldStop_x && shouldStop_y];
+        });
+        this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       }
     } else {
       this.isControlledByDraggable = false;
