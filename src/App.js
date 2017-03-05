@@ -5,73 +5,50 @@ import ReactTransitionGroup from 'react-addons-transition-group';
 
 import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from './proto';
 
-function Screen({ index, x, backgroundColor }) {
-  return (
-    <Layer
-      properties={{
-        x: x > -375 * index ? (375 * index) + x : Math.max((x + 375 * index) / 4, -375),
-        y: 0,
-        width: 375,
-        height: 667,
-        opacity: x > -375 * index ? 1 : 1 - Math.max((x + 375 * index) / -375, 0),
-        scale: x > -375 * index ? 1 : 1 - Math.max((x + 375 * index) / -10000, 0),
-        backgroundColor,
-      }}
-    />
-  );
-}
-
 class App extends React.Component {
   state = {
-    x: 0,
-    scrollX: 0,
-  };
-
-  _onDragEnd = (p: Point) => {
-    this.setState({
-      scrollX: p.x,
-    });
+    point: { x: 0, y: 0 },
   };
 
   _onMove = (p: Point) => {
     this.setState({
-      x: p.x,
+      point: p,
     });
   };
 
   render() {
+    let opacity = 1;
+    let { x, y } = this.state.point;
+    if (x < 0) {
+      opacity -= Math.min(-x / 80, 0.5);
+    }
+    if (y < 0) {
+      opacity -= Math.min(-y / 80, 0.5);
+    }
+    if (x > 375 - 80) {
+      opacity -= Math.min((x - (375 - 80)) / 80, 0.5);
+    }
+    if (y > 667 - 80) {
+      opacity -= Math.min((y - (667 - 80)) / 80, 0.5);
+    }
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Screen
-            x={this.state.x}
-            index={0}
-            backgroundColor="#ADD8C7"
-          />
-          <Screen
-            x={this.state.x}
-            index={1}
-            backgroundColor="#FBB829"
-          />
-          <Screen
-            x={this.state.x}
-            index={2}
-            backgroundColor="#FF9999"
-          />
           <Layer
             properties={{
-              x: this.state.scrollX,
-              y: 0,
-              width: 375 * 3,
-              height: 667,
+              ...this.state.point,
+              width: 80,
+              height: 80,
+              backgroundColor: '#FF9999',
+              borderRadius: 8,
+              opacity,
             }}
             draggable={true}
             draggableProperties={{
-              constraintY: new DragConstraint({ min: 0, max: 0 }),
-              constraintX: new DragConstraint({ min: -375 * 2, max: 0, type: 'bounce' }),
-              pageSize: 375,
+              constraintY: new DragConstraint({ min: 0, max: 667 - 80, type: 'bounce' }),
+              constraintX: new DragConstraint({ min: 0, max: 375 - 80, type: 'bounce' }),
+              momentum: true,
             }}
-            onDragEnd={this._onDragEnd}
             onMove={this._onMove}
           />
         </div>

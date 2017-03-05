@@ -20,10 +20,10 @@ class ScrollMotion {
   getAccelerationFunction(x: number) {
     if (this._accelerationFunction === Friction) {
       let { min, max, type } = this._constraint;
-      if (typeof min === 'number' && x < min) {
+      if (typeof min === 'number' && x <= min) {
         this._accelerationFunction = type === 'bounce' ? createSpring(min) : Stop;
       }
-      if (typeof max === 'number' && x > max) {
+      if (typeof max === 'number' && x >= max) {
         this._accelerationFunction = type === 'bounce' ? createSpring(max) : Stop;
       }
     }

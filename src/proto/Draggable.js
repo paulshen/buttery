@@ -124,12 +124,6 @@ export default class Draggable {
             x: (lastTouch.clientX - secondToLastTouch.clientX) / dt,
             y: (lastTouch.clientY - secondToLastTouch.clientY) / dt,
           };
-          if (props.constraintX && props.constraintX.min != null && props.constraintX.min === props.constraintX.max) {
-            v.x = 0;
-          }
-          if (props.constraintY && props.constraintY.min != null && props.constraintY.min === props.constraintY.max) {
-            v.y = 0;
-          }
         }
         if (pageSize) {
           // $FlowAssert
@@ -167,12 +161,22 @@ export default class Draggable {
   };
 
   _updater = (p: Point) => {
-    this._p = p;
-    this._layerUpdater(p);
+    // reapply hard constraints here. motion might cause overshoot.
+    this._p = this._applyHardConstraints(p);
+    this._layerUpdater(this._p);
   };
 
   _onMotionEnd = (p: Point) => {
     this.isControlledByDraggable = false;
-    this._onDragEnd && this._onDragEnd(p);
+    const onDragEnd = this._onDragEnd;
+    // reapply hard constraints here. motion might cause overshoot.
+    onDragEnd && onDragEnd(this._applyHardConstraints(p));
+  };
+
+  _applyHardConstraints = (p: Point) => {
+    return {
+      x: this.props && this.props.constraintX && this.props.constraintX.type === 'hard' ? this.props.constraintX.point(p.x) : p.x,
+      y: this.props && this.props.constraintY && this.props.constraintY.type === 'hard' ? this.props.constraintY.point(p.y) : p.y,
+    };
   };
 }

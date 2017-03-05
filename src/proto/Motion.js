@@ -39,13 +39,13 @@ export default class Motion {
   _tick = () => {
     let now = Date.now();
     let dt = now - this._lastUpdateTime;
+    let [nextV, shouldStop] = this._a(this._p, this._v, dt);
+    this._v = nextV;
     this._p = {
       x: this._p.x + (this._v.x * dt),
       y: this._p.y + (this._v.y * dt),
     };
     this._updater(this._p);
-    let [nextV, shouldStop] = this._a(this._p, this._v, dt);
-    this._v = nextV;
     this._lastUpdateTime = now;
     if (!shouldStop) {
       this._raf = requestAnimationFrame(this._tick);
