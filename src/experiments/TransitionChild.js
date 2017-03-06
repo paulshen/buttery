@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
+import { Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
 
 const Steps = [
   { backgroundColor: '#438DED', width: 10, height: 10, x: 100, y: 100, opacity: 0 },
@@ -13,7 +13,7 @@ const Steps = [
 
 const Animators = [
   new SpringAnimator(),
-  new LinearAnimator(300),
+  new TimedAnimator({ duration: 300 }),
   new SpringAnimator(),
 ];
 

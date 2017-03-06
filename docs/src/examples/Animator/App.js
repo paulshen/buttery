@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LinearAnimator, Layer, SpringAnimator } from '../../proto';
+import { TimedAnimator, Layer, SpringAnimator } from '../../proto';
 
 const MyProperties = [
   { x: 375 / 2 - 40, y: 140, width: 80, height: 80, backgroundColor: '#1693A5', opacity: 1 },
@@ -17,7 +17,7 @@ export default class Example extends React.Component {
   _onClick = (animatorType) => {
     this.setState({
       index: (this.state.index + 1) % MyProperties.length,
-      animator: animatorType === 'spring' ? new SpringAnimator() : new LinearAnimator(200),
+      animator: animatorType === 'spring' ? new SpringAnimator() : new TimedAnimator({ duration: 200 }),
     });
   };
 

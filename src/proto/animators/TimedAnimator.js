@@ -1,7 +1,7 @@
 /* @flow */
 import { interpolateProperties } from '../LayerProperties';
 
-export default class LinearAnimator {
+export default class TimedAnimator {
   _updater: (p: LayerProperties) => void;
   _onEnd: ?() => void;
   _duration: number;
@@ -10,7 +10,7 @@ export default class LinearAnimator {
   _to: LayerProperties;
   _raf: number;
 
-  constructor(duration: number) {
+  constructor({ duration }: { duration: number }) {
     this._duration = duration;
   }
 

@@ -13,7 +13,7 @@ class Example extends React.Component {
   _onClick = (animatorType) => {
     this.setState({
       index: (this.state.index + 1) % MyProperties.length,
-      animator: animatorType === 'spring' ? new SpringAnimator() : new LinearAnimator(200),
+      animator: animatorType === 'spring' ? new SpringAnimator() : new TimedAnimator({ duration: 200 }),
     });
   };
 

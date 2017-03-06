@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, LinearAnimator } from '../proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
 
 function interpolate(x1, x2, y1, y2) {
   return function(input) {
