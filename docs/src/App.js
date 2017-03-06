@@ -1,65 +1,15 @@
 import React from 'react';
-import Radium from 'radium';
+import { Router, Route, Redirect, browserHistory } from 'react-router';
 
-import Code from './Code';
-import Output from './Output';
-import Example from './examples/DraggableOnDragEnd';
+import ExamplePage from './ExamplePage';
 
-function Nav() {
-  return (
-    <div style={Styles.Nav}>
-    </div>
-  );
-}
-Nav = Radium(Nav);
-
-class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
-      <div style={Styles.Root}>
-        <Nav />
-        <div style={Styles.Body}>
-          <div style={[Styles.BodyColumn, Styles.CodeColumn]}>
-            <div style={Styles.ExampleName}>{Example.name}</div>
-            <Code>{Example.Code}</Code>
-          </div>
-          <div style={Styles.BodyColumn}>
-            <Output><Example.App /></Output>
-          </div>
-        </div>
-      </div>
+      <Router history={browserHistory}>
+        <Route path="/example/:exampleName" component={ExamplePage} />
+        <Redirect from="*" to="/example/layers" />
+      </Router>
     );
   }
 }
-export default Radium(App);
-
-const Styles = {
-  Root: {
-    display: 'flex',
-    height: '100vh',
-  },
-  Nav: {
-    backgroundColor: '#f8f8f8',
-    width: '240px',
-  },
-  Body: {
-    boxShadow: '0 0 16px 0 rgba(0,0,0,0.02)',
-    display: 'flex',
-    flex: 1,
-  },
-  BodyColumn: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-  },
-  CodeColumn: {
-    paddingLeft: '60px',
-    paddingRight: '60px',
-    paddingTop: '80px',
-  },
-  ExampleName: {
-    fontSize: '24px',
-    letterSpacing: '1px',
-    marginBottom: '36px',
-  },
-};
