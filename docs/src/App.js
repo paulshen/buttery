@@ -1,6 +1,9 @@
 import React from 'react';
 import Radium from 'radium';
 
+import Code from './Code';
+import Output from './Output';
+
 function Nav() {
   return (
     <div style={Styles.Nav}>
@@ -14,7 +17,14 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <Nav />
-        <div style={Styles.Body} />
+        <div style={Styles.Body}>
+          <div style={Styles.BodyColumn}>
+            <Code />
+          </div>
+          <div style={Styles.BodyColumn}>
+            <Output />
+          </div>
+        </div>
       </div>
     );
   }
@@ -32,6 +42,11 @@ const Styles = {
     width: '240px',
   },
   Body: {
+    boxShadow: '0 0 16px 0 rgba(0,0,0,0.02)',
+    display: 'flex',
+    flex: 1,
+  },
+  BodyColumn: {
     flex: 1,
   },
 };
