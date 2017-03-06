@@ -1,19 +1,11 @@
 import React from 'react';
 import Radium from 'radium';
 
-function Code() {
+function Code({ children }) {
   return (
-    <pre style={Styles.Code}>
-      <code>
-{`<Layer
-  properties={{
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    backgroundColor: ‘#00ff99’,
-  }}
-/>`}
+    <pre>
+      <code style={Styles.Code}>
+        {children}
       </code>
     </pre>
   );
@@ -22,7 +14,8 @@ export default Radium(Code);
 
 const Styles = {
   Code: {
-    fontFamily: 'courier',
-    fontSize: '14px',
+    fontFamily: 'Inconsolata',
+    fontSize: '16px',
+    lineHeight: 1.3,
   },
 };

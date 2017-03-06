@@ -3,6 +3,7 @@ import Radium from 'radium';
 
 import Code from './Code';
 import Output from './Output';
+import ExampleLayers from './examples/Layers';
 
 function Nav() {
   return (
@@ -18,19 +19,19 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <Nav />
         <div style={Styles.Body}>
-          <div style={Styles.BodyColumn}>
-            <Code />
+          <div style={[Styles.BodyColumn, Styles.CodeColumn]}>
+            <div style={Styles.ExampleName}>{ExampleLayers.name}</div>
+            <Code>{ExampleLayers.Code}</Code>
           </div>
           <div style={Styles.BodyColumn}>
-            <Output />
+            <Output><ExampleLayers.App /></Output>
           </div>
         </div>
       </div>
     );
   }
 }
-
-export default App;
+export default Radium(App);
 
 const Styles = {
   Root: {
@@ -47,6 +48,18 @@ const Styles = {
     flex: 1,
   },
   BodyColumn: {
+    display: 'flex',
     flex: 1,
+    flexDirection: 'column',
+  },
+  CodeColumn: {
+    paddingLeft: '60px',
+    paddingRight: '60px',
+    paddingTop: '80px',
+  },
+  ExampleName: {
+    fontSize: '24px',
+    letterSpacing: '1px',
+    marginBottom: '36px',
   },
 };
