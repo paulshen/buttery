@@ -1,21 +1,37 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Radium from 'radium';
 
-class App extends Component {
+function Nav() {
+  return (
+    <div style={Styles.Nav}>
+    </div>
+  );
+}
+Nav = Radium(Nav);
+
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div style={Styles.Root}>
+        <Nav />
+        <div style={Styles.Body} />
       </div>
     );
   }
 }
 
 export default App;
+
+const Styles = {
+  Root: {
+    display: 'flex',
+    height: '100vh',
+  },
+  Nav: {
+    backgroundColor: '#f8f8f8',
+    width: '240px',
+  },
+  Body: {
+    flex: 1,
+  },
+};
