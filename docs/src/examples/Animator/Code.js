@@ -5,22 +5,29 @@ export default `const MyProperties = [
 ];
 
 class Example extends React.Component {
-  state =  { index: 0 };
+  state = {
+    index: 0,
+    animator: null,
+  };
 
-  _onClick = () => {
+  _onClick = (animatorType) => {
+    debugger;
     this.setState({
       index: (this.state.index + 1) % MyProperties.length,
+      animator: animatorType === 'spring' ? new SpringAnimator() : new LinearAnimator(200),
     });
   };
 
   render() {
-    // Here, we are using normal React state to update the Layer properties.
+    // We simply add an animator instance to the Layer. Whenever Layer
+    // properties change, they are animated.
     return (
       <div>
-        <button onClick={this._onClick}>Toggle</button>
+        <button onClick={() => this._onClick('timed')}>Toggle with TimedAnimator</button>
+        <button onClick={() => this._onClick('spring')}>Toggle with SpringAnimator</button>
         <Layer
           properties={MyProperties[this.state.index]}
-          onClick={this._onClick}
+          animator={this.state.animator}
         />
       </div>
     );
