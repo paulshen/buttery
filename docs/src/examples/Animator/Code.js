@@ -11,7 +11,6 @@ class Example extends React.Component {
   };
 
   _onClick = (animatorType) => {
-    debugger;
     this.setState({
       index: (this.state.index + 1) % MyProperties.length,
       animator: animatorType === 'spring' ? new SpringAnimator() : new LinearAnimator(200),
@@ -20,7 +19,8 @@ class Example extends React.Component {
 
   render() {
     // We simply add an animator instance to the Layer. Whenever Layer
-    // properties change, they are animated.
+    // properties change, they are animated. Note that all given properties are
+    // animated.
     return (
       <div>
         <button onClick={() => this._onClick('timed')}>Toggle with TimedAnimator</button>

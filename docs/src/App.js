@@ -3,7 +3,7 @@ import Radium from 'radium';
 
 import Code from './Code';
 import Output from './Output';
-import Example from './examples/Animator';
+import Example from './examples/DraggableOnDragEnd';
 
 function Nav() {
   return (
