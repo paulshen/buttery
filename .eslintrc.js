@@ -52,6 +52,8 @@ module.exports = {
       "react/jsx-wrap-multilines": ["error", { "return": true, "declaration": false, "assignment": false }],
       "react/no-multi-comp": "off",
       "react/no-unused-prop-types": "off",
+      "no-unused-expressions": ["error", { "allowShortCircuit": true }],
+      "no-param-reassign": ["error", { "props": false }],
     },
     "settings": {
     },

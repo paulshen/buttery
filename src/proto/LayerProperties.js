@@ -44,11 +44,11 @@ export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
     a.scaleY === b.scaleY &&
     a.scale === b.scale &&
     a.borderRadius === b.borderRadius &&
-    a.shadowX == b.shadowX &&
-    a.shadowY == b.shadowY &&
-    a.shadowBlur == b.shadowBlur &&
-    a.shadowColor == b.shadowColor &&
-    a.shadowSpread == b.shadowSpread
+    a.shadowX === b.shadowX &&
+    a.shadowY === b.shadowY &&
+    a.shadowBlur === b.shadowBlur &&
+    a.shadowColor === b.shadowColor &&
+    a.shadowSpread === b.shadowSpread
   );
 }
 

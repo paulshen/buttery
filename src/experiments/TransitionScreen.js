@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator } from '../proto';
 
 class App extends React.Component {
   state: {
@@ -64,25 +64,25 @@ class App extends React.Component {
             ref={c => this._scrollLayer = c}
           >
             <Layer
-              properties={{ x: 0 , y: 0, width: 375, height: 300, backgroundColor: `rgb(255,153,153)` }}
+              properties={{ x: 0, y: 0, width: 375, height: 300, backgroundColor: `rgb(255,153,153)` }}
             />
             <Layer
-              properties={{ x: 0 , y: 300, width: 375, height: 300, backgroundColor: `rgb(200,153,153)` }}
+              properties={{ x: 0, y: 300, width: 375, height: 300, backgroundColor: `rgb(200,153,153)` }}
               style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
               <div>Hello!</div>
             </Layer>
             {!this.state.transitionLayerProperties &&
               <Layer
-                properties={{ x: 0 , y: 600, width: 375, height: 300 }}
+                properties={{ x: 0, y: 600, width: 375, height: 300 }}
                 style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
                 onClick={this._onClick}
                 ref={c => this._transitionLayer = c}
               />}
             <Layer
-              properties={{ x: 0 , y: 900, width: 375, height: 300, backgroundColor: `rgb(153,153,200)` }}
+              properties={{ x: 0, y: 900, width: 375, height: 300, backgroundColor: `rgb(153,153,200)` }}
             />
             <Layer
-              properties={{ x: 0 , y: 1200, width: 375, height: 300, backgroundColor: `rgb(153,200,153)` }}
+              properties={{ x: 0, y: 1200, width: 375, height: 300, backgroundColor: `rgb(153,200,153)` }}
             />
           </Layer>
           <ReactTransitionGroup>

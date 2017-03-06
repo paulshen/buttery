@@ -24,7 +24,7 @@ export default class TimedAnimator {
   }
 
   stop() {
-    cancelAnimationFrame(this._raf);
+    window.cancelAnimationFrame(this._raf);
   }
 
   _tick = () => {
@@ -32,7 +32,7 @@ export default class TimedAnimator {
     let t = Math.min((now - this._start) / this._duration, 1);
     this._updater(interpolateProperties(this._from, this._to, t));
     if (t < 1) {
-      this._raf = requestAnimationFrame(this._tick);
+      this._raf = window.requestAnimationFrame(this._tick);
     } else {
       this._onEnd && this._onEnd();
     }

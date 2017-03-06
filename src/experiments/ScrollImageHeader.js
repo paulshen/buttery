@@ -1,9 +1,8 @@
 /* @flow */
 import React from 'react';
 import Radium from 'radium';
-import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { DragConstraint, Layer, SpringAnimator } from '../proto';
 
 class App extends React.Component {
   state: {
@@ -67,8 +66,7 @@ class App extends React.Component {
               onMove={this._onMove}
               onDragEnd={this._onDragEnd}
               animator={new SpringAnimator(0.0001, 0.02)}
-            >
-            </Layer>
+            />
           </Layer>
         </div>
       </div>

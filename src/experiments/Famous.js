@@ -1,11 +1,14 @@
 /* @flow */
 import React from 'react';
 import Radium from 'radium';
-import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { DragConstraint, Layer } from '../proto';
 
-function Screen({ index, x, backgroundColor }) {
+function Screen({ index, x, backgroundColor }: {
+  index: number,
+  x: number,
+  backgroundColor: string,
+}) {
   return (
     <Layer
       properties={{

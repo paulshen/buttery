@@ -75,6 +75,8 @@ export default class LayerTransitionChild extends React.Component {
     case 'exiting':
       p = exitProperties;
       break;
+    default:
+      throw new Error('unexpected case');
     }
     if (stage !== 'shown') {
       draggable = false;

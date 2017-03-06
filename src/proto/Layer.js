@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { applyProperties, arePropertiesSame, interpolateProperties } from './LayerProperties';
+import { applyProperties, arePropertiesSame } from './LayerProperties';
 import Draggable from './Draggable';
 
 class Layer extends React.Component {
@@ -30,9 +30,9 @@ class Layer extends React.Component {
     this._properties = { ...props.properties };
   }
 
-  getProperties = () => {
-    return { ...this._properties };
-  }
+  getProperties = () => ({
+    ...this._properties,
+  });
 
   componentDidMount() {
     this._applyProperties(this.props.properties);
@@ -98,7 +98,8 @@ class Layer extends React.Component {
     this.props && this.props.onDrag && this.props.onDrag(p);
   };
 
-  _applyProperties = (properties) => {
+  _applyProperties = (propertiesParam) => {
+    let properties = propertiesParam;
     if (this._draggable) {
       if (this._draggable.isControlledByDraggable) {
         properties = {

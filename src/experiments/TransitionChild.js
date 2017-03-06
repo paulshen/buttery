@@ -3,18 +3,12 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { Layer, LayerTransitionChild, SpringAnimator } from '../proto';
 
 const Steps = [
   { backgroundColor: '#438DED', width: 10, height: 10, x: 100, y: 100, opacity: 0 },
   { backgroundColor: '#438DED', width: 10, height: 12, x: 110, y: 90, opacity: 1 },
   { backgroundColor: '#438DED', width: 10, height: 10, x: 90, y: 180, opacity: 0 },
-];
-
-const Animators = [
-  new SpringAnimator(),
-  new TimedAnimator({ duration: 300 }),
-  new SpringAnimator(),
 ];
 
 class App extends React.Component {
@@ -42,7 +36,7 @@ class App extends React.Component {
       children.push(
         <LayerTransitionChild
           enterProperties={Steps[0]}
-          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(position / 20), y: Steps[1].y + 20 * (position % 20)}}
+          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(position / 20), y: Steps[1].y + 20 * (position % 20) }}
           exitProperties={Steps[2]}
           animator={new SpringAnimator()}
           key={i}
@@ -96,4 +90,4 @@ const Styles = {
     height: '667px',
     width: '375px',
   },
-}
+};

@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { Layer, LayerTransitionChild, SpringAnimator } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -89,4 +89,4 @@ const Styles = {
     height: '667px',
     width: '375px',
   },
-}
+};

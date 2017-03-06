@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -19,7 +19,7 @@ class App extends React.Component {
     });
   };
 
-  _onDrag = (p: Point) => {
+  _onDrag = () => {
   };
 
   _onMove = (p: Point) => {

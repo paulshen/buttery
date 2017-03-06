@@ -9,7 +9,7 @@ class App extends React.Component {
     x: 0,
   };
 
-  _onMove = ({ x, y }) => {
+  _onMove = ({ x }) => {
     this.setState({
       x,
     });
@@ -81,4 +81,4 @@ const Styles = {
     height: '667px',
     width: '375px',
   },
-}
+};

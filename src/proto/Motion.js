@@ -1,6 +1,4 @@
 /* @flow */
-import type DragConstraint from './DragConstraint';
-
 export default class Motion {
   _start: Point;
   _p: Point;
@@ -29,7 +27,7 @@ export default class Motion {
   }
 
   stop() {
-    cancelAnimationFrame(this._raf);
+    window.cancelAnimationFrame(this._raf);
   }
 
   _setAccelerationFunction = (a: (p: Point, v: Vector, dt: number) => [Vector, boolean]) => {
@@ -48,7 +46,7 @@ export default class Motion {
     this._updater(this._p);
     this._lastUpdateTime = now;
     if (!shouldStop) {
-      this._raf = requestAnimationFrame(this._tick);
+      this._raf = window.requestAnimationFrame(this._tick);
     } else {
       this._onEnd && this._onEnd(this._p);
     }

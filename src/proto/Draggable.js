@@ -66,7 +66,9 @@ export default class Draggable {
     this._dragStart = { ...this._p };
     this._touches = [];
     this._addTouch(this._getTouch(e));
-    this._onDragStart && this._onDragStart();
+    if (this._onDragStart) {
+      this._onDragStart();
+    }
     e.stopPropagation();
   };
 
@@ -86,14 +88,14 @@ export default class Draggable {
     this._addTouch(touch);
   };
 
-  _onTouchEnd = (e: Event) => {
+  _onTouchEnd = () => {
     if (!this._dragStart) {
       return;
     }
     if (this._touches.length > 2) {
       this.props && this.props.onTouchEnd && this.props.onTouchEnd(this._p);
       // splitting this allows clients to modify props on touchend
-      requestAnimationFrame(this._onTouchEndMotion);
+      window.requestAnimationFrame(this._onTouchEndMotion);
     }
     this._dragStart = null;
   };
@@ -129,18 +131,18 @@ export default class Draggable {
         let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), props.constraintX.min / pageSize), props.constraintX.max / pageSize) * pageSize;
         // TODO: y
         let springX = createSpring(targetX);
-        this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
-          let [v_x, shouldStop_x] = springX(p.x, v.x, dt);
-          return [{ x: v_x, y: 0 }, shouldStop_x];
+        this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
+          let [vX, shouldStopX] = springX(p.x, vm.x, dt);
+          return [{ x: vX, y: 0 }, shouldStopX];
         });
         this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       } else if (momentum) {
         let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
         let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
-        this._motion = new Motion(function(p: Point, v: Vector, dt: number) {
-          let [v_x, shouldStop_x] = scrollX(p.x, v.x, dt);
-          let [v_y, shouldStop_y] = scrollY(p.y, v.y, dt);
-          return [{ x: v_x, y: v_y }, shouldStop_x && shouldStop_y];
+        this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
+          let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
+          let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
+          return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
         });
         this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       }
@@ -171,10 +173,8 @@ export default class Draggable {
     onDragEnd && onDragEnd(this._applyHardConstraints(p));
   };
 
-  _applyHardConstraints = (p: Point) => {
-    return {
-      x: this.props && this.props.constraintX && this.props.constraintX.type === 'hard' ? this.props.constraintX.point(p.x) : p.x,
-      y: this.props && this.props.constraintY && this.props.constraintY.type === 'hard' ? this.props.constraintY.point(p.y) : p.y,
-    };
-  };
+  _applyHardConstraints = (p: Point) => ({
+    x: this.props && this.props.constraintX && this.props.constraintX.type === 'hard' ? this.props.constraintX.point(p.x) : p.x,
+    y: this.props && this.props.constraintY && this.props.constraintY.type === 'hard' ? this.props.constraintY.point(p.y) : p.y,
+  });
 }

@@ -1,10 +1,9 @@
 /* @flow */
 import DragConstraint from '../DragConstraint';
-import Motion from '../Motion';
 import Friction from './Friction';
 import createSpring from './createSpring';
 
-function Stop(x: number, v: number, dt: number) {
+function Stop() {
   return [0, true];
 }
 

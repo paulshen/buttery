@@ -5,9 +5,9 @@ import Radium from 'radium';
 import { Layer, SpringAnimator, TimedAnimator } from '../proto';
 
 const Steps = [
-  { backgroundColor: '#438DED', width: 100, height: 100, x: 100, y: 100, },
-  { backgroundColor: '#438DED', width: 80, height: 120, x: 110, y: 90, },
-  { backgroundColor: '#438DED', width: 60, height: 60, x: 90, y: 180, },
+  { backgroundColor: '#438DED', width: 100, height: 100, x: 100, y: 100 },
+  { backgroundColor: '#438DED', width: 80, height: 120, x: 110, y: 90 },
+  { backgroundColor: '#438DED', width: 60, height: 60, x: 90, y: 180 },
 ];
 
 const Animators = [
@@ -62,4 +62,4 @@ const Styles = {
     height: '667px',
     width: '375px',
   },
-}
+};

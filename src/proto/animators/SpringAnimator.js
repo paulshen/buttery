@@ -29,11 +29,11 @@ export default class SpringAnimator {
     this._updater = updater;
     this._onEnd = onEnd;
     this._lastUpdate = Date.now();
-    this._raf = requestAnimationFrame(this._tick);
+    this._raf = window.requestAnimationFrame(this._tick);
   }
 
   stop() {
-    cancelAnimationFrame(this._raf);
+    window.cancelAnimationFrame(this._raf);
   }
 
   _tick = () => {
@@ -48,7 +48,7 @@ export default class SpringAnimator {
       this._onEnd && this._onEnd();
     } else {
       this._lastUpdate = now;
-      this._raf = requestAnimationFrame(this._tick);
+      this._raf = window.requestAnimationFrame(this._tick);
     }
   };
 }

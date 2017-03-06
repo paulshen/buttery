@@ -1,9 +1,8 @@
 /* @flow */
 import React from 'react';
 import Radium from 'radium';
-import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { DragConstraint, Layer, SpringAnimator } from '../proto';
 
 function interpolate(x1, x2, y1, y2) {
   return function(input) {
@@ -112,10 +111,10 @@ class App extends React.Component {
             x: 0,
             y: 0,
             width: 375,
-            height: Math.max(Math.min(this.state.y ,100), 60),
+            height: Math.max(Math.min(this.state.y, 100), 60),
             backgroundColor: '#000000',
             opacity: this.state.y <= 100 ? 1 : 0,
-          }} onClick={this._onHeaderClick}/>
+          }} onClick={this._onHeaderClick} />
           <Layer properties={{
             x: interpolate(90, 60, 20, 40)(this.state.y),
             y: this.state.y < 100 ? interpolate(90, 60, 50, 24)(this.state.y) : interpolate(400, 100, 140, 50)(this.state.y),

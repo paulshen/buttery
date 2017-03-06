@@ -1,9 +1,8 @@
 /* @flow */
 import React from 'react';
 import Radium from 'radium';
-import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator, TimedAnimator } from '../proto';
+import { DragConstraint, Layer, SpringAnimator } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -64,7 +63,7 @@ class App extends React.Component {
               onAnimationEnd={this._onAnimationEnd}
             >
               <Layer
-                properties={{ x: 167 , y: -50, width: 40, height: 40, backgroundColor: `rgba(255,153,153,${Math.min(Math.max(this.state.y / 80, 0), 1)})` }}
+                properties={{ x: 167, y: -50, width: 40, height: 40, backgroundColor: `rgba(255,153,153,${Math.min(Math.max(this.state.y / 80, 0), 1)})` }}
               />
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id massa libero. Etiam efficitur diam a purus consequat venenatis. Ut sit amet libero arcu. Vivamus orci metus, ornare in volutpat ut, varius eu massa. Sed ut sagittis lorem, sed viverra velit. Sed id viverra neque. Maecenas nec neque id turpis laoreet mollis tincidunt eget ante. Maecenas dapibus neque egestas euismod finibus. Nunc et finibus nunc. Donec nec libero justo.</p>
               <p>Pellentesque iaculis rutrum leo, sit amet placerat neque consectetur eget. Sed sapien enim, pellentesque nec dui id, tristique fringilla neque. Donec hendrerit convallis purus vitae dictum. Praesent at felis nec mauris vulputate elementum ut ac metus. Curabitur porttitor fermentum rutrum. Etiam bibendum diam at sollicitudin pharetra. In fringilla finibus ligula nec gravida. Aliquam quis mauris facilisis, sagittis quam eu, bibendum orci. In iaculis non nisi in facilisis. Donec ligula urna, blandit eu placerat nec, malesuada sed eros. Pellentesque quis metus sollicitudin, maximus augue eu, tincidunt felis. Fusce elementum augue ante, vel luctus nisi cursus ut.</p>
