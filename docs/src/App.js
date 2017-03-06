@@ -3,7 +3,7 @@ import Radium from 'radium';
 
 import Code from './Code';
 import Output from './Output';
-import ExampleLayers from './examples/Layers';
+import Example from './examples/Manipulation';
 
 function Nav() {
   return (
@@ -20,11 +20,11 @@ class App extends React.Component {
         <Nav />
         <div style={Styles.Body}>
           <div style={[Styles.BodyColumn, Styles.CodeColumn]}>
-            <div style={Styles.ExampleName}>{ExampleLayers.name}</div>
-            <Code>{ExampleLayers.Code}</Code>
+            <div style={Styles.ExampleName}>{Example.name}</div>
+            <Code>{Example.Code}</Code>
           </div>
           <div style={Styles.BodyColumn}>
-            <Output><ExampleLayers.App /></Output>
+            <Output><Example.App /></Output>
           </div>
         </div>
       </div>
