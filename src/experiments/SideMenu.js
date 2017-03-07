@@ -55,7 +55,7 @@ class App extends React.Component {
               shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
               shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
             }}
-            animator={new SpringAnimator()}
+            animator={SpringAnimator()}
             onClick={this._onClick}
           />
           {this.state.showMenu &&
@@ -93,7 +93,7 @@ class App extends React.Component {
                 draggableProperties={{
                   constraintX: DragConstraint({ min: -375, max: 0 }),
                 }}
-                animator={new SpringAnimator(0.0005, 0.05)}
+                animator={SpringAnimator({ spring: 0.0005, friction: 0.05 })}
                 onDrag={this._onDrag}
                 onMove={this._onMove}
                 onDragEnd={this._onDragEnd}

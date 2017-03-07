@@ -59,7 +59,7 @@ class App extends React.Component {
               }}
               onMove={this._onMove}
               onDragEnd={this._onDragEnd}
-              animator={new SpringAnimator(0.0001, 0.02)}
+              animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
               onAnimationEnd={this._onAnimationEnd}
             >
               <Layer

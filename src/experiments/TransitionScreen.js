@@ -60,7 +60,7 @@ class App extends React.Component {
               momentum: true,
             }}
             onDragEnd={this._onDragEnd}
-            animator={new SpringAnimator(0.0001, 0.02)}
+            animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
             ref={c => this._scrollLayer = c}
           >
             <Layer
@@ -91,7 +91,7 @@ class App extends React.Component {
                 enterProperties={this.state.transitionLayerProperties}
                 properties={{ ...this.state.transitionLayerProperties, y: 0, height: 200 }}
                 exitProperties={this.state.transitionLayerProperties}
-                animator={new SpringAnimator()}
+                animator={SpringAnimator()}
                 style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
                 onClick={this._onClick}
                 onExit={this._onExit}

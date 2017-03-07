@@ -38,7 +38,7 @@ class App extends React.Component {
           enterProperties={Steps[0]}
           properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(position / 20), y: Steps[1].y + 20 * (position % 20) }}
           exitProperties={Steps[2]}
-          animator={new SpringAnimator()}
+          animator={SpringAnimator()}
           key={i}
         />
       );

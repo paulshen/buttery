@@ -34,7 +34,7 @@ class App extends React.Component {
               shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
               shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
             }}
-            animator={new SpringAnimator()}
+            animator={SpringAnimator()}
             onClick={this._onClick}
           />
         </div>

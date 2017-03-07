@@ -78,7 +78,7 @@ class App extends React.Component {
               height: 1200,
               backgroundColor: 'blue',
             }}
-            animator={new SpringAnimator(0.0001, 0.02)}
+            animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
             draggable={true}
             draggableProperties={{
               constraintX: DragConstraint({ min: 0, max: 0 }),

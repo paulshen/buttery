@@ -37,7 +37,7 @@ class App extends React.Component {
               shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
               shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
             }}
-            animator={new SpringAnimator()}
+            animator={SpringAnimator()}
             onClick={this._onClick}
           />
           <ReactTransitionGroup>
@@ -64,7 +64,7 @@ class App extends React.Component {
                   width: 375,
                   height: 667,
                 }}
-                animator={new SpringAnimator(0.0005, 0.05)}
+                animator={SpringAnimator({ spring: 0.0005, friction: 0.05 })}
                 onClick={this._onClick}
                 key={fromBottom}
               />}

@@ -11,9 +11,9 @@ const Steps = [
 ];
 
 const Animators = [
-  new SpringAnimator(),
+  SpringAnimator(),
   new TimedAnimator({ duration: 300 }),
-  new SpringAnimator(),
+  SpringAnimator(),
 ];
 
 class App extends React.Component {
