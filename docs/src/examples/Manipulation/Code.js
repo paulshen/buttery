@@ -18,10 +18,7 @@ class Example extends React.Component {
     return (
       <div>
         <button onClick={this._onClick}>Toggle</button>
-        <Layer
-          properties={MyProperties[this.state.index]}
-          onClick={this._onClick}
-        />
+        <Layer properties={MyProperties[this.state.index]} />
       </div>
     );
   }

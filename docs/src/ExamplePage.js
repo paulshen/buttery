@@ -59,11 +59,14 @@ const Styles = {
     flex: 1,
   },
   BodyColumn: {
+    boxSizing: 'border-box',
     display: 'flex',
-    flex: 1,
     flexDirection: 'column',
+    overflowY: 'auto',
+    width: '50%',
   },
   CodeColumn: {
+    paddingBottom: '60px',
     paddingLeft: '60px',
     paddingRight: '60px',
     paddingTop: '80px',
