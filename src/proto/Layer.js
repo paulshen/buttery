@@ -65,8 +65,14 @@ class Layer extends React.Component {
       this._animator.stop();
     }
     if (animator) {
-      animator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
-      this._animator = animator;
+      let nextAnimator;
+      if (this._animator && this._animator.key === animator.key) {
+        nextAnimator = this._animator;
+      } else {
+        nextAnimator = new animator.Klass(animator.props);
+      }
+      nextAnimator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
+      this._animator = nextAnimator;
     } else {
       this._applyProperties(properties);
     }
