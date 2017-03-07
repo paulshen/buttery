@@ -20,8 +20,8 @@ export default `class Example extends React.Component {
         }}
         draggable={true}
         draggableProperties={{
-          constraintX: new DragConstraint({ min: 0, max: 375 - 80 }),
-          constraintY: new DragConstraint({ min: this.state.y, max: this.state.y }),
+          constraintX: DragConstraint({ min: 0, max: 375 - 80 }),
+          constraintY: DragConstraint({ min: this.state.y, max: this.state.y }),
         }}
         onDragEnd={this._onDragEnd}
       />

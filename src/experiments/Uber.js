@@ -81,8 +81,8 @@ class App extends React.Component {
             animator={new SpringAnimator(0.0001, 0.02)}
             draggable={true}
             draggableProperties={{
-              constraintX: new DragConstraint({ min: 0, max: 0 }),
-              constraintY: new DragConstraint({ min: 667 - 1200, max: this.state.y < 100 ? 100 : 550, type: 'bounce' }),
+              constraintX: DragConstraint({ min: 0, max: 0 }),
+              constraintY: DragConstraint({ min: 667 - 1200, max: this.state.y < 100 ? 100 : 550, type: 'bounce' }),
               momentum: this.state.y < 100,
             }}
             onDragEnd={this._onDragEnd}
@@ -96,8 +96,8 @@ class App extends React.Component {
               }}
               draggable={true}
               draggableProperties={{
-                constraintY: new DragConstraint({ min: 400, max: 400 }),
-                constraintX: new DragConstraint({ min: 375 - 900, max: 0, type: 'bounce' }),
+                constraintY: DragConstraint({ min: 400, max: 400 }),
+                constraintX: DragConstraint({ min: 375 - 900, max: 0, type: 'bounce' }),
                 pageSize: 300,
               }}
               onDragEnd={this._onPagerDragEnd}

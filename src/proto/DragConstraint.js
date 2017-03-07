@@ -1,5 +1,5 @@
 /* @flow */
-function constrainWithBounce(value, min, max) {
+function constrainBounce(value, min, max) {
   let constrainedValue = value;
   if (typeof min === 'number' && constrainedValue < min) {
     constrainedValue = min - Math.abs(constrainedValue - min) ** 0.85;
@@ -10,7 +10,7 @@ function constrainWithBounce(value, min, max) {
   return constrainedValue;
 }
 
-function constrain(value, min, max) {
+function constrainHard(value, min, max) {
   let constrainedValue = value;
   if (typeof min === 'number') {
     constrainedValue = Math.max(constrainedValue, min);
@@ -21,23 +21,23 @@ function constrain(value, min, max) {
   return constrainedValue;
 }
 
-export default class DragConstraint {
-  min: ?number;
-  max: ?number;
-  type: 'hard' | 'bounce';
-
-  constructor({ min, max, type }: { min?: number, max?: number, type?: 'hard' | 'bounce' }) {
-    this.min = min;
-    this.max = max;
-    this.type = type || 'hard';
+export function constrain(x: number, constraint: DragConstraintType): number {
+  switch (constraint.type) {
+  case 'bounce':
+    return constrainBounce(x, constraint.min, constraint.max);
+  default:
+    return constrainHard(x, constraint.min, constraint.max);
   }
+}
 
-  point(x: number): number {
-    switch (this.type) {
-    case 'bounce':
-      return constrainWithBounce(x, this.min, this.max);
-    default:
-      return constrain(x, this.min, this.max);
-    }
-  }
+export default function DragConstraint({ min, max, type }: {
+  min?: number,
+  max?: number,
+  type?: 'hard' | 'bounce',
+}): DragConstraintType {
+  return {
+    min,
+    max,
+    type: type || 'hard',
+  };
 }

@@ -1,6 +1,6 @@
 /* @flow */
 
-import DragConstraint from './DragConstraint';
+import { constrain } from './DragConstraint';
 import Motion from './Motion';
 import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
@@ -9,8 +9,8 @@ import Friction from './motion/Friction';
 export default class Draggable {
   props: ?{
     momentum?: boolean,
-    constraintX?: DragConstraint,
-    constraintY?: DragConstraint,
+    constraintX?: DragConstraintType,
+    constraintY?: DragConstraintType,
     pageSize?: number,
     onTouchEnd?: (p: Point) => void,
   };
@@ -81,8 +81,8 @@ export default class Draggable {
     let x = dragStart.x + (touch.clientX - this._touches[0].clientX);
     let y = dragStart.y + (touch.clientY - this._touches[0].clientY);
     this._p = {
-      x: this.props && this.props.constraintX ? this.props.constraintX.point(x) : x,
-      y: this.props && this.props.constraintY ? this.props.constraintY.point(y) : y,
+      x: this.props && this.props.constraintX ? constrain(x, this.props.constraintX) : x,
+      y: this.props && this.props.constraintY ? constrain(y, this.props.constraintY) : y,
     };
     this._updater(this._p);
     this._addTouch(touch);
@@ -174,7 +174,7 @@ export default class Draggable {
   };
 
   _applyHardConstraints = (p: Point) => ({
-    x: this.props && this.props.constraintX && this.props.constraintX.type === 'hard' ? this.props.constraintX.point(p.x) : p.x,
-    y: this.props && this.props.constraintY && this.props.constraintY.type === 'hard' ? this.props.constraintY.point(p.y) : p.y,
+    x: this.props && this.props.constraintX && this.props.constraintX.type === 'hard' ? constrain(p.x, this.props.constraintX) : p.x,
+    y: this.props && this.props.constraintY && this.props.constraintY.type === 'hard' ? constrain(p.y, this.props.constraintY) : p.y,
   });
 }

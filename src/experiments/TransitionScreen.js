@@ -7,12 +7,12 @@ import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator } from '../
 
 class App extends React.Component {
   state: {
-    constraintY: DragConstraint,
+    constraintY: DragConstraintType,
     scrollY: number,
     transitionLayerProperties: ?LayerProperties,
     transitionExit: boolean,
   } = {
-    constraintY: new DragConstraint({ min: 587 - 2000, max: 0, type: 'bounce' }),
+    constraintY: DragConstraint({ min: 587 - 2000, max: 0, type: 'bounce' }),
     scrollY: 0,
     transitionLayerProperties: null,
     transitionExit: false,
@@ -55,7 +55,7 @@ class App extends React.Component {
             properties={{ x: 0, y: this.state.scrollY, width: 375, height: 2000 }}
             draggable={true}
             draggableProperties={{
-              constraintX: new DragConstraint({ min: 0, max: 0 }),
+              constraintX: DragConstraint({ min: 0, max: 0 }),
               constraintY: this.state.constraintY,
               momentum: true,
             }}

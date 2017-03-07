@@ -6,12 +6,12 @@ import { DragConstraint, Layer, SpringAnimator } from '../proto';
 
 class App extends React.Component {
   state: {
-    constraintY: DragConstraint,
+    constraintY: DragConstraintType,
     scrollY: number,
     y: number,
     imageHeight: number,
   } = {
-    constraintY: new DragConstraint({ min: 667 - 60 - 2000, max: 140, type: 'bounce' }),
+    constraintY: DragConstraint({ min: 667 - 60 - 2000, max: 140, type: 'bounce' }),
     scrollY: 140,
     y: 140,
     imageHeight: 200,
@@ -59,7 +59,7 @@ class App extends React.Component {
               style={{ backgroundImage: 'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)', pointerEvents: 'all' }}
               draggable={true}
               draggableProperties={{
-                constraintX: new DragConstraint({ min: 0, max: 0 }),
+                constraintX: DragConstraint({ min: 0, max: 0 }),
                 constraintY: this.state.constraintY,
                 momentum: true,
               }}

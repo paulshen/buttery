@@ -33,3 +33,9 @@ type LayerProperties = {
   shadowColor?: ?string,
   shadowSpread?: ?number,
 };
+
+type DragConstraintType = {
+  min?: number,
+  max?: number,
+  type: 'hard' | 'bounce',
+};
