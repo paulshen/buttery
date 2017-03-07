@@ -5,6 +5,7 @@ import DraggableOnDragEnd from './DraggableOnDragEnd';
 import DragMomentum from './DragMomentum';
 import Layers from './Layers';
 import Manipulation from './Manipulation';
+import Scroll from './Scroll';
 
 export default {
   animator: Animator,
@@ -14,4 +15,5 @@ export default {
   dragmomentum: DragMomentum,
   layers: Layers,
   manipulation: Manipulation,
+  scroll: Scroll,
 };
