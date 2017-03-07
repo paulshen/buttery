@@ -12,7 +12,7 @@ const Steps = [
 
 const Animators = [
   SpringAnimator(),
-  new TimedAnimator({ duration: 300 }),
+  TimedAnimator({ duration: 300 }),
   SpringAnimator(),
 ];
 

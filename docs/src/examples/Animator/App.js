@@ -17,7 +17,7 @@ export default class Example extends React.Component {
   _onClick = (animatorType) => {
     this.setState({
       index: (this.state.index + 1) % MyProperties.length,
-      animator: animatorType === 'spring' ? SpringAnimator() : new TimedAnimator({ duration: 200 }),
+      animator: animatorType === 'spring' ? SpringAnimator() : TimedAnimator({ duration: 200 }),
     });
   };
 

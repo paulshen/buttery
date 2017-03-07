@@ -1,7 +1,21 @@
 /* @flow */
 import { interpolateProperties } from '../LayerProperties';
 
-export default class TimedAnimator {
+function getKey(props: TimedAnimatorProps) {
+  return `timed:${props.duration}`;
+}
+
+type TimedAnimatorProps = { duration: number };
+export default function TimedAnimator(props: TimedAnimatorProps) {
+  return {
+    props,
+    Klass: TimedAnimatorImpl,
+    key: getKey(props),
+  };
+}
+
+class TimedAnimatorImpl {
+  key: string;
   _updater: (p: LayerProperties) => void;
   _onEnd: ?() => void;
   _duration: number;
@@ -10,8 +24,9 @@ export default class TimedAnimator {
   _to: LayerProperties;
   _raf: number;
 
-  constructor({ duration }: { duration: number }) {
-    this._duration = duration;
+  constructor(props: TimedAnimatorProps) {
+    this._duration = props.duration;
+    this.key = getKey(props);
   }
 
   start(from: LayerProperties, to: LayerProperties, updater: (p: LayerProperties) => void, onEnd: ?() => void) {

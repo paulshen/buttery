@@ -1,8 +1,8 @@
 /* @flow */
 import { interpolateProperties } from '../LayerProperties';
 
-function getKey(spring?: number, friction?: number) {
-  return `spring:${spring == null ? '_' : spring}:${friction == null ? '_' : friction}`;
+function getKey(props?: SpringAnimatorProps) {
+  return `spring:${props && props.spring != null ? props.spring : '_'}:${props && props.friction != null ? props.friction : '_'}`;
 }
 
 type SpringAnimatorProps = { spring?: number, friction?: number };
@@ -10,7 +10,7 @@ export default function SpringAnimator(props?: SpringAnimatorProps) {
   return {
     props,
     Klass: SpringAnimatorImpl,
-    key: getKey(props && props.spring, props && props.friction),
+    key: getKey(props),
   };
 }
 
@@ -33,7 +33,7 @@ class SpringAnimatorImpl {
     let p = props || {};
     this._spring = p.spring || 0.0005;
     this._friction = p.friction || 0.01;
-    this.key = getKey(p.spring, p.friction);
+    this.key = getKey(props);
   }
 
   start(from: LayerProperties, to: LayerProperties, updater: (p: LayerProperties) => void, onEnd: ?() => void) {
