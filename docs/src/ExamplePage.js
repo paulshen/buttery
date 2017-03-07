@@ -14,6 +14,7 @@ function Nav() {
       <div><Link to="/example/animator">Animator</Link></div>
       <div><Link to="/example/draggable">Draggable</Link></div>
       <div><Link to="/example/draggableondragend">Draggable onDragEnd</Link></div>
+      <div><Link to="/example/dragconstraints">Drag Constraints</Link></div>
     </div>
   );
 }
