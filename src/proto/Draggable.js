@@ -6,6 +6,9 @@ import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
 import Friction from './motion/Friction';
 
+let activeDraggables = [];
+const DRAG_START_THRESHOLD = 3;
+
 export default class Draggable {
   props: ?{
     momentum?: boolean,
@@ -20,6 +23,7 @@ export default class Draggable {
   _layer: HTMLElement;
   _p: Point;
   _dragStart: ?Point;
+  _dragCaptured: boolean;
   _touches: Object[];
   _motion: Motion;
   _onDragStart: ?() => void;
@@ -63,13 +67,15 @@ export default class Draggable {
       this._motion.stop();
     }
     this.isControlledByDraggable = true;
+    this._dragCaptured = false;
+    // TODO: handle when already constrained
     this._dragStart = { ...this._p };
     this._touches = [];
     this._addTouch(this._getTouch(e));
+    activeDraggables.push(this);
     if (this._onDragStart) {
       this._onDragStart();
     }
-    e.stopPropagation();
   };
 
   _onTouchMove = (e: Event) => {
@@ -84,8 +90,25 @@ export default class Draggable {
       x: this.props && this.props.constraintX ? constrain(x, this.props.constraintX) : x,
       y: this.props && this.props.constraintY ? constrain(y, this.props.constraintY) : y,
     };
-    this._updater(this._p);
+    if (!this._dragCaptured &&
+        (Math.abs(this._p.x - dragStart.x) > DRAG_START_THRESHOLD ||
+         Math.abs(this._p.y - dragStart.y) > DRAG_START_THRESHOLD)) {
+      if (activeDraggables.length > 1) {
+        // this draggable has captured the event. end other active listeners
+        activeDraggables.forEach((draggable) => draggable !== this && draggable.end());
+      }
+      this._dragCaptured = true;
+    }
+    if (this._dragCaptured) {
+      this._updater(this._p);
+    }
     this._addTouch(touch);
+  };
+
+  end = () => {
+    this._dragStart = null;
+    this.isControlledByDraggable = false;
+    activeDraggables = activeDraggables.filter(d => d !== this);
   };
 
   _onTouchEnd = () => {
@@ -98,6 +121,7 @@ export default class Draggable {
       window.requestAnimationFrame(this._onTouchEndMotion);
     }
     this._dragStart = null;
+    activeDraggables = activeDraggables.filter(d => d !== this);
   };
 
   _getTouch = (e: Event) => {
