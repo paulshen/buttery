@@ -41,8 +41,8 @@ export default class Draggable {
     this._layer.addEventListener('touchmove', this._onTouchMove, false);
     this._layer.addEventListener('touchend', this._onTouchEnd, false);
     this._layer.addEventListener('mousedown', this._onTouchStart, false);
-    this._layer.addEventListener('mousemove', this._onTouchMove, false);
-    this._layer.addEventListener('mouseup', this._onTouchEnd, false);
+    document.addEventListener('mousemove', this._onTouchMove, false);
+    document.addEventListener('mouseup', this._onTouchEnd, false);
   }
 
   setPoint(p: Point) {
@@ -58,8 +58,8 @@ export default class Draggable {
     this._layer.removeEventListener('touchmove', this._onTouchMove);
     this._layer.removeEventListener('touchend', this._onTouchEnd);
     this._layer.removeEventListener('mousedown', this._onTouchStart);
-    this._layer.removeEventListener('mousemove', this._onTouchMove);
-    this._layer.removeEventListener('mouseup', this._onTouchEnd);
+    document.removeEventListener('mousemove', this._onTouchMove);
+    document.removeEventListener('mouseup', this._onTouchEnd);
   }
 
   _onTouchStart = (e: Event) => {
