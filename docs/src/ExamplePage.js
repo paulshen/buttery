@@ -23,17 +23,47 @@ function Nav() {
 }
 Nav = Radium(Nav);
 
+function StatusLink({ children, to }, { router }) {
+  return (
+    <Link to={to} style={Styles.StatusLink}>
+      {children}
+      {router.location.pathname === to && <div style={Styles.StatusLinkStrike} />}
+    </Link>
+  );
+}
+StatusLink.contextTypes = {
+  router: React.PropTypes.object.isRequired,
+};
+
 class ExamplePage extends React.Component {
   render() {
-    let example = Examples[this.props.params.exampleName] || Examples['layers'];
+    let { view } = this.props.route;
+
+    let exampleName = this.props.params.exampleName || 'layers';
+    let example = Examples[exampleName];
+    let exampleKeys = Object.keys(Examples);
+    let exampleIndex = exampleKeys.indexOf(exampleName);
+    let prevExampleName = exampleIndex > 0 ? exampleKeys[exampleIndex - 1] : null;
+    let nextExampleName = exampleIndex < exampleKeys.length - 2 ? exampleKeys[exampleIndex + 1] : null;
+
     return (
       <div style={Styles.Root}>
         <Nav />
         <div style={Styles.Body}>
           <div style={Styles.BodyColumn}>
             <div style={Styles.DescriptionBody}>
+              <div>
+                {prevExampleName && <StatusLink to={`/example/${prevExampleName}`}>Previous</StatusLink>}
+                {nextExampleName && <StatusLink to={`/example/${nextExampleName}`}>Next</StatusLink>}
+              </div>
+              <div>
+                <StatusLink to={`/example/${this.props.params.exampleName}`}>Description</StatusLink>
+                <StatusLink to={`/example/${this.props.params.exampleName}/code`}>Code</StatusLink>
+              </div>
               <div style={Styles.ExampleName}>{example.name}</div>
-              <div style={Styles.Description}>{example.description && example.description()}</div>
+              {view === 'description' ?
+                <div style={Styles.Description}>{example.description && example.description()}</div>
+              : <Code>{example.Code}</Code>}
             </div>
           </div>
           <div style={Styles.BodyColumn}>
@@ -87,5 +117,21 @@ const Styles = {
     fontSize: '24px',
     letterSpacing: '1px',
     marginBottom: '36px',
+  },
+  StatusLink: {
+    color: '#000000',
+    fontSize: 12,
+    fontWeight: 400,
+    letterSpacing: 0.2,
+    position: 'relative',
+    textDecoration: 'none',
+  },
+  StatusLinkStrike: {
+    backgroundColor: '#000000',
+    height: 1,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 8,
   },
 };

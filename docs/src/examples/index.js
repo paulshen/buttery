@@ -9,13 +9,13 @@ import Scroll from './Scroll';
 import LayerTransitionChild from './LayerTransitionChild';
 
 export default {
-  animator: Animator,
-  draggable: Draggable,
-  dragconstraints: DragConstraints,
-  draggableondragend: DraggableOnDragEnd,
-  dragmomentum: DragMomentum,
   layers: Layers,
   manipulation: Manipulation,
+  animator: Animator,
+  draggable: Draggable,
+  draggableondragend: DraggableOnDragEnd,
+  dragconstraints: DragConstraints,
+  dragmomentum: DragMomentum,
   scroll: Scroll,
   layertransitionchild: LayerTransitionChild,
 };
