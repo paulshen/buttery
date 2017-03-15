@@ -30,9 +30,11 @@ class ExamplePage extends React.Component {
       <div style={Styles.Root}>
         <Nav />
         <div style={Styles.Body}>
-          <div style={[Styles.BodyColumn, Styles.CodeColumn]}>
-            <div style={Styles.ExampleName}>{example.name}</div>
-            <Code>{example.Code}</Code>
+          <div style={Styles.BodyColumn}>
+            <div style={Styles.DescriptionBody}>
+              <div style={Styles.ExampleName}>{example.name}</div>
+              <div style={Styles.Description}>{example.description && example.description()}</div>
+            </div>
           </div>
           <div style={Styles.BodyColumn}>
             <Output><example.App /></Output>
@@ -69,11 +71,17 @@ const Styles = {
     overflowY: 'auto',
     width: '50%',
   },
-  CodeColumn: {
-    paddingBottom: '60px',
-    paddingLeft: '60px',
-    paddingRight: '60px',
-    paddingTop: '80px',
+  DescriptionBody: {
+    alignSelf: 'center',
+    paddingBottom: '100px',
+    paddingTop: '100px',
+    width: '60%',
+  },
+  Description: {
+    fontSize: '16px',
+    fontWeight: 300,
+    letterSpacing: '0.2px',
+    lineHeight: 1.5,
   },
   ExampleName: {
     fontSize: '24px',
