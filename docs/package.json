@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "^0.9.5"
+    "react-scripts": "git+ssh://git@github.com/paulshen/create-react-app.git#f2d9904"
   },
   "dependencies": {
     "codemirror": "^5.24.2",

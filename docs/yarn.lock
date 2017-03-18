@@ -1749,9 +1749,9 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-react-app@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-0.6.2.tgz#ee535cbaaf9e3576ea16b99afe720353d8730ec0"
+"eslint-config-react-app@git+ssh://git@github.com/paulshen/create-react-app.git#c773058":
+  version "0.6.1"
+  resolved "git+ssh://git@github.com/paulshen/create-react-app.git#c773058"
 
 eslint-import-resolver-node@^0.2.0:
   version "0.2.3"
@@ -4194,9 +4194,9 @@ react-router@^3.0.2:
     loose-envify "^1.2.0"
     warning "^3.0.0"
 
-react-scripts@^0.9.5:
+"react-scripts@git+ssh://git@github.com/paulshen/create-react-app.git#f2d9904":
   version "0.9.5"
-  resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-0.9.5.tgz#e9f05c8427e27131662a9b9d7a9786d1ff16bb3f"
+  resolved "git+ssh://git@github.com/paulshen/create-react-app.git#f2d9904"
   dependencies:
     autoprefixer "6.7.2"
     babel-core "6.22.1"
@@ -4213,7 +4213,7 @@ react-scripts@^0.9.5:
     detect-port "1.1.0"
     dotenv "2.0.0"
     eslint "3.16.1"
-    eslint-config-react-app "^0.6.2"
+    eslint-config-react-app "git+ssh://git@github.com/paulshen/create-react-app.git#c773058"
     eslint-loader "1.6.0"
     eslint-plugin-flowtype "2.21.0"
     eslint-plugin-import "2.0.1"
