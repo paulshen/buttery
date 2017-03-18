@@ -3,7 +3,7 @@ import Radium from 'radium';
 
 import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
 import CodeComponent from '../../Code';
-import Code from './Code';
+import Code from '!!raw!./App';
 import App from './App';
 
 export default {
