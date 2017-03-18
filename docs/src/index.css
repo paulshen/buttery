@@ -5,5 +5,9 @@ body {
 }
 
 .CodeMirror {
+  display: block;
+  font-family: Inconsolata;
+  font-size: 16px;
   height: auto;
+  line-height: 1.3;
 }

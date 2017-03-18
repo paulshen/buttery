@@ -36,7 +36,7 @@ const Styles = {
   Code: {
     display: 'block',
     fontFamily: 'Inconsolata',
-    fontSize: '16px',
+    fontSize: '14px',
     lineHeight: 1.3,
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-word',

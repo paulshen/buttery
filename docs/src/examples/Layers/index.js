@@ -1,37 +1,22 @@
 import React from 'react';
 import Radium from 'radium';
 
+import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
+import CodeComponent from '../../Code';
 import Code from './Code';
 import App from './App';
-
-const Section = (props) => <div {...props} style={Section.Styles} />;
-Section.Styles = {
-  marginBottom: '32px',
-};
-
-const Header = (props) => <div {...props} style={Header.Styles} />;
-Header.Styles = {
-  fontSize: '20px',
-  fontWeight: 400,
-  letterSpacing: '0.8px',
-};
-
-const Paragraph = (props) => <div {...props} style={Paragraph.Styles} />;
-Paragraph.Styles = {
-  marginBottom: '16px',
-};
 
 export default {
   name: 'Layers',
   description: () => (
     <div>
       <Section>
-        <Paragraph>{`Layers are the building blocks of Wasabi. Use them as <div>s whose styles and position are controlled by Wasabi.`}</Paragraph>
+        <Paragraph>Layers are the building blocks of Wasabi. Use them as <InlineCode>{`<div>`}</InlineCode>s whose styles and position are controlled by Wasabi.</Paragraph>
         <Paragraph>Layers are absolutely positioned by Wasabi. This allows Wasabi to optimize performance by skipping the browser's layout computations.</Paragraph>
-        <Paragraph>All layers must have the prop `properties` set. This is a style-like object that Wasabi uses to style and position your layer.</Paragraph>
+        <Paragraph>All layers must have the prop <InlineCode>properties</InlineCode> set. This is a style-like object that Wasabi uses to style and position your layer.</Paragraph>
       </Section>
       <Header>LayerProperties</Header>
-      <pre>
+      <CodeComponent>
 {`type LayerProperties = {
   x: number,
   y: number,
@@ -50,7 +35,7 @@ export default {
   shadowColor?: ?string,
   shadowSpread?: ?number,
 };`}
-      </pre>
+      </CodeComponent>
     </div>
   ),
   App,
