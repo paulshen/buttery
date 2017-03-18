@@ -2,6 +2,10 @@ import React from 'react';
 import Radium from 'radium';
 
 import CodeMirror from 'codemirror';
+import 'codemirror/addon/fold/foldcode';
+import 'codemirror/addon/fold/foldgutter';
+import 'codemirror/addon/fold/brace-fold';
+import 'codemirror/addon/fold/foldgutter.css';
 import 'codemirror/mode/jsx/jsx';
 import 'codemirror/lib/codemirror.css';
 
@@ -10,6 +14,8 @@ class Code extends React.Component {
     this._codemirror = CodeMirror.fromTextArea(this._textarea, {
       mode: 'javascript',
       viewportMargin: Infinity,
+      foldGutter: this.props.foldGutter,
+      gutters: ['CodeMirror-foldgutter'],
     });
   }
 
