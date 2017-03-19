@@ -2,8 +2,8 @@ import React from 'react';
 import Radium from 'radium';
 
 import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
-import CodeComponent from '../../Code';
-import Code from '!!raw!./App';
+import Code from '../../Code';
+import Source from '!!raw!./App';
 import App from './App';
 
 export default {
@@ -16,7 +16,7 @@ export default {
         <Paragraph>All layers must have the prop <InlineCode>properties</InlineCode> set. This is a style-like object that Wasabi uses to style and position your layer.</Paragraph>
       </Section>
       <Header>LayerProperties</Header>
-      <CodeComponent>
+      <Code>
 {`type LayerProperties = {
   x: number,
   y: number,
@@ -35,9 +35,9 @@ export default {
   shadowColor?: ?string,
   shadowSpread?: ?number,
 };`}
-      </CodeComponent>
+      </Code>
     </div>
   ),
   App,
-  Code,
+  Source,
 };
