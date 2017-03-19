@@ -1,8 +1,7 @@
 import React from 'react';
-import Radium from 'radium';
-
 import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
 import Code from '../../Code';
+
 import Source from '!!raw!./App';
 import App from './App';
 

@@ -51,20 +51,19 @@ class ExamplePage extends React.Component {
         <Nav />
         <div style={Styles.Body}>
           <div style={Styles.BodyColumn}>
-            <div style={Styles.DescriptionBody}>
-              <div>
-                {prevExampleName && <StatusLink to={`/example/${prevExampleName}`}>Previous</StatusLink>}
-                {nextExampleName && <StatusLink to={`/example/${nextExampleName}`}>Next</StatusLink>}
+              <div style={Styles.DescriptionBody}>
+                <div>
+                  {prevExampleName && <StatusLink to={`/example/${prevExampleName}`}>Previous</StatusLink>}
+                  {nextExampleName && <StatusLink to={`/example/${nextExampleName}`}>Next</StatusLink>}
+                </div>
+                <div>
+                  <StatusLink to={`/example/${this.props.params.exampleName}`}>Description</StatusLink>
+                  <StatusLink to={`/example/${this.props.params.exampleName}/code`}>Code</StatusLink>
+                </div>
+                <div style={Styles.ExampleName}>{example.name}</div>
+                {view === 'description' && <div style={Styles.Description}>{example.description && example.description()}</div>}
               </div>
-              <div>
-                <StatusLink to={`/example/${this.props.params.exampleName}`}>Description</StatusLink>
-                <StatusLink to={`/example/${this.props.params.exampleName}/code`}>Code</StatusLink>
-              </div>
-              <div style={Styles.ExampleName}>{example.name}</div>
-              {view === 'description' ?
-                <div style={Styles.Description}>{example.description && example.description()}</div>
-              : <Code foldGutter={true}>{example.Source}</Code>}
-            </div>
+              {view === 'code' && <div style={Styles.ExampleCode}><Code foldGutter={true}>{example.Source}</Code></div>}
           </div>
           <div style={Styles.BodyColumn}>
             <Output><example.App /></Output>
@@ -101,9 +100,12 @@ const Styles = {
     overflowY: 'auto',
     width: '50%',
   },
+  DescriptionColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   DescriptionBody: {
     alignSelf: 'center',
-    paddingBottom: '100px',
     paddingTop: '100px',
     width: '60%',
   },
@@ -112,11 +114,15 @@ const Styles = {
     fontWeight: 300,
     letterSpacing: '0.2px',
     lineHeight: 1.5,
+    paddingBottom: '100px',
   },
   ExampleName: {
     fontSize: '24px',
     letterSpacing: '1px',
     marginBottom: '36px',
+  },
+  ExampleCode: {
+    flex: 1,
   },
   StatusLink: {
     color: '#000000',
