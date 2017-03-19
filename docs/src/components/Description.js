@@ -25,3 +25,8 @@ InlineCode.Styles = {
   fontFamily: 'Inconsolata',
   fontSize: '15px',
 };
+
+export const Table = (props) => <table style={Table.Styles}><tbody {...props} /></table>;
+Table.Styles = {
+  fontSize: '14px',
+};
