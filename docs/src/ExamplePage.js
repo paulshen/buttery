@@ -44,7 +44,7 @@ class ExamplePage extends React.Component {
     let exampleKeys = Object.keys(Examples);
     let exampleIndex = exampleKeys.indexOf(exampleName);
     let prevExampleName = exampleIndex > 0 ? exampleKeys[exampleIndex - 1] : null;
-    let nextExampleName = exampleIndex < exampleKeys.length - 2 ? exampleKeys[exampleIndex + 1] : null;
+    let nextExampleName = exampleIndex < exampleKeys.length - 1 ? exampleKeys[exampleIndex + 1] : null;
 
     return (
       <div style={Styles.Root}>
