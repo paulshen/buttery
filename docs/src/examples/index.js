@@ -7,6 +7,7 @@ import Layers from './Layers';
 import Manipulation from './Manipulation';
 import Scroll from './Scroll';
 import LayerTransitionChild from './LayerTransitionChild';
+import Uber from './Uber';
 
 export default {
   layers: Layers,
@@ -18,4 +19,5 @@ export default {
   draggablemomentum: DraggableMomentum,
   scroll: Scroll,
   layertransitionchild: LayerTransitionChild,
+  uber: Uber,
 };

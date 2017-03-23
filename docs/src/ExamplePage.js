@@ -31,6 +31,7 @@ function Nav() {
       <div><StatusLink to="/example/draggablemomentum">Draggable Momentum</StatusLink></div>
       <div><StatusLink to="/example/scroll">Scroll</StatusLink></div>
       <div><StatusLink to="/example/layertransitionchild">LayerTransitionChild</StatusLink></div>
+      <div><StatusLink to="/example/uber">Uber</StatusLink></div>
     </div>
   );
 }
