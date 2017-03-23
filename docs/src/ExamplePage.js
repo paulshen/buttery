@@ -1,31 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Radium from 'radium';
 
 import Code from './Code';
 import Output from './Output';
 import Examples from './examples';
+import Link from './components/Link';
 
-function Nav() {
+function StatusLink({ children, to, style }, { router }) {
   return (
-    <div style={Styles.Nav}>
-      <div><Link to="/example/layers">Layers</Link></div>
-      <div><Link to="/example/manipulation">Manipulation</Link></div>
-      <div><Link to="/example/animator">Animator</Link></div>
-      <div><Link to="/example/draggable">Draggable</Link></div>
-      <div><Link to="/example/draggableevents">Draggable Events</Link></div>
-      <div><Link to="/example/dragconstraints">Drag Constraints</Link></div>
-      <div><Link to="/example/draggablemomentum">Draggable Momentum</Link></div>
-      <div><Link to="/example/scroll">Scroll</Link></div>
-      <div><Link to="/example/layertransitionchild">LayerTransitionChild</Link></div>
-    </div>
-  );
-}
-Nav = Radium(Nav);
-
-function StatusLink({ children, to }, { router }) {
-  return (
-    <Link to={to} style={Styles.StatusLink}>
+    <Link to={to} style={[Styles.StatusLink, style]}>
       {children}
       {router.location.pathname === to && <div style={Styles.StatusLinkStrike} />}
     </Link>
@@ -34,6 +17,24 @@ function StatusLink({ children, to }, { router }) {
 StatusLink.contextTypes = {
   router: React.PropTypes.object.isRequired,
 };
+StatusLink = Radium(StatusLink);
+
+function Nav() {
+  return (
+    <div style={Styles.Nav}>
+      <div><StatusLink to="/example/layers">Layers</StatusLink></div>
+      <div><StatusLink to="/example/manipulation">Manipulation</StatusLink></div>
+      <div><StatusLink to="/example/animator">Animator</StatusLink></div>
+      <div><StatusLink to="/example/draggable">Draggable</StatusLink></div>
+      <div><StatusLink to="/example/draggableevents">Draggable Events</StatusLink></div>
+      <div><StatusLink to="/example/dragconstraints">Drag Constraints</StatusLink></div>
+      <div><StatusLink to="/example/draggablemomentum">Draggable Momentum</StatusLink></div>
+      <div><StatusLink to="/example/scroll">Scroll</StatusLink></div>
+      <div><StatusLink to="/example/layertransitionchild">LayerTransitionChild</StatusLink></div>
+    </div>
+  );
+}
+Nav = Radium(Nav);
 
 class ExamplePage extends React.Component {
   render() {
@@ -43,27 +44,27 @@ class ExamplePage extends React.Component {
     let example = Examples[exampleName];
     let exampleKeys = Object.keys(Examples);
     let exampleIndex = exampleKeys.indexOf(exampleName);
-    let prevExampleName = exampleIndex > 0 ? exampleKeys[exampleIndex - 1] : null;
-    let nextExampleName = exampleIndex < exampleKeys.length - 1 ? exampleKeys[exampleIndex + 1] : null;
+    let prevExampleKey = exampleIndex > 0 ? exampleKeys[exampleIndex - 1] : null;
+    let nextExampleKey = exampleIndex < exampleKeys.length - 1 ? exampleKeys[exampleIndex + 1] : null;
 
     return (
       <div style={Styles.Root}>
         <Nav />
         <div style={Styles.Body}>
           <div style={Styles.BodyColumn}>
-              <div style={Styles.DescriptionBody}>
-                <div>
-                  {prevExampleName && <StatusLink to={`/example/${prevExampleName}`}>Previous</StatusLink>}
-                  {nextExampleName && <StatusLink to={`/example/${nextExampleName}`}>Next</StatusLink>}
-                </div>
-                <div>
-                  <StatusLink to={`/example/${this.props.params.exampleName}`}>Description</StatusLink>
-                  <StatusLink to={`/example/${this.props.params.exampleName}/code`}>Code</StatusLink>
-                </div>
-                <div style={Styles.ExampleName}>{example.name}</div>
-                {view === 'description' && <div style={Styles.Description}>{example.description && example.description()}</div>}
+            <div style={Styles.ExampleNavigator}>
+              {prevExampleKey && <StatusLink to={`/example/${prevExampleKey}`}>&larr; {Examples[prevExampleKey].name}</StatusLink>}
+              {nextExampleKey && <StatusLink to={`/example/${nextExampleKey}`}>{Examples[nextExampleKey].name} &rarr;</StatusLink>}
+            </div>
+            <div style={Styles.DescriptionBody}>
+              <div style={Styles.ExampleName}>{example.name}</div>
+              <div style={Styles.ExampleSwitcher}>
+                <StatusLink to={`/example/${this.props.params.exampleName}`} style={Styles.ExampleSwitcherLink}>Description</StatusLink>
+                <StatusLink to={`/example/${this.props.params.exampleName}/code`} style={Styles.ExampleSwitcherLink}>Code</StatusLink>
               </div>
-              {view === 'code' && <div style={Styles.ExampleCode}><Code foldGutter={true}>{example.Source}</Code></div>}
+              {view === 'description' && <div style={Styles.Description}>{example.description && example.description()}</div>}
+            </div>
+            {view === 'code' && <div style={Styles.ExampleCode}><Code foldGutter={true}>{example.Source}</Code></div>}
           </div>
           <div style={Styles.BodyColumn}>
             <Output><example.App /></Output>
@@ -106,7 +107,7 @@ const Styles = {
   },
   DescriptionBody: {
     alignSelf: 'center',
-    paddingTop: '100px',
+    paddingTop: '80px',
     width: '60%',
   },
   Description: {
@@ -116,10 +117,21 @@ const Styles = {
     lineHeight: 1.5,
     paddingBottom: '100px',
   },
+  ExampleNavigator: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: '20px',
+  },
   ExampleName: {
     fontSize: '24px',
     letterSpacing: '1px',
-    marginBottom: '36px',
+  },
+  ExampleSwitcher: {
+    marginBottom: '32px',
+  },
+  ExampleSwitcherLink: {
+    marginRight: '20px',
   },
   ExampleCode: {
     flex: 1,

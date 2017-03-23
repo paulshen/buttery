@@ -12,12 +12,12 @@ export default {
       <Section>
         <Paragraph>Layers can have momentum behavior at the end of drag events.</Paragraph>
         <Code>
-  {`<Layer
-    draggable={true}
-    draggableProps={{
-      momentum: true,
-    }}
-  />`}
+{`<Layer
+  draggable={true}
+  draggableProps={{
+    momentum: true,
+  }}
+/>`}
         </Code>
       </Section>
       <Section>
