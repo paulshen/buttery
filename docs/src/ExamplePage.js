@@ -65,7 +65,7 @@ class ExamplePage extends React.Component {
               </div>
               {view === 'description' && <div style={Styles.Description}>{example.description && example.description()}</div>}
             </div>
-            {view === 'code' && <div style={Styles.ExampleCode}><Code foldGutter={true}>{example.Source}</Code></div>}
+            {view === 'code' && <div style={Styles.ExampleCode}><Code foldGutter={true} folds={example.folds}>{example.Source}</Code></div>}
           </div>
           <div style={Styles.BodyColumn}>
             <Output><example.App /></Output>

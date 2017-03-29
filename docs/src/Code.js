@@ -15,8 +15,14 @@ class Code extends React.Component {
       mode: 'javascript',
       viewportMargin: Infinity,
       foldGutter: this.props.foldGutter,
+      lineNumbers: true,
       gutters: ['CodeMirror-foldgutter'],
     });
+    const { folds } = this.props;
+    if (folds) {
+      console.log(folds);
+      folds.forEach(fold => this._codemirror.foldCode(CodeMirror.Pos(fold, 0)));
+    }
   }
 
   componentWillUnmount() {

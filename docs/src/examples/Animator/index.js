@@ -40,4 +40,5 @@ export default {
   ),
   App,
   Source,
+  folds: [5,6,7],
 };
