@@ -33,6 +33,19 @@ export default {
           <tr><td><InlineCode>momentum</InlineCode></td><td>See DragMomentum</td></tr>
         </Table>
       </Section>
+      <Section>
+        <Header>DragConstraint</Header>
+        <Paragraph>All props are optional</Paragraph>
+        <Table>
+          <tr><td>Prop</td><td>Notes</td></tr>
+          <tr><td><InlineCode>min</InlineCode></td><td>number</td></tr>
+          <tr><td><InlineCode>max</InlineCode></td><td>number</td></tr>
+          <tr>
+            <td><InlineCode>type</InlineCode></td>
+            <td><InlineCode>'hard'</InlineCode><InlineCode>'bounce'</InlineCode></td>
+          </tr>
+        </Table>
+      </Section>
     </div>
   ),
   App,

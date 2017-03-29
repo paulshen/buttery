@@ -8,6 +8,10 @@ export default class Example extends React.Component {
     y: 667 / 2 - 40,
   };
 
+  _onMove = ({ x, y }) => {
+    console.log(x, y);
+  };
+
   _onDragEnd = ({ x, y }) => {
     this.setState({ x, y });
   };
@@ -23,6 +27,7 @@ export default class Example extends React.Component {
           backgroundColor: '#1693A5',
         }}
         draggable={true}
+        onMove={this._onMove}
         onDragEnd={this._onDragEnd}
       />
     );

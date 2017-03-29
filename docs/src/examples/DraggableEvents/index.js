@@ -28,8 +28,8 @@ export default {
           ...
         }}
         draggable={true}
-        onDragEnd={({ x, y }) => this.setState({ x, y })}
         onMove={({ x, y }) => console.log(x, y)}
+        onDragEnd={({ x, y }) => this.setState({ x, y })}
       />
     );
   }
