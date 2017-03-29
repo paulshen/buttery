@@ -37,5 +37,5 @@ type LayerProperties = {
 type DragConstraintType = {
   min?: number,
   max?: number,
-  type: 'hard' | 'bounce',
+  bounce: boolean,
 };

@@ -22,22 +22,21 @@ function constrainHard(value, min, max) {
 }
 
 export function constrain(x: number, constraint: DragConstraintType): number {
-  switch (constraint.type) {
-  case 'bounce':
+  if (constraint.bounce) {
     return constrainBounce(x, constraint.min, constraint.max);
-  default:
+  } else {
     return constrainHard(x, constraint.min, constraint.max);
   }
 }
 
-export default function DragConstraint({ min, max, type }: {
+export default function DragConstraint({ min, max, bounce }: {
   min?: number,
   max?: number,
-  type?: 'hard' | 'bounce',
+  bounce?: boolean,
 }): DragConstraintType {
   return {
     min,
     max,
-    type: type || 'hard',
+    bounce: !!bounce,
   };
 }

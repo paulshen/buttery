@@ -79,7 +79,7 @@ export default class App extends React.Component {
           draggable={true}
           draggableProperties={{
             constraintX: DragConstraint({ min: 0, max: 0 }),
-            constraintY: DragConstraint({ min: 667 - 1200, max: this.state.y < 100 ? 100 : 550, type: 'bounce' }),
+            constraintY: DragConstraint({ min: 667 - 1200, max: this.state.y < 100 ? 100 : 550, bounce: true }),
             momentum: this.state.y < 100,
           }}
           onDragEnd={this._onDragEnd}
@@ -94,7 +94,7 @@ export default class App extends React.Component {
             draggable={true}
             draggableProperties={{
               constraintY: DragConstraint({ min: 400, max: 400 }),
-              constraintX: DragConstraint({ min: 375 - 900, max: 0, type: 'bounce' }),
+              constraintX: DragConstraint({ min: 375 - 900, max: 0, bounce: true }),
               pageSize: 300,
             }}
             onDragEnd={this._onPagerDragEnd}

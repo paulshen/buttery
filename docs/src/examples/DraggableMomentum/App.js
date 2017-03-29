@@ -24,7 +24,7 @@ export default class Example extends React.Component {
         }}
         draggable={true}
         draggableProperties={{
-          constraintX: DragConstraint({ min: 0, max: 375 - 80, type: 'bounce' }),
+          constraintX: DragConstraint({ min: 0, max: 375 - 80, bounce: true }),
           constraintY: DragConstraint({ min: 0, max: 667 - 80 }),
           momentum: true,
         }}

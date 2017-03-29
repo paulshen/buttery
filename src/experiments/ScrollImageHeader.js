@@ -11,7 +11,7 @@ class App extends React.Component {
     y: number,
     imageHeight: number,
   } = {
-    constraintY: DragConstraint({ min: 667 - 60 - 2000, max: 140, type: 'bounce' }),
+    constraintY: DragConstraint({ min: 667 - 60 - 2000, max: 140, bounce: true }),
     scrollY: 140,
     y: 140,
     imageHeight: 200,

@@ -23,12 +23,12 @@ export default {
       <Section>
         <Header>Bouncy drag constraints</Header>
         <Paragraph>Drag constraints combined with momentum can emulate scroll, paging, and other behaviors.</Paragraph>
-        <Paragraph>Setting a DragConstraint's type to <InlineCode>bounce</InlineCode> will allow the layer to overshoot and act as a spring.</Paragraph>
+        <Paragraph>Setting a DragConstraint's <InlineCode>bounce</InlineCode> prop to <InlineCode>true</InlineCode> will allow the layer to overshoot and act as a spring.</Paragraph>
         <Code>
 {`<Layer
   draggable={true}
   draggableProps={{
-    constraintX: DragConstraint({ min: 0, max: 100, type: 'bounce' }),
+    constraintX: DragConstraint({ min: 0, max: 100, bounce: true }),
     momentum: true,
   }}
 />`}

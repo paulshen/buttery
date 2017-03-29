@@ -40,10 +40,7 @@ export default {
           <tr><td>Prop</td><td>Notes</td></tr>
           <tr><td><InlineCode>min</InlineCode></td><td>number</td></tr>
           <tr><td><InlineCode>max</InlineCode></td><td>number</td></tr>
-          <tr>
-            <td><InlineCode>type</InlineCode></td>
-            <td><InlineCode>'hard'</InlineCode><InlineCode>'bounce'</InlineCode></td>
-          </tr>
+          <tr><td><InlineCode>bounce</InlineCode></td><td>boolean</td></tr>
         </Table>
       </Section>
     </div>

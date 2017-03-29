@@ -198,7 +198,7 @@ export default class Draggable {
   };
 
   _applyHardConstraints = (p: Point) => ({
-    x: this.props && this.props.constraintX && this.props.constraintX.type === 'hard' ? constrain(p.x, this.props.constraintX) : p.x,
-    y: this.props && this.props.constraintY && this.props.constraintY.type === 'hard' ? constrain(p.y, this.props.constraintY) : p.y,
+    x: this.props && this.props.constraintX && !this.props.constraintX.bounce ? constrain(p.x, this.props.constraintX) : p.x,
+    y: this.props && this.props.constraintY && !this.props.constraintY.bounce ? constrain(p.y, this.props.constraintY) : p.y,
   });
 }
