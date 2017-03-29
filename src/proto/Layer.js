@@ -1,11 +1,10 @@
 /* @flow */
 import React from 'react';
-import Radium from 'radium';
 
 import { applyProperties, arePropertiesSame } from './LayerProperties';
 import Draggable from './Draggable';
 
-class Layer extends React.Component {
+export default class Layer extends React.Component {
   props: {
     properties: LayerProperties,
     animator?: Object,
@@ -149,19 +148,17 @@ class Layer extends React.Component {
   }
 
   render() {
-    let { children, animator, properties, draggable, draggableProperties, style, onClick, onMove, onDrag, onDragEnd, ...props } = this.props;
+    let { children, animator, properties, draggable, draggableProperties, style, onMove, onDrag, onDragEnd, ...props } = this.props;
     return (
       <div
         {...props}
-        onClick={onClick}
         ref={c => this._layer = c}
-        style={[Styles.Layer, style]}>
+        style={style ? { ...Styles.Layer, ...style } : Styles.Layer}>
         {children}
       </div>
     );
   }
 }
-export default Radium(Layer);
 
 const Styles = {
   Layer: {
