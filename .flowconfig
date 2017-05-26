@@ -1,6 +1,7 @@
 [ignore]
 .*/node_modules/fbjs/lib/partitionObjectByKey.js.flow
 .*/node_modules/radium/.*
+.*/docs/.*
 
 [include]
 

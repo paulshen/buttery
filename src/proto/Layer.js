@@ -24,7 +24,7 @@ export default class Layer extends React.Component {
   _pointFromDraggable: ?Point;
   _draggable: ?Draggable;
 
-  constructor(props) {
+  constructor(props: $PropertyType<Layer, 'props'>) {
     super();
     this._properties = { ...props.properties };
   }
@@ -40,7 +40,7 @@ export default class Layer extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
     let { animator, properties, draggable } = nextProps;
     if (!arePropertiesSame(properties, this.props.properties)) {
       this._handlePropertiesChange(properties, animator);
@@ -59,7 +59,7 @@ export default class Layer extends React.Component {
     }
   }
 
-  _handlePropertiesChange = (properties, animator) => {
+  _handlePropertiesChange = (properties: LayerProperties, animator: ?Object) => {
     if (this._animator) {
       this._animator.stop();
     }
@@ -77,7 +77,7 @@ export default class Layer extends React.Component {
     }
   };
 
-  _createDraggable = (props) => {
+  _createDraggable = (props: $PropertyType<Layer, 'props'>) => {
     let { properties, draggableProperties } = props;
     this._pointFromDraggable = { x: properties.x, y: properties.y };
     this._draggable = new Draggable();
@@ -103,7 +103,7 @@ export default class Layer extends React.Component {
     this.props && this.props.onDrag && this.props.onDrag(p);
   };
 
-  _applyProperties = (propertiesParam) => {
+  _applyProperties = (propertiesParam: LayerProperties) => {
     let properties = propertiesParam;
     if (this._draggable) {
       if (this._draggable.isControlledByDraggable) {
@@ -134,7 +134,7 @@ export default class Layer extends React.Component {
     this._handlePropertiesChange(this.props.properties, this.props.animator);
   };
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {
     return React.Children.count(nextProps.children) > 0 || React.Children.count(this.props.children) > 0;
   }
 
