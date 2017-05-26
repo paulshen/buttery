@@ -1,6 +1,6 @@
 /* @flow */
 
-import { constrain } from './DragConstraint';
+import { constrain, isConstrained } from './DragConstraint';
 import Motion from './Motion';
 import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
@@ -164,6 +164,12 @@ export default class Draggable {
         let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
         let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
         this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
+          if (vm.x && vm.y && !isConstrained(p.x, props.constraintX) && !isConstrained(p.y, props.constraintY)) {
+            let vHypotenuse = Math.sqrt(vm.x * vm.x + vm.y * vm.y);
+            let [nextV, shouldStop] = Friction(0, vHypotenuse, dt);
+            return [{ x: vm.x / vHypotenuse * nextV, y: vm.y / vHypotenuse * nextV }, shouldStop];
+          }
+
           let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
           let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
           return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
