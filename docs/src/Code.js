@@ -1,5 +1,4 @@
 import React from 'react';
-import Radium from 'radium';
 
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/foldcode';
@@ -35,16 +34,30 @@ class Code extends React.Component {
     return (
       <textarea
         style={Styles.Code}
-        ref={c => this._textarea = c}
+        ref={c => (this._textarea = c)}
         readOnly={true}
         value={children}
       />
     );
   }
 }
-export default Radium(Code);
+export default Code;
+
+export function DescriptionCode({ children }) {
+  return (
+    <div style={Styles.Root}>
+      <Code>{children}</Code>
+    </div>
+  );
+}
 
 const Styles = {
+  Root: {
+    marginLeft: '-80px',
+    marginRight: '-80px',
+    paddingBottom: '10px',
+    paddingTop: '10px',
+  },
   Code: {
     display: 'block',
     fontFamily: 'Inconsolata',

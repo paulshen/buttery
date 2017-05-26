@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';
@@ -11,7 +11,7 @@ export default {
     <div>
       <Section>
         <Paragraph>Draggable layers with momentum can be used to emulate iOS scroll behavior.</Paragraph>
-        <Code>
+        <DescriptionCode>
 {`class ScrollLayer extends React.Component {
   state = { y: 0 };
 
@@ -30,7 +30,7 @@ export default {
     );
   }
 }`}
-        </Code>
+        </DescriptionCode>
       </Section>
     </div>
   ),

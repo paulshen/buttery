@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';
@@ -13,11 +13,11 @@ export default {
         <Paragraph>Layers can be updated just like any other React component. No surprises here!</Paragraph>
         <Paragraph>For performance, Wasabi does a property-level equality check to determine whether to update.</Paragraph>
       </Section>
-      <Code>
+      <DescriptionCode>
 {`<Layer
   properties={MyProperties[this.state.index]}
 />`}
-      </Code>
+      </DescriptionCode>
     </div>
   ),
   App,

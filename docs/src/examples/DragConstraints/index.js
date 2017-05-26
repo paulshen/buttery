@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';
@@ -11,7 +11,7 @@ export default {
     <div>
       <Section>
         <Paragraph>Draggable layers support an optional <InlineCode>draggableProps</InlineCode> property for configuring draggable behavior.</Paragraph>
-        <Code>
+        <DescriptionCode>
 {`import { Layer, DragConstraint } from 'proto';
 
 <Layer
@@ -21,7 +21,7 @@ export default {
     constraintY: DragConstraint({ min: 50, max: 50 }),
   }}
 />`}
-        </Code>
+        </DescriptionCode>
       </Section>
       <Section>
         <Header>Draggable Props</Header>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';
@@ -11,12 +11,12 @@ export default {
     <div>
       <Section>
         <Paragraph>It's easy to make a layer draggable.</Paragraph>
-        <Code>
+        <DescriptionCode>
 {`<Layer
   properties={...}
   draggable={true}
 />`}
-        </Code>
+        </DescriptionCode>
       </Section>
       <Section>
         <Paragraph>While a layer is dragged, its position is controlled by the draggable. When the drag ends, position control is returned to the owner.</Paragraph>

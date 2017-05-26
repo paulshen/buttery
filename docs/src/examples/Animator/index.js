@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';
@@ -11,12 +11,12 @@ export default {
     <div>
       <Section>
         <Paragraph>Animate updates to <InlineCode>LayerProperties</InlineCode> by setting the <InlineCode>animator</InlineCode> prop.</Paragraph>
-        <Code>
+        <DescriptionCode>
 {`<Layer
   properties={...}
   animator={SpringAnimator()}
 />`}
-        </Code>
+        </DescriptionCode>
       </Section>
       <Header>Animators</Header>
       <Section>

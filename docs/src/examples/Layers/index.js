@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
-import Code from '../../Code';
+import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
 import App from './App';
@@ -15,7 +15,7 @@ export default {
         <Paragraph>All layers must have the prop <InlineCode>properties</InlineCode> set. This is a style-like object that Wasabi uses to style and position your layer.</Paragraph>
       </Section>
       <Header>LayerProperties</Header>
-      <Code>
+      <DescriptionCode>
 {`type LayerProperties = {
   x: number,
   y: number,
@@ -34,7 +34,7 @@ export default {
   shadowColor?: ?string,
   shadowSpread?: ?number,
 };`}
-      </Code>
+      </DescriptionCode>
     </div>
   ),
   App,

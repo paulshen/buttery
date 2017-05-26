@@ -10,7 +10,8 @@ function StatusLink({ children, to, style }, { router }) {
   return (
     <Link to={to} style={[Styles.StatusLink, style]}>
       {children}
-      {router.location.pathname === to && <div style={Styles.StatusLinkStrike} />}
+      {router.location.pathname === to &&
+        <div style={Styles.StatusLinkStrike} />}
     </Link>
   );
 }
@@ -23,14 +24,28 @@ function Nav() {
   return (
     <div style={Styles.Nav}>
       <div><StatusLink to="/example/layers">Layers</StatusLink></div>
-      <div><StatusLink to="/example/manipulation">Manipulation</StatusLink></div>
+      <div>
+        <StatusLink to="/example/manipulation">Manipulation</StatusLink>
+      </div>
       <div><StatusLink to="/example/animator">Animator</StatusLink></div>
       <div><StatusLink to="/example/draggable">Draggable</StatusLink></div>
-      <div><StatusLink to="/example/draggableevents">Draggable Events</StatusLink></div>
-      <div><StatusLink to="/example/dragconstraints">Drag Constraints</StatusLink></div>
-      <div><StatusLink to="/example/draggablemomentum">Draggable Momentum</StatusLink></div>
+      <div>
+        <StatusLink to="/example/draggableevents">Draggable Events</StatusLink>
+      </div>
+      <div>
+        <StatusLink to="/example/dragconstraints">Drag Constraints</StatusLink>
+      </div>
+      <div>
+        <StatusLink to="/example/draggablemomentum">
+          Draggable Momentum
+        </StatusLink>
+      </div>
       <div><StatusLink to="/example/scroll">Scroll</StatusLink></div>
-      <div><StatusLink to="/example/layertransitionchild">LayerTransitionChild</StatusLink></div>
+      <div>
+        <StatusLink to="/example/layertransitionchild">
+          LayerTransitionChild
+        </StatusLink>
+      </div>
       <div><StatusLink to="/example/uber">Uber</StatusLink></div>
     </div>
   );
@@ -45,8 +60,12 @@ class ExamplePage extends React.Component {
     let example = Examples[exampleName];
     let exampleKeys = Object.keys(Examples);
     let exampleIndex = exampleKeys.indexOf(exampleName);
-    let prevExampleKey = exampleIndex > 0 ? exampleKeys[exampleIndex - 1] : null;
-    let nextExampleKey = exampleIndex < exampleKeys.length - 1 ? exampleKeys[exampleIndex + 1] : null;
+    let prevExampleKey = exampleIndex > 0
+      ? exampleKeys[exampleIndex - 1]
+      : null;
+    let nextExampleKey = exampleIndex < exampleKeys.length - 1
+      ? exampleKeys[exampleIndex + 1]
+      : null;
 
     return (
       <div style={Styles.Root}>
@@ -54,18 +73,42 @@ class ExamplePage extends React.Component {
         <div style={Styles.Body}>
           <div style={Styles.BodyColumn}>
             <div style={Styles.ExampleNavigator}>
-              {prevExampleKey && <StatusLink to={`/example/${prevExampleKey}`}>&larr; {Examples[prevExampleKey].name}</StatusLink>}
-              {nextExampleKey && <StatusLink to={`/example/${nextExampleKey}`}>{Examples[nextExampleKey].name} &rarr;</StatusLink>}
+              {prevExampleKey &&
+                <StatusLink to={`/example/${prevExampleKey}`}>
+                  &larr; {Examples[prevExampleKey].name}
+                </StatusLink>}
+              {nextExampleKey &&
+                <StatusLink to={`/example/${nextExampleKey}`}>
+                  {Examples[nextExampleKey].name} &rarr;
+                </StatusLink>}
             </div>
             <div style={Styles.DescriptionBody}>
               <div style={Styles.ExampleName}>{example.name}</div>
               <div style={Styles.ExampleSwitcher}>
-                <StatusLink to={`/example/${this.props.params.exampleName}`} style={Styles.ExampleSwitcherLink}>Description</StatusLink>
-                <StatusLink to={`/example/${this.props.params.exampleName}/code`} style={Styles.ExampleSwitcherLink}>Code</StatusLink>
+                <StatusLink
+                  to={`/example/${this.props.params.exampleName}`}
+                  style={Styles.ExampleSwitcherLink}
+                >
+                  Description
+                </StatusLink>
+                <StatusLink
+                  to={`/example/${this.props.params.exampleName}/code`}
+                  style={Styles.ExampleSwitcherLink}
+                >
+                  Code
+                </StatusLink>
               </div>
-              {view === 'description' && <div style={Styles.Description}>{example.description && example.description()}</div>}
+              {view === 'description' &&
+                <div style={Styles.Description}>
+                  {example.description && example.description()}
+                </div>}
             </div>
-            {view === 'code' && <div style={Styles.ExampleCode}><Code foldGutter={true} folds={example.folds}>{example.Source}</Code></div>}
+            {view === 'code' &&
+              <div style={Styles.ExampleCode}>
+                <Code foldGutter={true} folds={example.folds}>
+                  {example.Source}
+                </Code>
+              </div>}
           </div>
           <div style={Styles.BodyColumn}>
             <Output><example.App /></Output>
@@ -107,9 +150,9 @@ const Styles = {
     flexDirection: 'column',
   },
   DescriptionBody: {
-    alignSelf: 'center',
+    paddingLeft: '80px',
+    paddingRight: '80px',
     paddingTop: '80px',
-    width: '60%',
   },
   Description: {
     fontSize: '16px',
