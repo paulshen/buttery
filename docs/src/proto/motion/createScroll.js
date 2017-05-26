@@ -2,6 +2,7 @@
 import Friction from './Friction';
 import createSpring from './createSpring';
 
+// $FlowIgnore
 function Stop() {
   return [0, true];
 }

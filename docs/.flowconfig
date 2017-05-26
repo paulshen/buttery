@@ -1,0 +1,9 @@
+[ignore]
+.*/node_modules/radium/.*
+.*/src/proto/.*
+
+[include]
+
+[libs]
+
+[options]
