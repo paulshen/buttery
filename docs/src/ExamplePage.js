@@ -71,7 +71,7 @@ class ExamplePage extends React.Component {
       <div style={Styles.Root}>
         <Nav />
         <div style={Styles.Body}>
-          <div style={Styles.BodyColumn}>
+          <div style={[Styles.BodyColumn, Styles.TextColumn]}>
             <div style={Styles.ExampleNavigator}>
               {prevExampleKey &&
                 <StatusLink to={`/example/${prevExampleKey}`}>
@@ -105,12 +105,12 @@ class ExamplePage extends React.Component {
             </div>
             {view === 'code' &&
               <div style={Styles.ExampleCode}>
-                <Code foldGutter={true} folds={example.folds}>
+                <Code showGutter={true} foldGutter={true} folds={example.folds}>
                   {example.Source}
                 </Code>
               </div>}
           </div>
-          <div style={Styles.BodyColumn}>
+          <div style={[Styles.BodyColumn, Styles.OutputColumn]}>
             <Output><example.App /></Output>
           </div>
         </div>
@@ -143,6 +143,12 @@ const Styles = {
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'auto',
+  },
+  TextColumn: {
+    flex: 1,
+  },
+  OutputColumn: {
+    maxWidth: 375 + 120,
     width: '50%',
   },
   DescriptionColumn: {

@@ -9,13 +9,17 @@ import 'codemirror/mode/jsx/jsx';
 import 'codemirror/lib/codemirror.css';
 
 class Code extends React.Component {
+  props: {
+    showGutter: true,
+  };
+
   componentDidMount() {
     this._codemirror = CodeMirror.fromTextArea(this._textarea, {
       mode: 'javascript',
       viewportMargin: Infinity,
       foldGutter: this.props.foldGutter,
-      lineNumbers: true,
-      gutters: ['CodeMirror-foldgutter'],
+      lineNumbers: this.props.showGutter,
+      gutters: this.props.showGutter ? ['CodeMirror-foldgutter'] : [],
     });
     const { folds } = this.props;
     if (folds) {
@@ -45,17 +49,21 @@ export default Code;
 
 export function DescriptionCode({ children }) {
   return (
-    <div style={Styles.Root}>
+    <div style={Styles.DescriptionCode}>
       <Code>{children}</Code>
     </div>
   );
 }
 
 const Styles = {
-  Root: {
-    marginLeft: '-80px',
-    marginRight: '-80px',
+  DescriptionCode: {
+    backgroundColor: '#fafafa',
+    marginBottom: '20px',
+    marginLeft: '-40px',
+    marginRight: '-40px',
+    marginTop: '20px',
     paddingBottom: '10px',
+    paddingLeft: '10px',
     paddingTop: '10px',
   },
   Code: {
