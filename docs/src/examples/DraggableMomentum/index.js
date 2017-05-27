@@ -28,7 +28,9 @@ export default {
 {`<Layer
   draggable={true}
   draggableProps={{
-    constraintX: DragConstraint({ min: 0, max: 100, bounce: true }),
+    constraintX: DragConstraint({
+      min: 0, max: 100, bounce: true
+    }),
     momentum: true,
   }}
 />`}

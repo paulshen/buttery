@@ -17,8 +17,12 @@ export default {
 <Layer
   draggable={true}
   draggableProps={{
-    constraintX: DragConstraint({ min: 0, max: 100 }),
-    constraintY: DragConstraint({ min: 50, max: 50 }),
+    constraintX: DragConstraint({
+      min: 0, max: 100
+    }),
+    constraintY: DragConstraint({
+      min: 50, max: 50
+    }),
   }}
 />`}
         </DescriptionCode>

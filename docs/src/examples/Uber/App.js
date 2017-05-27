@@ -51,7 +51,11 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <Layer
+        properties={{
+          x: 0, y: 0, width: 375, height: 667
+        }}
+        style={{ overflow: 'hidden' }}>
         <Layer properties={{
           x: 0,
           y: 0,
@@ -121,7 +125,7 @@ export default class App extends React.Component {
         }} style={{ color: '#FFFFFF' }}>
           Messages
         </Layer>
-      </div>
+      </Layer>
     );
   }
 }

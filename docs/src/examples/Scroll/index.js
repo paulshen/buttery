@@ -21,8 +21,12 @@ export default {
         properties={{ ... y: this.state.y }}
         draggable={true}
         draggableProps={{
-          constraintX: DragConstraint({ min: 0, max: 0 }),
-          constraintY: DragConstraint({ min: -1400, max: 0, bounce: true }),
+          constraintX: DragConstraint({
+            min: 0, max: 0
+          }),
+          constraintY: DragConstraint({
+            min: -1400, max: 0, bounce: true
+          }),
           momentum: true,
         }}
         onDragEnd={({ y }) => this.setState({ y })}

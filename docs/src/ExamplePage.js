@@ -70,7 +70,7 @@ class ExamplePage extends React.Component {
     return (
       <div style={Styles.Root}>
         <Nav />
-        <div style={Styles.Body}>
+        <div style={Styles.Body} key={exampleName}>
           <div style={[Styles.BodyColumn, Styles.TextColumn]}>
             <div style={Styles.ExampleNavigator}>
               {prevExampleKey &&

@@ -15,11 +15,12 @@ export default {
         <Paragraph>You can also subscribe to every update with <InlineCode>onMove</InlineCode>.</Paragraph>
         <DescriptionCode>
 {`class Example extends React.Component {
-    state = {
-      x: 0,
-      y: 0,
-    };
+  state = {
+    x: 0,
+    y: 0,
+  };
 
+  render() {
     return (
       <Layer
         properties={{
@@ -28,8 +29,12 @@ export default {
           ...
         }}
         draggable={true}
-        onMove={({ x, y }) => console.log(x, y)}
-        onDragEnd={({ x, y }) => this.setState({ x, y })}
+        onMove={
+          ({ x, y }) => console.log(x, y)
+        }
+        onDragEnd={
+          ({ x, y }) => this.setState({ x, y })
+        }
       />
     );
   }
