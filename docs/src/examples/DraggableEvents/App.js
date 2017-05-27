@@ -4,32 +4,41 @@ import { Layer } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    x: 375 / 2 - 40,
-    y: 667 / 2 - 40,
+    x: 100,
+    y: 140,
+    lastEventMessage: '',
   };
 
   _onMove = ({ x, y }) => {
-    console.log(x, y);
+    this.setState({
+      lastEventMessage: `onMove: (${x}, ${y})`,
+    });
   };
 
   _onDragEnd = ({ x, y }) => {
-    this.setState({ x, y });
+    this.setState({
+      x, y,
+      lastEventMessage: `onDragEnd: (${x}, ${y})`,
+    });
   };
 
   render() {
     return (
-      <Layer
-        properties={{
-          x: this.state.x,
-          y: this.state.y,
-          width: 80,
-          height: 80,
-          backgroundColor: '#1693A5',
-        }}
-        draggable={true}
-        onMove={this._onMove}
-        onDragEnd={this._onDragEnd}
-      />
+      <div>
+        <div style={{ position: 'absolute' }}>{this.state.lastEventMessage}</div>
+        <Layer
+          properties={{
+            x: this.state.x,
+            y: this.state.y,
+            width: 80,
+            height: 80,
+            backgroundColor: '#1693A5',
+          }}
+          draggable={true}
+          onMove={this._onMove}
+          onDragEnd={this._onDragEnd}
+        />
+      </div>
     );
   }
 }

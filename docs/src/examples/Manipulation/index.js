@@ -11,7 +11,7 @@ export default {
     <div>
       <Section>
         <Paragraph>Layers can be updated just like any other React component. No surprises here!</Paragraph>
-        <Paragraph>For performance, Wasabi does a property-level equality check to determine whether to update.</Paragraph>
+        <Paragraph>For performance, Wasabi does a deep equality test on <InlineCode>LayerProperties</InlineCode> to determine whether to update the layer.</Paragraph>
       </Section>
       <DescriptionCode>
 {`<Layer

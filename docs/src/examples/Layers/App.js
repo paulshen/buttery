@@ -11,9 +11,9 @@ export default class Example extends React.Component {
             x: 100,
             y: 200,
             width: 120,
-            height: 60,
+            height: 80,
             backgroundColor: '#1693A5',
-            borderRadius: 8,
+            borderRadius: 4,
           }}
         />
       </div>

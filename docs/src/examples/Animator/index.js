@@ -14,11 +14,14 @@ export default {
         <DescriptionCode>
 {`<Layer
   properties={...}
-  animator={SpringAnimator()}
+  animator={TimedAnimator({ duration: 300 })}
 />`}
         </DescriptionCode>
       </Section>
       <Header>Animators</Header>
+      <Section>
+        <Paragraph>There are two included animators.</Paragraph>
+      </Section>
       <Section>
         <Header>TimedAnimator(props)</Header>
         <Paragraph><InlineCode>TimedAnimator</InlineCode> is a simple animator that animates changes to <InlineCode>LayerProperties</InlineCode> over a given duration.</Paragraph>

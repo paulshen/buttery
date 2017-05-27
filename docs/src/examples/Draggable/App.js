@@ -8,8 +8,8 @@ export default class Example extends React.Component {
       <div>
         <Layer
           properties={{
-            x: 375 / 2 - 40,
-            y: 667 / 2 - 40,
+            x: 100,
+            y: 140,
             width: 80,
             height: 80,
             backgroundColor: '#1693A5',
