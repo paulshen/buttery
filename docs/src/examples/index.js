@@ -1,8 +1,8 @@
 import Animator from './Animator';
 import Draggable from './Draggable';
 import DragConstraints from './DragConstraints';
-import DraggableEvents from './DraggableEvents';
-import DraggableMomentum from './DraggableMomentum';
+import DragEvents from './DragEvents';
+import DragMomentum from './DragMomentum';
 import Layers from './Layers';
 import Manipulation from './Manipulation';
 import Scroll from './Scroll';
@@ -14,9 +14,9 @@ export default {
   manipulation: Manipulation,
   animator: Animator,
   draggable: Draggable,
-  draggableevents: DraggableEvents,
+  dragevents: DragEvents,
   dragconstraints: DragConstraints,
-  draggablemomentum: DraggableMomentum,
+  dragmomentum: DragMomentum,
   scroll: Scroll,
   layertransitionchild: LayerTransitionChild,
   uber: Uber,

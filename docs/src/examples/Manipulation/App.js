@@ -22,7 +22,9 @@ export default class Example extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this._onClick}>Toggle</button>
+        <div style={{ position: 'absolute' }}>
+          <button onClick={this._onClick}>Toggle</button>
+        </div>
         <Layer properties={MyProperties[this.state.index]} />
       </div>
     );

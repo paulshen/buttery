@@ -6,7 +6,7 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Draggable Momentum',
+  name: 'Drag Momentum',
   description: () => (
     <div>
       <Section>
@@ -35,11 +35,11 @@ export default {
   }}
 />`}
         </DescriptionCode>
-        <Paragraph>Fling the example layer against the constraints to see the behavior. The vertical constraint is a hard constraint while the side constraints have type <InlineCode>bounce</InlineCode>.</Paragraph>
+        <Paragraph>Fling the square against the constraints to see the momentum and bounce behavior.</Paragraph>
       </Section>
     </div>
   ),
   App,
   Source,
-  folds: [17],
+  folds: [],
 };

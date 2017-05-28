@@ -25,7 +25,9 @@ export default class Example extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ position: 'absolute' }}>{this.state.lastEventMessage}</div>
+        <div style={{ position: 'absolute' }}>
+          {this.state.lastEventMessage}
+        </div>
         <Layer
           properties={{
             x: this.state.x,

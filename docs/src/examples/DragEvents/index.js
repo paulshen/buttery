@@ -6,11 +6,11 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Draggable Events',
+  name: 'Drag Events',
   description: () => (
     <div>
       <Section>
-        <Paragraph>Layers support React event handlers as you expect. Props are transferred onto the underlying div.</Paragraph>
+        <Paragraph>Layers support React event handlers (e.g. <InlineCode>onClick</InlineCode>) as you expect. Props are transferred onto the underlying div.</Paragraph>
         <Paragraph>Draggable layers fire an <InlineCode>onDragEnd</InlineCode> event with the ending point. You usually want to update <InlineCode>properties</InlineCode> on this event.</Paragraph>
         <Paragraph>You can also subscribe to every update with <InlineCode>onMove</InlineCode>.</Paragraph>
         <DescriptionCode>

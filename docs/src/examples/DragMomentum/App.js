@@ -5,10 +5,11 @@ import { DragConstraint, Layer } from '../../proto';
 export default class Example extends React.Component {
   state = {
     x: 0,
+    y: 0,
   };
 
-  _onDragEnd = ({ x }) => {
-    this.setState({ x });
+  _onDragEnd = ({ x, y }) => {
+    this.setState({ x, y });
   };
 
   render() {
@@ -16,23 +17,24 @@ export default class Example extends React.Component {
       <Layer
         properties={{
           x: 50,
-          y: 200,
+          y: (667 - 275) / 2,
           width: 275,
-          height: 80,
+          height: 275,
           backgroundColor: '#c3f0f7',
         }}>
         <Layer
           properties={{
             x: this.state.x,
-            y: 0,
+            y: this.state.y,
             width: 80,
             height: 80,
             backgroundColor: '#1693A5',
           }}
           draggable={true}
           draggableProperties={{
-            constraintX: DragConstraint({ min: 0, max: 275 - 80 }),
-            constraintY: DragConstraint({ min: 0, max: 0 }),
+            constraintX: DragConstraint({ min: 0, max: 275 - 80, bounce: true }),
+            constraintY: DragConstraint({ min: 0, max: 275 - 80, bounce: true }),
+            momentum: true,
           }}
           onDragEnd={this._onDragEnd}
         />

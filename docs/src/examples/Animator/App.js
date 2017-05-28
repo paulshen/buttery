@@ -26,15 +26,17 @@ export default class Example extends React.Component {
     // properties change, they are animated.
     return (
       <div>
-        <div>
-          <button onClick={() => this._onClick('timed')}>
-            Toggle with TimedAnimator
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this._onClick('spring')}>
-            Toggle with SpringAnimator
-          </button>
+        <div style={{ position: 'absolute' }}>
+          <div>
+            <button onClick={() => this._onClick('timed')}>
+              Toggle with TimedAnimator
+            </button>
+          </div>
+          <div>
+            <button onClick={() => this._onClick('spring')}>
+              Toggle with SpringAnimator
+            </button>
+          </div>
         </div>
         <Layer
           properties={MyProperties[this.state.index]}

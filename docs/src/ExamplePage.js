@@ -30,14 +30,14 @@ function Nav() {
       <div><StatusLink to="/example/animator">Animator</StatusLink></div>
       <div><StatusLink to="/example/draggable">Draggable</StatusLink></div>
       <div>
-        <StatusLink to="/example/draggableevents">Draggable Events</StatusLink>
+        <StatusLink to="/example/dragevents">Drag Events</StatusLink>
       </div>
       <div>
         <StatusLink to="/example/dragconstraints">Drag Constraints</StatusLink>
       </div>
       <div>
-        <StatusLink to="/example/draggablemomentum">
-          Draggable Momentum
+        <StatusLink to="/example/dragmomentum">
+          Drag Momentum
         </StatusLink>
       </div>
       <div><StatusLink to="/example/scroll">Scroll</StatusLink></div>

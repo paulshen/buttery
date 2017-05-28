@@ -9,7 +9,7 @@ export default class Example extends React.Component {
         <Layer
           properties={{
             x: 100,
-            y: 200,
+            y: 140,
             width: 120,
             height: 80,
             backgroundColor: '#1693A5',
