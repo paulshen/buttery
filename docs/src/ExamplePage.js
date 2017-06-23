@@ -46,6 +46,11 @@ function Nav() {
           LayerTransitionChild
         </StatusLink>
       </div>
+      <div>
+        <StatusLink to="/example/viewcontrollertransition">
+          View Controller Transition
+        </StatusLink>
+      </div>
       <div><StatusLink to="/example/uber">Uber</StatusLink></div>
     </div>
   );

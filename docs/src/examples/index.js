@@ -7,6 +7,7 @@ import Layers from './Layers';
 import Manipulation from './Manipulation';
 import Scroll from './Scroll';
 import LayerTransitionChild from './LayerTransitionChild';
+import ViewControllerTransition from './ViewControllerTransition';
 import Uber from './Uber';
 
 export default {
@@ -19,5 +20,6 @@ export default {
   dragmomentum: DragMomentum,
   scroll: Scroll,
   layertransitionchild: LayerTransitionChild,
+  viewcontrollertransition: ViewControllerTransition,
   uber: Uber,
 };
