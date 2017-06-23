@@ -9,7 +9,7 @@ export default class Layer extends React.Component {
     properties: LayerProperties,
     animator?: Object,
     draggable?: boolean,
-    draggableProperties?: $PropertyType<Draggable, 'props'>;
+    draggableProperties?: $PropertyType<Draggable, 'props'>,
     children?: any,
     style?: any,
     onClick?: Function,
@@ -17,7 +17,7 @@ export default class Layer extends React.Component {
     onAnimationEnd?: () => void,
     onDrag?: (p: Point) => void,
     onDragEnd?: (p: Point) => void,
-  }
+  };
   _layer: HTMLElement;
   _properties: LayerProperties;
   _animator: ?Object;
@@ -59,7 +59,10 @@ export default class Layer extends React.Component {
     }
   }
 
-  _handlePropertiesChange = (properties: LayerProperties, animator: ?Object) => {
+  _handlePropertiesChange = (
+    properties: LayerProperties,
+    animator: ?Object
+  ) => {
     if (this._animator) {
       this._animator.stop();
     }
@@ -70,7 +73,12 @@ export default class Layer extends React.Component {
       } else {
         nextAnimator = new animator.Klass(animator.props);
       }
-      nextAnimator.start(this._properties || this.props.properties, properties, this._updater, this._onAnimationEnd);
+      nextAnimator.start(
+        this._properties || this.props.properties,
+        properties,
+        this._updater,
+        this._onAnimationEnd
+      );
       this._animator = nextAnimator;
     } else {
       this._applyProperties(properties);
@@ -83,11 +91,16 @@ export default class Layer extends React.Component {
     this._draggable = new Draggable();
     this._draggable.props = draggableProperties;
     this._draggable.layerProperties = properties;
-    this._draggable.start(this._layer, this._pointFromDraggable, this._onDragStart, this._dragUpdater, this._onDragEnd);
+    this._draggable.start(
+      this._layer,
+      this._pointFromDraggable,
+      this._onDragStart,
+      this._dragUpdater,
+      this._onDragEnd
+    );
   };
 
   _updater = (properties: LayerProperties) => {
-    this._properties = properties;
     this._applyProperties(properties);
   };
 
@@ -104,6 +117,10 @@ export default class Layer extends React.Component {
   };
 
   _applyProperties = (propertiesParam: LayerProperties) => {
+    let prevPosition = {
+      x: this._properties.x,
+      y: this._properties.y,
+    };
     let properties = propertiesParam;
     if (this._draggable) {
       if (this._draggable.isControlledByDraggable) {
@@ -116,7 +133,11 @@ export default class Layer extends React.Component {
       }
     }
     applyProperties(this._layer, properties);
-    if (this.props.onMove) {
+    this._properties = properties;
+    if (
+      this.props.onMove &&
+      (properties.x !== prevPosition.x || properties.y !== prevPosition.y)
+    ) {
       this.props.onMove(properties);
     }
   };
@@ -126,16 +147,15 @@ export default class Layer extends React.Component {
   };
 
   _onDragEnd = (p: Point) => {
-    this._properties = {
-      ...this._properties,
-      ...p,
-    };
     this.props.onDragEnd && this.props.onDragEnd(p);
     this._handlePropertiesChange(this.props.properties, this.props.animator);
   };
 
   shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {
-    return React.Children.count(nextProps.children) > 0 || React.Children.count(this.props.children) > 0;
+    return (
+      React.Children.count(nextProps.children) > 0 ||
+      React.Children.count(this.props.children) > 0
+    );
   }
 
   componentWillUnmount() {
@@ -148,12 +168,24 @@ export default class Layer extends React.Component {
   }
 
   render() {
-    let { children, animator, properties, draggable, draggableProperties, style, onMove, onDrag, onDragEnd, ...props } = this.props;
+    let {
+      children,
+      animator,
+      properties,
+      draggable,
+      draggableProperties,
+      style,
+      onMove,
+      onDrag,
+      onDragEnd,
+      ...props
+    } = this.props;
     return (
       <div
         {...props}
-        ref={c => this._layer = c}
-        style={style ? { ...Styles.Layer, ...style } : Styles.Layer}>
+        ref={c => (this._layer = c)}
+        style={style ? { ...Styles.Layer, ...style } : Styles.Layer}
+      >
         {children}
       </div>
     );
