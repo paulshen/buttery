@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.47.0",
+    "flow-bin": "^0.49.1",
     "react-scripts": "git+ssh://git@github.com/paulshen/create-react-app.git#f2d9904"
   },
   "dependencies": {

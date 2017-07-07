@@ -33,7 +33,7 @@ export function isConstrained(
   constraint: ?DragConstraintType
 ): boolean {
   return (
-    constraint &&
+    !!constraint &&
     ((typeof constraint.min === 'number' && x < constraint.min) ||
       (typeof constraint.max === 'number' && x > constraint.max))
   );
