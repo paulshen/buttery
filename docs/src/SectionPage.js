@@ -3,7 +3,7 @@ import Radium from 'radium';
 
 import Code from './Code';
 import Output from './Output';
-import Examples from './examples';
+import Sections from './sections';
 import Link from './components/Link';
 
 function StatusLink({ children, to, style }, { router }) {
@@ -23,107 +23,107 @@ StatusLink = Radium(StatusLink);
 function Nav() {
   return (
     <div style={Styles.Nav}>
-      <div><StatusLink to="/example/layers">Layers</StatusLink></div>
+      <div><StatusLink to="/section/layers">Layers</StatusLink></div>
       <div>
-        <StatusLink to="/example/manipulation">Manipulation</StatusLink>
+        <StatusLink to="/section/manipulation">Manipulation</StatusLink>
       </div>
-      <div><StatusLink to="/example/animator">Animator</StatusLink></div>
-      <div><StatusLink to="/example/draggable">Draggable</StatusLink></div>
+      <div><StatusLink to="/section/animator">Animator</StatusLink></div>
+      <div><StatusLink to="/section/draggable">Draggable</StatusLink></div>
       <div>
-        <StatusLink to="/example/dragevents">Drag Events</StatusLink>
-      </div>
-      <div>
-        <StatusLink to="/example/dragconstraints">Drag Constraints</StatusLink>
+        <StatusLink to="/section/dragevents">Drag Events</StatusLink>
       </div>
       <div>
-        <StatusLink to="/example/dragmomentum">
+        <StatusLink to="/section/dragconstraints">Drag Constraints</StatusLink>
+      </div>
+      <div>
+        <StatusLink to="/section/dragmomentum">
           Drag Momentum
         </StatusLink>
       </div>
-      <div><StatusLink to="/example/scroll">Scroll</StatusLink></div>
+      <div><StatusLink to="/section/scroll">Scroll</StatusLink></div>
       <div>
-        <StatusLink to="/example/layertransitionchild">
+        <StatusLink to="/section/layertransitionchild">
           LayerTransitionChild
         </StatusLink>
       </div>
       <div>
-        <StatusLink to="/example/viewcontrollertransition">
+        <StatusLink to="/section/viewcontrollertransition">
           View Controller Transition
         </StatusLink>
       </div>
-      <div><StatusLink to="/example/uber">Uber</StatusLink></div>
+      <div><StatusLink to="/section/uber">Uber</StatusLink></div>
     </div>
   );
 }
 Nav = Radium(Nav);
 
-class ExamplePage extends React.Component {
+class SectionPage extends React.Component {
   render() {
     let { view } = this.props.route;
 
-    let exampleName = this.props.params.exampleName || 'layers';
-    let example = Examples[exampleName];
-    let exampleKeys = Object.keys(Examples);
-    let exampleIndex = exampleKeys.indexOf(exampleName);
-    let prevExampleKey = exampleIndex > 0
-      ? exampleKeys[exampleIndex - 1]
+    let sectionName = this.props.params.sectionName || 'layers';
+    let section = Sections[sectionName];
+    let sectionKeys = Object.keys(Sections);
+    let sectionIndex = sectionKeys.indexOf(sectionName);
+    let prevSectionKey = sectionIndex > 0
+      ? sectionKeys[sectionIndex - 1]
       : null;
-    let nextExampleKey = exampleIndex < exampleKeys.length - 1
-      ? exampleKeys[exampleIndex + 1]
+    let nextSectionKey = sectionIndex < sectionKeys.length - 1
+      ? sectionKeys[sectionIndex + 1]
       : null;
 
     return (
       <div style={Styles.Root}>
         <Nav />
-        <div style={Styles.Body} key={exampleName}>
+        <div style={Styles.Body} key={sectionName}>
           <div style={[Styles.BodyColumn, Styles.TextColumn]}>
-            <div style={Styles.ExampleNavigator}>
-              {prevExampleKey &&
-                <StatusLink to={`/example/${prevExampleKey}`}>
-                  &larr; {Examples[prevExampleKey].name}
+            <div style={Styles.SectionNavigator}>
+              {prevSectionKey &&
+                <StatusLink to={`/section/${prevSectionKey}`}>
+                  &larr; {Sections[prevSectionKey].name}
                 </StatusLink>}
-              {nextExampleKey &&
-                <StatusLink to={`/example/${nextExampleKey}`}>
-                  {Examples[nextExampleKey].name} &rarr;
+              {nextSectionKey &&
+                <StatusLink to={`/section/${nextSectionKey}`}>
+                  {Sections[nextSectionKey].name} &rarr;
                 </StatusLink>}
             </div>
             <div style={Styles.DescriptionBody}>
-              <div style={Styles.ExampleName}>{example.name}</div>
-              <div style={Styles.ExampleSwitcher}>
+              <div style={Styles.SectionName}>{section.name}</div>
+              <div style={Styles.SectionSwitcher}>
                 <StatusLink
-                  to={`/example/${this.props.params.exampleName}`}
-                  style={Styles.ExampleSwitcherLink}
+                  to={`/section/${this.props.params.sectionName}`}
+                  style={Styles.SectionSwitcherLink}
                 >
                   Description
                 </StatusLink>
                 <StatusLink
-                  to={`/example/${this.props.params.exampleName}/code`}
-                  style={Styles.ExampleSwitcherLink}
+                  to={`/section/${this.props.params.sectionName}/code`}
+                  style={Styles.SectionSwitcherLink}
                 >
                   Code
                 </StatusLink>
               </div>
               {view === 'description' &&
                 <div style={Styles.Description}>
-                  {example.description && example.description()}
+                  {section.description && section.description()}
                 </div>}
             </div>
             {view === 'code' &&
-              <div style={Styles.ExampleCode}>
-                <Code showGutter={true} foldGutter={true} folds={example.folds}>
-                  {example.Source}
+              <div style={Styles.SectionCode}>
+                <Code showGutter={true} foldGutter={true} folds={section.folds}>
+                  {section.Source}
                 </Code>
               </div>}
           </div>
           <div style={[Styles.BodyColumn, Styles.OutputColumn]}>
-            <Output><example.App /></Output>
+            <Output><section.App /></Output>
           </div>
         </div>
       </div>
     );
   }
 }
-export default Radium(ExamplePage);
+export default Radium(SectionPage);
 
 const Styles = {
   Root: {
@@ -172,23 +172,23 @@ const Styles = {
     lineHeight: 1.5,
     paddingBottom: '100px',
   },
-  ExampleNavigator: {
+  SectionNavigator: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: '20px',
   },
-  ExampleName: {
+  SectionName: {
     fontSize: '24px',
     letterSpacing: '1px',
   },
-  ExampleSwitcher: {
+  SectionSwitcher: {
     marginBottom: '32px',
   },
-  ExampleSwitcherLink: {
+  SectionSwitcherLink: {
     marginRight: '20px',
   },
-  ExampleCode: {
+  SectionCode: {
     flex: 1,
   },
   StatusLink: {
