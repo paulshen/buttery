@@ -59,8 +59,6 @@ const Styles = {
   DescriptionCode: {
     backgroundColor: '#fafafa',
     marginBottom: '20px',
-    marginLeft: '-40px',
-    marginRight: '-40px',
     marginTop: '20px',
     paddingBottom: '10px',
     paddingLeft: '10px',
