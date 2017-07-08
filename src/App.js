@@ -1,5 +1,5 @@
 /* @flow */
-import App from './experiments/Uber';
+import App from './experiments/Paging';
 
 export default App;
 

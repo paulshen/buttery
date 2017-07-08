@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer } from '../proto';
+import { Layer, DragConstraint } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -24,13 +24,14 @@ class App extends React.Component {
             properties={{
               width: 1125,
               height: 667,
-              x: 0,
+              x: this.state.x,
               y: 0,
             }}
             onMove={this._onMove}
             draggable={true}
             draggableProperties={{
-              viewportSize: { width: 375, height: 667 },
+              constraintX: DragConstraint({ min: -375 * 2, max: 0, bounce: true }),
+              constraintY: DragConstraint({ min: 0, max: 0 }),
               pageSize: 375,
             }}>
             <Layer
