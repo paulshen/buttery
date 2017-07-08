@@ -7,9 +7,28 @@ import Output from './Output';
 import Sections from './sections';
 import Link from './components/Link';
 
+class CodePane extends React.Component {
+  props: {
+    sectionKey: string,
+  };
+
+  render() {
+    let section = Sections[this.props.sectionKey];
+
+    return (
+      <div style={Styles.CodePane}>
+        <Code showGutter={true} foldGutter={true} folds={section.folds}>
+          {section.Source}
+        </Code>
+      </div>
+    );
+  }
+}
+
 class DocumentationPage extends React.Component {
   state = {
     selectedSectionKey: Object.keys(Sections)[0],
+    showCode: false,
   };
   _bodyColumn: HTMLDivElement;
   _sections: { [sectionKey: string]: HTMLDivElement } = {};
@@ -29,7 +48,6 @@ class DocumentationPage extends React.Component {
       },
       [null, -Infinity]
     );
-    console.log(topSection, scrollTop);
     const topSectionKey = topSection[0];
     if (
       topSectionKey !== null &&
@@ -41,38 +59,54 @@ class DocumentationPage extends React.Component {
     }
   };
 
+  _onClickShowCode = () => {
+    this.setState({
+      showCode: !this.state.showCode,
+    });
+  };
+
   render() {
     let selectedSection = Sections[this.state.selectedSectionKey];
 
     return (
       <div style={Styles.Root}>
         <div style={Styles.Body}>
-          <div
-            style={[Styles.BodyColumn, Styles.TextColumn]}
-            onScroll={this._onScroll}
-            ref={c => (this._bodyColumn = c)}
-          >
-            <div style={Styles.TextColumnInner}>
-              {Object.keys(Sections).map(sectionKey => {
-                let section = Sections[sectionKey];
-                return (
-                  <div
-                    ref={c => (this._sections[sectionKey] = c)}
-                    key={sectionKey}
-                  >
-                    <div style={Styles.SectionName}>
-                      {section.name}
+          <div style={Styles.LeftColumn}>
+            <div
+              style={[Styles.ScrollColumn, Styles.LeftColumnScroll]}
+              onScroll={this._onScroll}
+              ref={c => (this._bodyColumn = c)}
+            >
+              <div style={Styles.LeftColumnInner}>
+                {Object.keys(Sections).map(sectionKey => {
+                  let section = Sections[sectionKey];
+                  return (
+                    <div
+                      ref={c => (this._sections[sectionKey] = c)}
+                      key={sectionKey}
+                    >
+                      <div style={Styles.SectionName}>
+                        {section.name}
+                      </div>
+                      <div style={Styles.Description}>
+                        {section.description && section.description()}
+                      </div>
                     </div>
-                    <div style={Styles.Description}>
-                      {section.description && section.description()}
-                    </div>
-                  </div>
-                );
-              })}
-              <div style={Styles.BottomSpacer} />
+                  );
+                })}
+                <div style={Styles.BottomSpacer} />
+              </div>
             </div>
+            {this.state.showCode &&
+              <CodePane sectionKey={this.state.selectedSectionKey} />}
           </div>
-          <div style={[Styles.BodyColumn, Styles.OutputColumn]}>
+          <div style={[Styles.ScrollColumn, Styles.OutputColumn]}>
+            <button
+              onClick={this._onClickShowCode}
+              style={Styles.ToggleCodeButton}
+            >
+              Toggle Code
+            </button>
             <Output>
               <selectedSection.App />
             </Output>
@@ -94,16 +128,23 @@ const Styles = {
     display: 'flex',
     flex: 1,
   },
-  BodyColumn: {
+  ScrollColumn: {
     boxSizing: 'border-box',
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     overflowY: 'auto',
   },
-  TextColumn: {
+  LeftColumn: {
+    display: 'flex',
     flex: 1,
+    position: 'relative',
   },
-  TextColumnInner: {
+  LeftColumnScroll: {
+    position: 'relative',
+    zIndex: 0,
+  },
+  LeftColumnInner: {
     padding: '64px',
   },
   SectionName: {
@@ -123,5 +164,18 @@ const Styles = {
   },
   BottomSpacer: {
     height: '100vh',
+  },
+  ToggleCodeButton: {
+    alignSelf: 'flex-start',
+  },
+  CodePane: {
+    backgroundColor: '#ffffff',
+    bottom: 0,
+    left: 0,
+    overflowY: 'auto',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 1,
   },
 };
