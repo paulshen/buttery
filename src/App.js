@@ -1,5 +1,5 @@
 /* @flow */
-import App from './experiments/Paging';
+import App from './experiments/SideMenu';
 
 export default App;
 

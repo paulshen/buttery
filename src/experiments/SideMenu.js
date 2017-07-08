@@ -92,6 +92,7 @@ class App extends React.Component {
                 draggable={true}
                 draggableProperties={{
                   constraintX: DragConstraint({ min: -375, max: 0 }),
+                  constraintY: DragConstraint({ min: 0, max: 0 }),
                 }}
                 animator={SpringAnimator({ spring: 0.0005, friction: 0.05 })}
                 onDrag={this._onDrag}
