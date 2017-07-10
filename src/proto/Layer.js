@@ -167,6 +167,7 @@ export default class Layer extends React.Component {
     let {
       children,
       animator,
+      frame,
       properties,
       draggable,
       draggableProperties,
