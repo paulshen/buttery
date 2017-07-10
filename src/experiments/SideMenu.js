@@ -3,7 +3,13 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator } from '../proto';
+import {
+  DragConstraint,
+  Layer,
+  LayerTransitionChild,
+  SpringAnimator,
+  Rect
+} from '../proto';
 
 class App extends React.Component {
   state = {
@@ -19,8 +25,7 @@ class App extends React.Component {
     });
   };
 
-  _onDrag = () => {
-  };
+  _onDrag = () => {};
 
   _onMove = (p: Point) => {
     this.setState({
@@ -41,12 +46,8 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
+            frame={Rect(100, 200, 80, 80)}
             properties={{
-              x: 100,
-              y: 200,
-              width: 80,
-              height: 80,
-              backgroundColor: '#FE9D63',
               rotation: this.state.numClicks * 120,
               scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
               scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
@@ -55,40 +56,28 @@ class App extends React.Component {
               shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
               shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
             }}
+            style={{
+              backgroundColor: '#FE9D63',
+            }}
             animator={SpringAnimator()}
             onClick={this._onClick}
           />
           {this.state.showMenu &&
-            <Layer properties={{
-              backgroundColor: 'rgba(0,0,0,0.3)',
-              x: 0,
-              y: 0,
-              width: 375,
-              height: 667,
-              opacity: Math.max(Math.min(this.state.menuX / 175 + 1, 1), 0),
-            }} />
-          }
+            <Layer
+              frame={Rect(0, 0, 375, 667)}
+              properties={{
+                opacity: Math.max(Math.min(this.state.menuX / 175 + 1, 1), 0),
+              }}
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.3)',
+              }}
+            />}
           <ReactTransitionGroup>
             {this.state.showMenu &&
               <LayerTransitionChild
-                enterProperties={{
-                  x: -375,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
-                properties={{
-                  x: 0,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
-                exitProperties={{
-                  x: -375,
-                  y: 0,
-                  width: 375,
-                  height: 667,
-                }}
+                enterFrame={Rect(-375, 0, 375, 667)}
+                frame={Rect(0, 0, 375, 667)}
+                exitFrame={Rect(-375, 0, 375, 667)}
                 draggable={true}
                 draggableProperties={{
                   constraintX: DragConstraint({ min: -375, max: 0 }),
@@ -98,14 +87,12 @@ class App extends React.Component {
                 onDrag={this._onDrag}
                 onMove={this._onMove}
                 onDragEnd={this._onDragEnd}
-                key="menu">
+                key="menu"
+              >
                 <Layer
-                  properties={{
+                  frame={Rect(0, 0, 200, 667)}
+                  style={{
                     backgroundColor: 'black',
-                    x: 0,
-                    y: 0,
-                    width: 200,
-                    height: 667,
                   }}
                 />
               </LayerTransitionChild>}

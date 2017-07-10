@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator } from '../proto';
+import { DragConstraint, Layer, SpringAnimator, Rect } from '../proto';
 
 class App extends React.Component {
   state: {
@@ -11,7 +11,11 @@ class App extends React.Component {
     y: number,
     imageHeight: number,
   } = {
-    constraintY: DragConstraint({ min: 667 - 60 - 2000, max: 140, bounce: true }),
+    constraintY: DragConstraint({
+      min: 667 - 60 - 2000,
+      max: 140,
+      bounce: true,
+    }),
     scrollY: 140,
     y: 140,
     imageHeight: 200,
@@ -40,23 +44,42 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            properties={{ x: 0, y: 0, width: 375, height: 200, scale: Math.max(1 + (this.state.y - 140) / 200, 1) }}
+            frame={Rect(0, 0, 375, 200)}
+            properties={{ scale: Math.max(1 + (this.state.y - 140) / 200, 1) }}
             style={{
-              backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w400/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)',
+              backgroundImage:
+                'url(http://d2h0v2e3t9v1o4.cloudfront.net/w400/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)',
               transformOrigin: '50% 0%',
             }}
           />
           <Layer
-            properties={{ x: 0, y: this._getTextY(), width: 375, height: 40, scale: Math.min(Math.max(1 + (this.state.y - 140) / 240, 0.5), 1.5) }}
-            style={{ color: '#ffffff', fontSize: '32px', textAlign: 'center', textShadow: '0 1px 5px rgba(0,0,0,0.4)' }}>
+            frame={Rect(0, this._getTextY(), 375, 40)}
+            properties={{
+              scale: Math.min(
+                Math.max(1 + (this.state.y - 140) / 240, 0.5),
+                1.5
+              ),
+            }}
+            style={{
+              color: '#ffffff',
+              fontSize: '32px',
+              textAlign: 'center',
+              textShadow: '0 1px 5px rgba(0,0,0,0.4)',
+            }}
+          >
             Iceland
           </Layer>
           <Layer
-            properties={{ x: 0, y: 60, width: 375, height: 607 }}
-            style={{ overflow: 'hidden', pointerEvents: 'none' }}>
+            frame={Rect(0, 60, 375, 607)}
+            style={{ overflow: 'hidden', pointerEvents: 'none' }}
+          >
             <Layer
-              properties={{ x: 0, y: this.state.scrollY, width: 375, height: 2000 }}
-              style={{ backgroundImage: 'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)', pointerEvents: 'all' }}
+              frame={Rect(0, this.state.scrollY, 375, 2000)}
+              style={{
+                backgroundImage:
+                  'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)',
+                pointerEvents: 'all',
+              }}
               draggable={true}
               draggableProperties={{
                 constraintX: DragConstraint({ min: 0, max: 0 }),

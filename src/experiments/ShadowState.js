@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, SpringAnimator } from '../proto';
+import { Layer, SpringAnimator, Rect } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -20,12 +20,8 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
+            frame={Rect(100, 200, 80, 80)}
             properties={{
-              x: 100,
-              y: 200,
-              width: 80,
-              height: 80,
-              backgroundColor: '#FE9D63',
               rotation: this.state.numClicks * 120,
               scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
               scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
@@ -33,6 +29,9 @@ class App extends React.Component {
               shadowColor: 'rgba(0,0,0,0.15)',
               shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
               shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
+            }}
+            style={{
+              backgroundColor: '#FE9D63',
             }}
             animator={SpringAnimator()}
             onClick={this._onClick}

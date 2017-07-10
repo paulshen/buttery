@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, DragConstraint } from '../proto';
+import { Layer, DragConstraint, Rect } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -16,48 +16,41 @@ class App extends React.Component {
   };
 
   render() {
-    let colorValue = Math.round(Math.max(Math.min(-this.state.x / 750, 1), 0) * 255);
+    let colorValue = Math.round(
+      Math.max(Math.min(-this.state.x / 750, 1), 0) * 255
+    );
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            properties={{
-              width: 1125,
-              height: 667,
-              x: this.state.x,
-              y: 0,
-            }}
+            frame={Rect(this.state.x, 0, 1125, 667)}
             onMove={this._onMove}
             draggable={true}
             draggableProperties={{
-              constraintX: DragConstraint({ min: -375 * 2, max: 0, bounce: true }),
+              constraintX: DragConstraint({
+                min: -375 * 2,
+                max: 0,
+                bounce: true,
+              }),
               constraintY: DragConstraint({ min: 0, max: 0 }),
               pageSize: 375,
-            }}>
+            }}
+          >
             <Layer
-              properties={{
-                width: 375,
-                height: 667,
-                x: 0,
-                y: 0,
+              frame={Rect(0, 0, 375, 667)}
+              style={{
                 backgroundColor: `rgb(220,220,${colorValue})`,
               }}
             />
             <Layer
-              properties={{
-                width: 375,
-                height: 667,
-                x: 375,
-                y: 0,
+              frame={Rect(375, 0, 375, 667)}
+              style={{
                 backgroundColor: `rgb(220,${colorValue},220)`,
               }}
             />
             <Layer
-              properties={{
-                width: 375,
-                height: 667,
-                x: 750,
-                y: 0,
+              frame={Rect(750, 0, 375, 667)}
+              style={{
                 backgroundColor: `rgb(${colorValue},220,220)`,
               }}
             />

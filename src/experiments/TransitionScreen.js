@@ -3,18 +3,24 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { DragConstraint, Layer, LayerTransitionChild, SpringAnimator } from '../proto';
+import {
+  DragConstraint,
+  Layer,
+  LayerTransitionChild,
+  SpringAnimator,
+  Rect
+} from '../proto';
 
 class App extends React.Component {
   state: {
     constraintY: DragConstraintType,
     scrollY: number,
-    transitionAnimatedProperties: ?AnimatedProperties,
+    transitionAnimatedFrame: ?AnimatedProperties,
     transitionExit: boolean,
   } = {
     constraintY: DragConstraint({ min: 587 - 2000, max: 0, bounce: true }),
     scrollY: 0,
-    transitionAnimatedProperties: null,
+    transitionAnimatedFrame: null,
     transitionExit: false,
   };
   _scrollLayer: Layer;
@@ -25,24 +31,24 @@ class App extends React.Component {
   };
 
   _onClick = () => {
-    if (this.state.transitionAnimatedProperties) {
+    if (this.state.transitionAnimatedFrame) {
       this.setState({
         transitionExit: true,
       });
     } else {
-      let properties = this._transitionLayer.getFrame();
-      let scrollProperties = this._scrollLayer.getFrame();
-      properties.x += scrollProperties.x;
-      properties.y += scrollProperties.y;
+      let frame = this._transitionLayer.getFrame();
+      let scrollFrame = this._scrollLayer.getFrame();
+      frame.x += scrollFrame.x;
+      frame.y += scrollFrame.y;
       this.setState({
-        transitionAnimatedProperties: properties,
+        transitionAnimatedFrame: frame,
       });
     }
   };
 
   _onExit = () => {
     this.setState({
-      transitionAnimatedProperties: null,
+      transitionAnimatedFrame: null,
       transitionExit: false,
     });
   };
@@ -52,8 +58,10 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            properties={{ x: 0, y: this.state.scrollY, width: 375, height: 2000 }}
-            draggable={true}
+            frame={Rect(0, this.state.scrollY, 375, 2000)}
+            draggable={
+              !this.state.transitionAnimatedFrame && !this.state.transitionExit
+            }
             draggableProperties={{
               constraintX: DragConstraint({ min: 0, max: 0 }),
               constraintY: this.state.constraintY,
@@ -61,38 +69,62 @@ class App extends React.Component {
             }}
             onDragEnd={this._onDragEnd}
             animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
-            ref={c => this._scrollLayer = c}
+            ref={c => (this._scrollLayer = c)}
           >
             <Layer
-              properties={{ x: 0, y: 0, width: 375, height: 300, backgroundColor: `rgb(255,153,153)` }}
+              frame={Rect(0, 0, 375, 300)}
+              style={{
+                backgroundColor: `rgb(255,153,153)`,
+              }}
             />
             <Layer
-              properties={{ x: 0, y: 300, width: 375, height: 300, backgroundColor: `rgb(200,153,153)` }}
-              style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+              frame={Rect(0, 300, 375, 300)}
+              style={{
+                alignItems: 'center',
+                backgroundColor: `rgb(200,153,153)`,
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <div>Hello!</div>
             </Layer>
-            {!this.state.transitionAnimatedProperties &&
+            {!this.state.transitionAnimatedFrame &&
               <Layer
-                properties={{ x: 0, y: 600, width: 375, height: 300 }}
-                style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
+                frame={Rect(0, 600, 375, 300)}
+                style={{
+                  backgroundColor: 'blue',
+                }}
                 onClick={this._onClick}
-                ref={c => this._transitionLayer = c}
+                ref={c => (this._transitionLayer = c)}
               />}
             <Layer
-              properties={{ x: 0, y: 900, width: 375, height: 300, backgroundColor: `rgb(153,153,200)` }}
+              frame={Rect(0, 900, 375, 300)}
+              style={{
+                backgroundColor: `rgb(153,153,200)`,
+              }}
             />
             <Layer
-              properties={{ x: 0, y: 1200, width: 375, height: 300, backgroundColor: `rgb(153,200,153)` }}
+              frame={Rect(0, 1200, 375, 300)}
+              style={{
+                backgroundColor: `rgb(153,200,153)`,
+              }}
             />
           </Layer>
           <ReactTransitionGroup>
-            {this.state.transitionAnimatedProperties && !this.state.transitionExit &&
+            {this.state.transitionAnimatedFrame &&
+              !this.state.transitionExit &&
               <LayerTransitionChild
-                enterProperties={this.state.transitionAnimatedProperties}
-                properties={{ ...this.state.transitionAnimatedProperties, y: 0, height: 200 }}
-                exitProperties={this.state.transitionAnimatedProperties}
+                enterFrame={this.state.transitionAnimatedFrame}
+                frame={{
+                  ...this.state.transitionAnimatedFrame,
+                  y: 0,
+                  height: 200,
+                }}
+                exitFrame={this.state.transitionAnimatedFrame}
                 animator={SpringAnimator()}
-                style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
+                style={{
+                  backgroundColor: 'red',
+                }}
                 onClick={this._onClick}
                 onExit={this._onExit}
               />}

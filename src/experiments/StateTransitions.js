@@ -5,9 +5,9 @@ import Radium from 'radium';
 import { Layer, SpringAnimator, TimedAnimator } from '../proto';
 
 const Steps = [
-  { backgroundColor: '#438DED', width: 100, height: 100, x: 100, y: 100 },
-  { backgroundColor: '#438DED', width: 80, height: 120, x: 110, y: 90 },
-  { backgroundColor: '#438DED', width: 60, height: 60, x: 90, y: 180 },
+  { width: 100, height: 100, x: 100, y: 100 },
+  { width: 80, height: 120, x: 110, y: 90 },
+  { width: 60, height: 60, x: 90, y: 180 },
 ];
 
 const Animators = [
@@ -31,14 +31,22 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Layer properties={Steps[this.state.step]} animator={Animators[this.state.step]} />
           <Layer
-            properties={{
-              backgroundColor: '#97B2C9',
+            frame={Steps[this.state.step]}
+            style={{
+              backgroundColor: '#438DED',
+            }}
+            animator={Animators[this.state.step]}
+          />
+          <Layer
+            frame={{
               width: 50,
               height: 50,
               x: 200,
               y: 500,
+            }}
+            style={{
+              backgroundColor: '#97B2C9',
             }}
             onClick={this._onClick}
           />

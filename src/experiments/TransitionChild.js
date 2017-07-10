@@ -6,9 +6,9 @@ import ReactTransitionGroup from 'react-addons-transition-group';
 import { Layer, LayerTransitionChild, SpringAnimator } from '../proto';
 
 const Steps = [
-  { backgroundColor: '#438DED', width: 10, height: 10, x: 100, y: 100, opacity: 0 },
-  { backgroundColor: '#438DED', width: 10, height: 12, x: 110, y: 90, opacity: 1 },
-  { backgroundColor: '#438DED', width: 10, height: 10, x: 90, y: 180, opacity: 0 },
+  { width: 10, height: 10, x: 100, y: 100, opacity: 0 },
+  { width: 10, height: 12, x: 110, y: 90, opacity: 1 },
+  { width: 10, height: 10, x: 90, y: 180, opacity: 0 },
 ];
 
 class App extends React.Component {
@@ -35,10 +35,20 @@ class App extends React.Component {
       let position = i - this.state.subtractClicks;
       children.push(
         <LayerTransitionChild
+          enterFrame={Steps[0]}
+          frame={{
+            ...Steps[1],
+            x: Steps[1].x + 20 * Math.floor(position / 20),
+            y: Steps[1].y + 20 * (position % 20),
+          }}
+          exitFrame={Steps[2]}
           enterProperties={Steps[0]}
-          properties={{ ...Steps[1], x: Steps[1].x + 20 * Math.floor(position / 20), y: Steps[1].y + 20 * (position % 20) }}
+          properties={Steps[1]}
           exitProperties={Steps[2]}
           animator={SpringAnimator()}
+          style={{
+            backgroundColor: '#438DED',
+          }}
           key={i}
         />
       );
@@ -51,22 +61,26 @@ class App extends React.Component {
             {children}
           </ReactTransitionGroup>
           <Layer
-            properties={{
-              backgroundColor: '#97B2C9',
+            frame={{
               width: 50,
               height: 50,
               x: 200,
               y: 500,
             }}
+            style={{
+              backgroundColor: '#97B2C9',
+            }}
             onClick={this._onAddClick}
           />
           <Layer
-            properties={{
-              backgroundColor: '#97B2C9',
+            frame={{
               width: 50,
               height: 50,
               x: 300,
               y: 500,
+            }}
+            style={{
+              backgroundColor: '#97B2C9',
             }}
             onClick={this._onSubtractClick}
           />
