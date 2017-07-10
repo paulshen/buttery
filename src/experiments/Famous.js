@@ -2,24 +2,35 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer } from '../proto';
+import { DragConstraint, Layer, Rect } from '../proto';
 
-function Screen({ index, x, backgroundColor }: {
+function Screen({
+  index,
+  scrollX,
+  backgroundColor,
+}: {
   index: number,
-  x: number,
+  scrollX: number,
   backgroundColor: string,
 }) {
+  let x =
+    scrollX > -375 * index
+      ? 375 * index + scrollX
+      : Math.max((scrollX + 375 * index) / 4, -375);
   return (
     <Layer
+      frame={Rect(x, 0, 375, 667)}
       properties={{
-        x: x > -375 * index ? (375 * index) + x : Math.max((x + 375 * index) / 4, -375),
-        y: 0,
-        width: 375,
-        height: 667,
-        opacity: x > -375 * index ? 1 : 1 - Math.max((x + 375 * index) / -375, 0),
-        scale: x > -375 * index ? 1 : 1 - Math.max((x + 375 * index) / -10000, 0),
-        backgroundColor,
+        opacity:
+          scrollX > -375 * index
+            ? 1
+            : 1 - Math.max((scrollX + 375 * index) / -375, 0),
+        scale:
+          scrollX > -375 * index
+            ? 1
+            : 1 - Math.max((scrollX + 375 * index) / -10000, 0),
       }}
+      style={{ backgroundColor }}
     />
   );
 }
@@ -46,32 +57,19 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Screen
-            x={this.state.x}
-            index={0}
-            backgroundColor="#ADD8C7"
-          />
-          <Screen
-            x={this.state.x}
-            index={1}
-            backgroundColor="#FBB829"
-          />
-          <Screen
-            x={this.state.x}
-            index={2}
-            backgroundColor="#FF9999"
-          />
+          <Screen scrollX={this.state.x} index={0} backgroundColor="#ADD8C7" />
+          <Screen scrollX={this.state.x} index={1} backgroundColor="#FBB829" />
+          <Screen scrollX={this.state.x} index={2} backgroundColor="#FF9999" />
           <Layer
-            properties={{
-              x: this.state.scrollX,
-              y: 0,
-              width: 375 * 3,
-              height: 667,
-            }}
+            frame={Rect(this.state.scrollX, 0, 375 * 3, 667)}
             draggable={true}
             draggableProperties={{
               constraintY: DragConstraint({ min: 0, max: 0 }),
-              constraintX: DragConstraint({ min: -375 * 2, max: 0, bounce: true }),
+              constraintX: DragConstraint({
+                min: -375 * 2,
+                max: 0,
+                bounce: true,
+              }),
               pageSize: 375,
             }}
             onDragEnd={this._onDragEnd}
