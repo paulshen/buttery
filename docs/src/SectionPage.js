@@ -51,7 +51,6 @@ function Nav() {
           View Controller Transition
         </StatusLink>
       </div>
-      <div><StatusLink to="/section/uber">Uber</StatusLink></div>
     </div>
   );
 }

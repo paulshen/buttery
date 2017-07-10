@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, SpringAnimator } from '../../proto';
+import { Layer, LayerTransitionChild, Rect, SpringAnimator } from '../../proto';
 
-function getProperties(i) {
+function getFrame(i) {
   return {
     x: 47.5 + 60 * (i % 5),
     y: 40 + 60 * Math.floor(i / 5),
     width: 40,
     height: 40,
-    backgroundColor: 'lightblue',
-    opacity: 1,
   };
 }
 
@@ -37,17 +35,21 @@ export default class Example extends React.Component {
     for (let i = 0; i < this.state.numEnd - this.state.numStart; i++) {
       layers.push(
         <LayerTransitionChild
-          enterProperties={{ ...getProperties(i), opacity: 0 }}
-          properties={getProperties(i)}
-          exitProperties={{ ...getProperties(i), opacity: 0 }}
+          frame={getFrame(i)}
+          enterProperties={{ opacity: 0 }}
+          properties={{ opacity: 1 }}
+          exitProperties={{ opacity: 0 }}
           animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
+          style={{
+            backgroundColor: 'lightblue',
+          }}
           key={this.state.numStart + i}
         />
       );
     }
 
     return (
-      <Layer properties={{ x: 0, y: 0, width: 375, height: 667 }}>
+      <Layer frame={Rect(0, 0, 375, 667)}>
         <button onClick={this._onClickAdd}>Add</button>
         <button onClick={this._onClickRemove}>Remove</button>
         <ReactTransitionGroup>

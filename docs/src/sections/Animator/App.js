@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { TimedAnimator, Layer, SpringAnimator } from '../../proto';
+import { TimedAnimator, Layer, Rect, SpringAnimator } from '../../proto';
 
-const MyProperties = [
-  { x: 100, y: 140, width: 60, height: 60, backgroundColor: '#1693A5', opacity: 1 },
-  { x: 100, y: 180, width: 80, height: 80, backgroundColor: '#1693A5', opacity: 0.8 },
-  { x: 100, y: 220, width: 100, height: 100, backgroundColor: '#1693A5', opacity: 0.6 },
+const MyFrames = [
+  Rect(100, 140, 60, 60),
+  Rect(100, 180, 80, 80),
+  Rect(100, 220, 100, 100),
 ];
 
 export default class Example extends React.Component {
@@ -14,10 +14,13 @@ export default class Example extends React.Component {
     animator: null,
   };
 
-  _onClick = (animatorType) => {
+  _onClick = animatorType => {
     this.setState({
-      index: (this.state.index + 1) % MyProperties.length,
-      animator: animatorType === 'spring' ? SpringAnimator() : TimedAnimator({ duration: 200 }),
+      index: (this.state.index + 1) % MyFrames.length,
+      animator:
+        animatorType === 'spring'
+          ? SpringAnimator()
+          : TimedAnimator({ duration: 200 }),
     });
   };
 
@@ -39,8 +42,12 @@ export default class Example extends React.Component {
           </div>
         </div>
         <Layer
-          properties={MyProperties[this.state.index]}
+          frame={MyFrames[this.state.index]}
+          properties={{ opacity: 1 - this.state.index * 0.2 }}
           animator={this.state.animator}
+          style={{
+            backgroundColor: '#1693A5',
+          }}
         />
       </div>
     );

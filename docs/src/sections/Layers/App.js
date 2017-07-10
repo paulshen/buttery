@@ -7,11 +7,13 @@ export default class Example extends React.Component {
     return (
       <div>
         <Layer
-          properties={{
+          frame={{
             x: 100,
             y: 140,
             width: 120,
             height: 80,
+          }}
+          style={{
             backgroundColor: '#1693A5',
             borderRadius: 4,
           }}

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Layer } from '../../proto';
+import { Layer, Rect } from '../../proto';
 
-const MyProperties = [
-  { x: 100, y: 140, width: 60, height: 60, backgroundColor: '#1693A5', opacity: 1 },
-  { x: 100, y: 180, width: 80, height: 80, backgroundColor: '#1693A5', opacity: 0.8 },
-  { x: 100, y: 220, width: 100, height: 100, backgroundColor: '#1693A5', opacity: 0.6 },
+const MyFrames = [
+  Rect(100, 140, 60, 60),
+  Rect(100, 180, 80, 80),
+  Rect(100, 220, 100, 100),
 ];
 
 export default class Example extends React.Component {
@@ -15,7 +15,7 @@ export default class Example extends React.Component {
 
   _onClick = () => {
     this.setState({
-      index: (this.state.index + 1) % MyProperties.length,
+      index: (this.state.index + 1) % MyFrames.length,
     });
   };
 
@@ -25,7 +25,13 @@ export default class Example extends React.Component {
         <div style={{ position: 'absolute' }}>
           <button onClick={this._onClick}>Toggle</button>
         </div>
-        <Layer properties={MyProperties[this.state.index]} />
+        <Layer
+          frame={MyFrames[this.state.index]}
+          properties={{ opacity: 1 - this.state.index * 0.2 }}
+          style={{
+            backgroundColor: '#1693A5',
+          }}
+        />
       </div>
     );
   }

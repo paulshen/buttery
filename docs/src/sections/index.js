@@ -8,7 +8,6 @@ import Manipulation from './Manipulation';
 import Scroll from './Scroll';
 import LayerTransitionChild from './LayerTransitionChild';
 import ViewControllerTransition from './ViewControllerTransition';
-import Uber from './Uber';
 
 export default {
   layers: Layers,
@@ -21,5 +20,4 @@ export default {
   scroll: Scroll,
   layertransitionchild: LayerTransitionChild,
   viewcontrollertransition: ViewControllerTransition,
-  uber: Uber,
 };
