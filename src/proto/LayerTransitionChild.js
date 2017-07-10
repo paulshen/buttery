@@ -5,9 +5,12 @@ import Layer from './Layer';
 
 export default class LayerTransitionChild extends React.Component {
   props: {
-    properties: AnimatedProperties,
-    enterProperties: AnimatedProperties,
-    exitProperties: AnimatedProperties,
+    frame: Rect,
+    enterFrame?: Rect,
+    exitFrame?: Rect,
+    properties?: AnimatedProperties,
+    enterProperties?: AnimatedProperties,
+    exitProperties?: AnimatedProperties,
     draggable?: boolean,
     animator?: Object,
     onEnter?: Function,
@@ -62,18 +65,22 @@ export default class LayerTransitionChild extends React.Component {
 
   render() {
     let { stage } = this.state;
-    let { enterProperties, properties, exitProperties, onEnter, onExit, draggable, ...props } = this.props;
+    let { enterFrame, frame, exitFrame, enterProperties, properties, exitProperties, onEnter, onExit, draggable, ...props } = this.props;
+    let f;
     let p;
     switch (stage) {
-    case 'entering':
-      p = enterProperties;
-      break;
     case 'show':
     case 'shown':
+      f = frame;
       p = properties;
       break;
+    case 'entering':
+      f = enterFrame || frame;
+      p = enterProperties || properties;
+      break;
     case 'exiting':
-      p = exitProperties;
+      f = exitFrame || frame;
+      p = exitProperties || properties;
       break;
     default:
       throw new Error('unexpected case');
@@ -84,6 +91,7 @@ export default class LayerTransitionChild extends React.Component {
     return (
       <Layer
         {...props}
+        frame={f}
         properties={p}
         draggable={draggable}
         onAnimationEnd={this._onAnimationEnd}
