@@ -1,6 +1,6 @@
 /* @flow */
 
-export function applyProperties(node: HTMLElement, properties: LayerProperties) {
+export function applyProperties(node: HTMLElement, properties: AnimatedProperties) {
   let transformString = `translate3d(${properties.x}px,${properties.y}px,0)`;
   if (typeof properties.rotation !== 'undefined') {
     transformString += ` rotate(${properties.rotation}deg)`;
@@ -31,7 +31,7 @@ export function applyProperties(node: HTMLElement, properties: LayerProperties) 
   }
 }
 
-export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
+export function arePropertiesSame(a: AnimatedProperties, b: AnimatedProperties) {
   return (
     a.x === b.x &&
     a.y === b.y &&
@@ -55,7 +55,7 @@ export function arePropertiesSame(a: LayerProperties, b: LayerProperties) {
 function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
-export function interpolateProperties(from: LayerProperties, to: LayerProperties, t: number): LayerProperties {
+export function interpolateProperties(from: AnimatedProperties, to: AnimatedProperties, t: number): AnimatedProperties {
   return ['x', 'y', 'width', 'height', 'opacity', 'rotation', 'scaleX', 'scaleY', 'scale', 'borderRadius', 'shadowX', 'shadowY', 'shadowBlur', 'shadowSpread'].reduce((hash, prop) => {
     if (from[prop] != null && to[prop] != null) {
       hash[prop] = interp(from[prop], to[prop], t);

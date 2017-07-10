@@ -17,7 +17,7 @@ export default class Draggable {
     pageSize?: number,
     onTouchEnd?: (p: Point) => void,
   };
-  layerProperties: LayerProperties;
+  layerProperties: AnimatedProperties;
   isControlledByDraggable = false;
 
   _layer: HTMLElement;

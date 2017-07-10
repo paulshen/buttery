@@ -15,7 +15,7 @@ type Vector = {
   y: number,
 };
 
-type LayerProperties = {
+type AnimatedProperties = {
   x: number,
   y: number,
   width: number,

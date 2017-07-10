@@ -1,5 +1,5 @@
 /* @flow */
-import { interpolateProperties } from '../LayerProperties';
+import { interpolateProperties } from '../AnimatedProperties';
 
 function getKey(props?: SpringAnimatorProps) {
   return `spring:${props && props.spring != null ? props.spring : '_'}:${props && props.friction != null ? props.friction : '_'}`;
@@ -19,11 +19,11 @@ class SpringAnimatorImpl {
   _friction: number;
 
   key: string;
-  _updater: (p: LayerProperties) => void;
+  _updater: (p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _start: number;
-  _from: LayerProperties;
-  _to: LayerProperties;
+  _from: AnimatedProperties;
+  _to: AnimatedProperties;
   _x: number;
   _v: number;
   _lastUpdate: number;
@@ -36,7 +36,7 @@ class SpringAnimatorImpl {
     this.key = getKey(props);
   }
 
-  start(from: LayerProperties, to: LayerProperties, updater: (p: LayerProperties) => void, onEnd: ?() => void) {
+  start(from: AnimatedProperties, to: AnimatedProperties, updater: (p: AnimatedProperties) => void, onEnd: ?() => void) {
     this._start = Date.now();
     this._from = { ...from };
     this._to = { ...to };

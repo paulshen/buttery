@@ -9,12 +9,12 @@ class App extends React.Component {
   state: {
     constraintY: DragConstraintType,
     scrollY: number,
-    transitionLayerProperties: ?LayerProperties,
+    transitionAnimatedProperties: ?AnimatedProperties,
     transitionExit: boolean,
   } = {
     constraintY: DragConstraint({ min: 587 - 2000, max: 0, bounce: true }),
     scrollY: 0,
-    transitionLayerProperties: null,
+    transitionAnimatedProperties: null,
     transitionExit: false,
   };
   _scrollLayer: Layer;
@@ -25,7 +25,7 @@ class App extends React.Component {
   };
 
   _onClick = () => {
-    if (this.state.transitionLayerProperties) {
+    if (this.state.transitionAnimatedProperties) {
       this.setState({
         transitionExit: true,
       });
@@ -35,14 +35,14 @@ class App extends React.Component {
       properties.x += scrollProperties.x;
       properties.y += scrollProperties.y;
       this.setState({
-        transitionLayerProperties: properties,
+        transitionAnimatedProperties: properties,
       });
     }
   };
 
   _onExit = () => {
     this.setState({
-      transitionLayerProperties: null,
+      transitionAnimatedProperties: null,
       transitionExit: false,
     });
   };
@@ -71,7 +71,7 @@ class App extends React.Component {
               style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
               <div>Hello!</div>
             </Layer>
-            {!this.state.transitionLayerProperties &&
+            {!this.state.transitionAnimatedProperties &&
               <Layer
                 properties={{ x: 0, y: 600, width: 375, height: 300 }}
                 style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
@@ -86,11 +86,11 @@ class App extends React.Component {
             />
           </Layer>
           <ReactTransitionGroup>
-            {this.state.transitionLayerProperties && !this.state.transitionExit &&
+            {this.state.transitionAnimatedProperties && !this.state.transitionExit &&
               <LayerTransitionChild
-                enterProperties={this.state.transitionLayerProperties}
-                properties={{ ...this.state.transitionLayerProperties, y: 0, height: 200 }}
-                exitProperties={this.state.transitionLayerProperties}
+                enterProperties={this.state.transitionAnimatedProperties}
+                properties={{ ...this.state.transitionAnimatedProperties, y: 0, height: 200 }}
+                exitProperties={this.state.transitionAnimatedProperties}
                 animator={SpringAnimator()}
                 style={{ backgroundImage: 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w1200/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)' }}
                 onClick={this._onClick}

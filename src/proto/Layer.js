@@ -1,12 +1,12 @@
 /* @flow */
 import React from 'react';
 
-import { applyProperties, arePropertiesSame } from './LayerProperties';
+import { applyProperties, arePropertiesSame } from './AnimatedProperties';
 import Draggable from './Draggable';
 
 export default class Layer extends React.Component {
   props: {
-    properties: LayerProperties,
+    properties: AnimatedProperties,
     animator?: Object,
     draggable?: boolean,
     draggableProperties?: $PropertyType<Draggable, 'props'>,
@@ -19,7 +19,7 @@ export default class Layer extends React.Component {
     onDragEnd?: (p: Point) => void,
   };
   _layer: HTMLElement;
-  _properties: LayerProperties;
+  _properties: AnimatedProperties;
   _animator: ?Object;
   _pointFromDraggable: ?Point;
   _draggable: ?Draggable;
@@ -60,7 +60,7 @@ export default class Layer extends React.Component {
   }
 
   _handlePropertiesChange = (
-    properties: LayerProperties,
+    properties: AnimatedProperties,
     animator: ?Object
   ) => {
     if (this._animator) {
@@ -100,7 +100,7 @@ export default class Layer extends React.Component {
     );
   };
 
-  _updater = (properties: LayerProperties) => {
+  _updater = (properties: AnimatedProperties) => {
     this._applyProperties(properties);
   };
 
@@ -116,7 +116,7 @@ export default class Layer extends React.Component {
     this.props && this.props.onDrag && this.props.onDrag(p);
   };
 
-  _applyProperties = (propertiesParam: LayerProperties) => {
+  _applyProperties = (propertiesParam: AnimatedProperties) => {
     let prevPosition = {
       x: this._properties.x,
       y: this._properties.y,
