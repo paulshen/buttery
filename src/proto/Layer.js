@@ -149,6 +149,8 @@ export default class Layer extends React.Component {
 
   shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {
     return (
+      nextProps.style ||
+      this.props.style ||
       React.Children.count(nextProps.children) > 0 ||
       React.Children.count(this.props.children) > 0
     );
