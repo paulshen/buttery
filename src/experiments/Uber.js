@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator } from '../proto';
+import { DragConstraint, Layer, SpringAnimator, Rect } from '../proto';
 
 function interpolate(x1, x2, y1, y2) {
   return function(input) {
@@ -55,73 +55,92 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <Layer properties={{
-            x: 0,
-            y: 0,
-            width: 375,
-            height: 667,
-            backgroundColor: 'skyblue',
-          }} />
-          <Layer properties={{
-            x: 0,
-            y: 0,
-            width: 375,
-            height: 667,
-            backgroundColor: '#000000',
-            opacity: (550 - this.state.y) / 300,
-          }} />
           <Layer
+            frame={Rect(0, 0, 375, 667)}
+            style={{
+              backgroundColor: 'skyblue',
+            }}
+          />
+          <Layer
+            frame={Rect(0, 0, 375, 667)}
             properties={{
-              x: 0,
-              y: this.state.scrollY,
-              width: 375,
-              height: 1200,
+              opacity: (550 - this.state.y) / 300,
+            }}
+            style={{
+              backgroundColor: '#000000',
+            }}
+          />
+          <Layer
+            frame={Rect(0, this.state.scrollY, 375, 1200)}
+            style={{
               backgroundColor: 'blue',
             }}
             animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
             draggable={true}
             draggableProperties={{
               constraintX: DragConstraint({ min: 0, max: 0 }),
-              constraintY: DragConstraint({ min: 667 - 1200, max: this.state.y < 100 ? 100 : 550, bounce: true }),
+              constraintY: DragConstraint({
+                min: 667 - 1200,
+                max: this.state.y < 100 ? 100 : 550,
+                bounce: true,
+              }),
               momentum: this.state.y < 100,
             }}
             onDragEnd={this._onDragEnd}
-            onMove={this._onMove}>
+            onMove={this._onMove}
+          >
             <Layer
-              properties={{
-                x: this.state.pageX,
-                y: 400,
-                width: 900,
-                height: 200,
-              }}
+              frame={Rect(this.state.pageX, 400, 900, 200)}
               draggable={true}
               draggableProperties={{
                 constraintY: DragConstraint({ min: 400, max: 400 }),
-                constraintX: DragConstraint({ min: 375 - 900, max: 0, bounce: true }),
+                constraintX: DragConstraint({
+                  min: 375 - 900,
+                  max: 0,
+                  bounce: true,
+                }),
                 pageSize: 300,
               }}
               onDragEnd={this._onPagerDragEnd}
             >
-              <Layer properties={{ x: 0, y: 0, width: 300, height: 200, backgroundColor: 'red' }} />
-              <Layer properties={{ x: 300, y: 0, width: 300, height: 200, backgroundColor: 'purple' }} />
-              <Layer properties={{ x: 600, y: 0, width: 300, height: 200, backgroundColor: 'yellow' }} />
+              <Layer
+                frame={Rect(0, 0, 300, 200)}
+                style={{ backgroundColor: 'red' }}
+              />
+              <Layer
+                frame={Rect(300, 0, 300, 200)}
+                style={{ backgroundColor: 'purple' }}
+              />
+              <Layer
+                frame={Rect(600, 0, 300, 200)}
+                style={{ backgroundColor: 'yellow' }}
+              />
             </Layer>
           </Layer>
-          <Layer properties={{
-            x: 0,
-            y: 0,
-            width: 375,
-            height: Math.max(Math.min(this.state.y, 100), 60),
-            backgroundColor: '#000000',
-            opacity: this.state.y <= 100 ? 1 : 0,
-          }} onClick={this._onHeaderClick} />
-          <Layer properties={{
-            x: interpolate(90, 60, 20, 40)(this.state.y),
-            y: this.state.y < 100 ? interpolate(90, 60, 50, 24)(this.state.y) : interpolate(400, 100, 140, 50)(this.state.y),
-            width: 375,
-            height: 50,
-            opacity: interpolate(400, 100, 0, 1)(this.state.y),
-          }} style={{ color: '#FFFFFF' }}>
+          <Layer
+            frame={Rect(0, 0, 375, Math.max(Math.min(this.state.y, 100), 60))}
+            properties={{
+              opacity: this.state.y <= 100 ? 1 : 0,
+            }}
+            style={{
+              backgroundColor: '#000000',
+            }}
+            onClick={this._onHeaderClick}
+          />
+          <Layer
+            frame={Rect(
+              interpolate(90, 60, 20, 40)(this.state.y),
+              this.state.y < 100
+                ? interpolate(90, 60, 50, 24)(this.state.y)
+                : interpolate(400, 100, 140, 50)(this.state.y),
+              375,
+              50
+            )}
+            properties={{
+              opacity: interpolate(400, 100, 0, 1)(this.state.y),
+            }}
+            style={{ color: '#FFFFFF' }}
+          >
             Messages
           </Layer>
         </div>

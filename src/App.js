@@ -1,5 +1,5 @@
 /* @flow */
-import App from './experiments/SideMenu';
+import App from './experiments/Uber';
 
 export default App;
 
