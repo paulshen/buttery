@@ -16,10 +16,6 @@ type Vector = {
 };
 
 type AnimatedProperties = {
-  x: number,
-  y: number,
-  width: number,
-  height: number,
   backgroundColor?: string,
   opacity?: number,
   rotation?: number,

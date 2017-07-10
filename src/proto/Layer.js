@@ -1,12 +1,13 @@
 /* @flow */
 import React from 'react';
 
-import { applyProperties, arePropertiesSame } from './AnimatedProperties';
+import { applyProperties, areFramesSame, arePropertiesSame } from './AnimatedProperties';
 import Draggable from './Draggable';
 
 export default class Layer extends React.Component {
   props: {
-    properties: AnimatedProperties,
+    frame: Rect,
+    properties?: AnimatedProperties,
     animator?: Object,
     draggable?: boolean,
     draggableProperties?: $PropertyType<Draggable, 'props'>,
@@ -19,31 +20,36 @@ export default class Layer extends React.Component {
     onDragEnd?: (p: Point) => void,
   };
   _layer: HTMLElement;
-  _properties: AnimatedProperties;
+  _frame: Rect;
+  _properties: ?AnimatedProperties;
   _animator: ?Object;
-  _pointFromDraggable: ?Point;
   _draggable: ?Draggable;
 
   constructor(props: $PropertyType<Layer, 'props'>) {
     super();
+    this._frame = { ...props.frame };
     this._properties = { ...props.properties };
   }
+
+  getFrame = () => ({
+    ...this._frame,
+  });
 
   getProperties = () => ({
     ...this._properties,
   });
 
   componentDidMount() {
-    this._applyProperties(this.props.properties);
+    this._apply(this.props.frame, this.props.properties);
     if (this.props.draggable) {
       this._createDraggable(this.props);
     }
   }
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
-    let { animator, properties, draggable } = nextProps;
-    if (!arePropertiesSame(properties, this.props.properties)) {
-      this._handlePropertiesChange(properties, animator);
+    let { animator, frame, properties, draggable } = nextProps;
+    if (!areFramesSame(frame, this.props.frame) || !arePropertiesSame(properties, this.props.properties)) {
+      this._handlePropertiesChange(frame, properties, animator);
     }
     if (draggable !== this.props.draggable) {
       if (draggable) {
@@ -55,12 +61,12 @@ export default class Layer extends React.Component {
     }
     if (this._draggable) {
       this._draggable.props = nextProps.draggableProperties;
-      this._draggable.layerProperties = properties;
     }
   }
 
   _handlePropertiesChange = (
-    properties: AnimatedProperties,
+    frame: Rect,
+    properties: ?AnimatedProperties,
     animator: ?Object
   ) => {
     if (this._animator) {
@@ -74,34 +80,30 @@ export default class Layer extends React.Component {
         nextAnimator = new animator.Klass(animator.props);
       }
       nextAnimator.start(
+        this._frame || this.props.frame,
         this._properties || this.props.properties,
+        frame,
         properties,
-        this._updater,
+        this._apply,
         this._onAnimationEnd
       );
       this._animator = nextAnimator;
     } else {
-      this._applyProperties(properties);
+      this._apply(frame, properties);
     }
   };
 
   _createDraggable = (props: $PropertyType<Layer, 'props'>) => {
-    let { properties, draggableProperties } = props;
-    this._pointFromDraggable = { x: properties.x, y: properties.y };
+    let { frame, draggableProperties } = props;
     this._draggable = new Draggable();
     this._draggable.props = draggableProperties;
-    this._draggable.layerProperties = properties;
     this._draggable.start(
       this._layer,
-      this._pointFromDraggable,
+      frame,
       this._onDragStart,
       this._dragUpdater,
       this._onDragEnd
     );
-  };
-
-  _updater = (properties: AnimatedProperties) => {
-    this._applyProperties(properties);
   };
 
   _onDragStart = () => {
@@ -111,34 +113,28 @@ export default class Layer extends React.Component {
   };
 
   _dragUpdater = (p: Point) => {
-    this._pointFromDraggable = p;
-    this._applyProperties(this.props.properties);
-    this.props && this.props.onDrag && this.props.onDrag(p);
+    if (this._draggable && this._draggable.isControlledByDraggable) {
+      this._apply({ ...this._frame, ...p }, this._properties);
+      this.props.onDrag && this.props.onDrag(p);
+    }
   };
 
-  _applyProperties = (propertiesParam: AnimatedProperties) => {
+  _apply = (frame: Rect, properties: ?AnimatedProperties) => {
     let prevPosition = {
-      x: this._properties.x,
-      y: this._properties.y,
+      x: this._frame.x,
+      y: this._frame.y,
     };
-    let properties = propertiesParam;
-    if (this._draggable) {
-      if (this._draggable.isControlledByDraggable) {
-        properties = {
-          ...properties,
-          ...this._pointFromDraggable,
-        };
-      } else {
-        this._draggable.setPoint({ x: properties.x, y: properties.y });
-      }
-    }
-    applyProperties(this._layer, properties);
+    applyProperties(this._layer, frame, properties);
+    this._frame = frame;
     this._properties = properties;
+    if (this._draggable && !this._draggable.isControlledByDraggable) {
+      this._draggable.setPoint(frame);
+    }
     if (
       this.props.onMove &&
-      (properties.x !== prevPosition.x || properties.y !== prevPosition.y)
+      (frame.x !== prevPosition.x || frame.y !== prevPosition.y)
     ) {
-      this.props.onMove(properties);
+      this.props.onMove(frame);
     }
   };
 
@@ -148,7 +144,7 @@ export default class Layer extends React.Component {
 
   _onDragEnd = (p: Point) => {
     this.props.onDragEnd && this.props.onDragEnd(p);
-    this._handlePropertiesChange(this.props.properties, this.props.animator);
+    this._handlePropertiesChange(this.props.frame, this.props.properties, this.props.animator);
   };
 
   shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {

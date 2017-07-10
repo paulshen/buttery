@@ -1,5 +1,5 @@
 /* @flow */
-import { interpolateProperties } from '../AnimatedProperties';
+import { interpolateFrame, interpolateProperties } from '../AnimatedProperties';
 
 function getKey(props: TimedAnimatorProps) {
   return `timed:${props.duration}`;
@@ -16,12 +16,14 @@ export default function TimedAnimator(props: TimedAnimatorProps) {
 
 class TimedAnimatorImpl {
   key: string;
-  _updater: (p: AnimatedProperties) => void;
+  _updater: (f: Rect, p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _duration: number;
   _start: number;
-  _from: AnimatedProperties;
-  _to: AnimatedProperties;
+  _fromFrame: Rect;
+  _fromProperties: AnimatedProperties;
+  _toFrame: Rect;
+  _toProperties: AnimatedProperties;
   _raf: number;
 
   constructor(props: TimedAnimatorProps) {
@@ -29,10 +31,12 @@ class TimedAnimatorImpl {
     this.key = getKey(props);
   }
 
-  start(from: AnimatedProperties, to: AnimatedProperties, updater: (p: AnimatedProperties) => void, onEnd: ?() => void) {
+  start(fromFrame: Rect, fromProperties: AnimatedProperties, toFrame: Rect, toProperties: ?AnimatedProperties, updater: (f: Rect, p: AnimatedProperties) => void, onEnd: ?() => void) {
     this._start = Date.now();
-    this._from = { ...from };
-    this._to = { ...to };
+    this._fromFrame = { ...fromFrame };
+    this._fromProperties = { ...fromProperties };
+    this._toFrame = { ...toFrame };
+    this._toProperties = { ...toProperties };
     this._updater = updater;
     this._onEnd = onEnd;
     this._tick();
@@ -45,7 +49,10 @@ class TimedAnimatorImpl {
   _tick = () => {
     let now = Date.now();
     let t = Math.min((now - this._start) / this._duration, 1);
-    this._updater(interpolateProperties(this._from, this._to, t));
+    this._updater(
+      interpolateFrame(this._fromFrame, this._toFrame, t),
+      interpolateProperties(this._fromProperties, this._toProperties, t)
+    );
     if (t < 1) {
       this._raf = window.requestAnimationFrame(this._tick);
     } else {

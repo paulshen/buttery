@@ -1,5 +1,5 @@
 /* @flow */
-import { interpolateProperties } from '../AnimatedProperties';
+import { interpolateFrame, interpolateProperties } from '../AnimatedProperties';
 
 function getKey(props?: SpringAnimatorProps) {
   return `spring:${props && props.spring != null ? props.spring : '_'}:${props && props.friction != null ? props.friction : '_'}`;
@@ -19,11 +19,13 @@ class SpringAnimatorImpl {
   _friction: number;
 
   key: string;
-  _updater: (p: AnimatedProperties) => void;
+  _updater: (f: Rect, p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _start: number;
-  _from: AnimatedProperties;
-  _to: AnimatedProperties;
+  _fromFrame: Rect;
+  _fromProperties: AnimatedProperties;
+  _toFrame: Rect;
+  _toProperties: AnimatedProperties;
   _x: number;
   _v: number;
   _lastUpdate: number;
@@ -36,10 +38,12 @@ class SpringAnimatorImpl {
     this.key = getKey(props);
   }
 
-  start(from: AnimatedProperties, to: AnimatedProperties, updater: (p: AnimatedProperties) => void, onEnd: ?() => void) {
+  start(fromFrame: Rect, fromProperties: AnimatedProperties, toFrame: Rect, toProperties: ?AnimatedProperties, updater: (f: Rect, p: AnimatedProperties) => void, onEnd: ?() => void) {
     this._start = Date.now();
-    this._from = { ...from };
-    this._to = { ...to };
+    this._fromFrame = { ...fromFrame };
+    this._fromProperties = { ...fromProperties };
+    this._toFrame = { ...toFrame };
+    this._toProperties = { ...toProperties };
     this._x = 0;
     this._v = 0;
     this._updater = updater;
@@ -59,7 +63,10 @@ class SpringAnimatorImpl {
       this._v -= ((this._x - 1) * this._spring + this._friction * this._v) * dt;
     }
     this._x += this._v * dt;
-    this._updater(interpolateProperties(this._from, this._to, this._x));
+    this._updater(
+      interpolateFrame(this._fromFrame, this._toFrame, this._x),
+      interpolateProperties(this._fromProperties, this._toProperties, this._x)
+    );
     if (Math.abs(this._x - 1) < 0.00001 && Math.abs(this._v) < 0.00001) {
       this._onEnd && this._onEnd();
     } else {

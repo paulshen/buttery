@@ -17,7 +17,6 @@ export default class Draggable {
     pageSize?: number,
     onTouchEnd?: (p: Point) => void,
   };
-  layerProperties: AnimatedProperties;
   isControlledByDraggable = false;
 
   _layer: HTMLElement;
@@ -33,7 +32,7 @@ export default class Draggable {
 
   start(layer: HTMLElement, initialPoint: Point, onDragStart: ?() => void, updater: (p: Point) => void, onDragEnd: ?(p: Point) => void) {
     this._layer = layer;
-    this._p = initialPoint;
+    this._p = { ...initialPoint };
     this._onDragStart = onDragStart;
     this._layerUpdater = updater;
     this._onDragEnd = onDragEnd;
@@ -46,7 +45,7 @@ export default class Draggable {
   }
 
   setPoint(p: Point) {
-    this._p = p;
+    this._p = { ...p };
   }
 
   stop() {

@@ -30,8 +30,8 @@ class App extends React.Component {
         transitionExit: true,
       });
     } else {
-      let properties = this._transitionLayer.getProperties();
-      let scrollProperties = this._scrollLayer.getProperties();
+      let properties = this._transitionLayer.getFrame();
+      let scrollProperties = this._scrollLayer.getFrame();
       properties.x += scrollProperties.x;
       properties.y += scrollProperties.y;
       this.setState({
