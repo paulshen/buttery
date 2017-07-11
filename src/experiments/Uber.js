@@ -10,21 +10,97 @@ function interpolate(x1, x2, y1, y2) {
   };
 }
 
-class App extends React.Component {
+function Header({ y, onClick }) {
+  return (
+    <Layer
+      frame={Rect(0, 0, 375, Math.max(y, 60))}
+      properties={{
+        backgroundColor: '#000000',
+        opacity: interpolate(400, 100, 0, 1)(y),
+        pointerEvents: y < 549 ? 'auto' : 'none',
+      }}
+      onClick={onClick}
+    >
+      <Layer
+        frame={Rect(
+          interpolate(90, 60, 20, 40)(y),
+          y < 100
+            ? interpolate(90, 60, 50, 24)(y)
+            : interpolate(400, 100, 140, 50)(y),
+          375,
+          50
+        )}
+        properties={{
+          color: '#FFFFFF',
+        }}
+      >
+        Messages
+      </Layer>
+    </Layer>
+  );
+}
+
+function PagerPage({ index, color }) {
+  return (
+    <Layer
+      frame={Rect(index * 300, 0, 300, 200)}
+      properties={{ backgroundColor: color }}
+    />
+  );
+}
+
+class Pager extends React.Component {
   state = {
-    y: 550,
-    scrollY: 550,
     pageX: 0,
   };
 
   _onDragEnd = (p: Point) => {
-    let targetOpen;
-    if (p.y < 50) {
+    this.setState({
+      pageX: p.x,
+    });
+  };
+
+  render() {
+    return (
+      <Layer
+        frame={Rect(this.state.pageX, 400, 900, 200)}
+        draggable={true}
+        draggableProperties={{
+          constraintY: DragConstraint({ min: 400, max: 400 }),
+          constraintX: DragConstraint({
+            min: 375 - 900,
+            max: 0,
+            bounce: true,
+          }),
+          pageSize: 300,
+        }}
+        onDragEnd={this._onDragEnd}
+      >
+        <PagerPage index={0} color="red" />
+        <PagerPage index={1} color="purple" />
+        <PagerPage index={2} color="yellow" />
+      </Layer>
+    );
+  }
+}
+
+class App extends React.Component {
+  state = {
+    y: 550,
+    scrollY: 550,
+  };
+
+  _onDragEnd = (p: Point) => {
+    let wasTargetOpen = this.state.scrollY <= 100;
+    let targetOpen = wasTargetOpen;
+    if (p.y < 100) {
       targetOpen = true;
-    } else if (p.y > 500) {
+    } else if (p.y > 450) {
       targetOpen = false;
-    } else {
-      targetOpen = this.state.scrollY > 100;
+    } else if (wasTargetOpen && p.y > 100 + 100) {
+      targetOpen = false;
+    } else if (!wasTargetOpen && p.y < 450 - 20) {
+      targetOpen = true;
     }
     this.setState({
       scrollY: targetOpen ? Math.min(100, p.y) : 550,
@@ -45,12 +121,6 @@ class App extends React.Component {
     }
   };
 
-  _onPagerDragEnd = (p: Point) => {
-    this.setState({
-      pageX: p.x,
-    });
-  };
-
   render() {
     return (
       <div style={Styles.Root}>
@@ -59,13 +129,6 @@ class App extends React.Component {
             frame={Rect(0, 0, 375, 667)}
             properties={{
               backgroundColor: 'skyblue',
-            }}
-          />
-          <Layer
-            frame={Rect(0, 0, 375, 667)}
-            properties={{
-              backgroundColor: '#000000',
-              opacity: (550 - this.state.y) / 300,
             }}
           />
           <Layer
@@ -87,58 +150,9 @@ class App extends React.Component {
             onDragEnd={this._onDragEnd}
             onMove={this._onMove}
           >
-            <Layer
-              frame={Rect(this.state.pageX, 400, 900, 200)}
-              draggable={true}
-              draggableProperties={{
-                constraintY: DragConstraint({ min: 400, max: 400 }),
-                constraintX: DragConstraint({
-                  min: 375 - 900,
-                  max: 0,
-                  bounce: true,
-                }),
-                pageSize: 300,
-              }}
-              onDragEnd={this._onPagerDragEnd}
-            >
-              <Layer
-                frame={Rect(0, 0, 300, 200)}
-                properties={{ backgroundColor: 'red' }}
-              />
-              <Layer
-                frame={Rect(300, 0, 300, 200)}
-                properties={{ backgroundColor: 'purple' }}
-              />
-              <Layer
-                frame={Rect(600, 0, 300, 200)}
-                properties={{ backgroundColor: 'yellow' }}
-              />
-            </Layer>
+            <Pager />
           </Layer>
-          <Layer
-            frame={Rect(0, 0, 375, Math.max(Math.min(this.state.y, 100), 60))}
-            properties={{
-              backgroundColor: '#000000',
-              opacity: this.state.y <= 100 ? 1 : 0,
-            }}
-            onClick={this._onHeaderClick}
-          />
-          <Layer
-            frame={Rect(
-              interpolate(90, 60, 20, 40)(this.state.y),
-              this.state.y < 100
-                ? interpolate(90, 60, 50, 24)(this.state.y)
-                : interpolate(400, 100, 140, 50)(this.state.y),
-              375,
-              50
-            )}
-            properties={{
-              color: '#FFFFFF',
-              opacity: interpolate(400, 100, 0, 1)(this.state.y),
-            }}
-          >
-            Messages
-          </Layer>
+          <Header y={this.state.y} onClick={this._onHeaderClick} />
         </div>
       </div>
     );
