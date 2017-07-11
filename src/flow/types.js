@@ -3,7 +3,17 @@ type Point = {
   y: number,
 };
 
+type DragValue = { value: number };
+type NumberOrDragValue = number | DragValue;
+
 type Frame = {
+  x: NumberOrDragValue,
+  y: NumberOrDragValue,
+  width: number,
+  height: number,
+};
+
+type ComputedFrame = {
   x: number,
   y: number,
   width: number,

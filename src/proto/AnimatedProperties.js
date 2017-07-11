@@ -4,7 +4,7 @@ import CSSPropertyOperations from 'react-dom/lib/CSSPropertyOperations';
 
 export function applyProperties(
   node: HTMLElement,
-  frame: Frame,
+  frame: ComputedFrame,
   properties: ?AnimatedProperties
 ) {
   let {
@@ -47,7 +47,17 @@ export function applyProperties(
   });
 }
 
-export function areFramesSame(a: Frame, b: Frame) {
+function arePointValuesSame(a: NumberOrDragValue, b: NumberOrDragValue) {
+  if (typeof a === 'number' && typeof b === 'number') {
+    return a === b;
+  }
+  if (typeof a === 'object' && typeof b === 'object') {
+    return a.value === b.value;
+  }
+  return false;
+}
+
+export function areFramesSame(a: ComputedFrame, b: ComputedFrame) {
   return (
     a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
   );
@@ -79,7 +89,11 @@ export function arePropertiesSame(
 function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
-export function interpolateFrame(from: Frame, to: Frame, t: number): Frame {
+export function interpolateFrame(
+  from: ComputedFrame,
+  to: ComputedFrame,
+  t: number
+): ComputedFrame {
   return ['x', 'y', 'width', 'height'].reduce(
     (hash, prop) => {
       if (from[prop] != null && to[prop] != null) {

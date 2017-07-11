@@ -16,13 +16,13 @@ export default function TimedAnimator(props: TimedAnimatorProps) {
 
 class TimedAnimatorImpl {
   key: string;
-  _updater: (f: Frame, p: AnimatedProperties) => void;
+  _updater: (f: ComputedFrame, p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _duration: number;
   _start: number;
-  _fromFrame: Frame;
+  _fromFrame: ComputedFrame;
   _fromProperties: AnimatedProperties;
-  _toFrame: Frame;
+  _toFrame: ComputedFrame;
   _toProperties: AnimatedProperties;
   _raf: number;
 
@@ -31,7 +31,14 @@ class TimedAnimatorImpl {
     this.key = getKey(props);
   }
 
-  start(fromFrame: Frame, fromProperties: AnimatedProperties, toFrame: Frame, toProperties: ?AnimatedProperties, updater: (f: Frame, p: AnimatedProperties) => void, onEnd: ?() => void) {
+  start(
+    fromFrame: ComputedFrame,
+    fromProperties: AnimatedProperties,
+    toFrame: ComputedFrame,
+    toProperties: ?AnimatedProperties,
+    updater: (f: ComputedFrame, p: AnimatedProperties) => void,
+    onEnd: ?() => void
+  ) {
     this._start = Date.now();
     this._fromFrame = { ...fromFrame };
     this._fromProperties = { ...fromProperties };

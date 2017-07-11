@@ -48,6 +48,10 @@ export default class Draggable {
     this._p = { ...p };
   }
 
+  getPoint(): Point {
+    return this._p;
+  }
+
   stop() {
     this.isControlledByDraggable = false;
     if (this._motion) {

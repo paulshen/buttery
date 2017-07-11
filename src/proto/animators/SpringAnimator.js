@@ -2,7 +2,9 @@
 import { interpolateFrame, interpolateProperties } from '../AnimatedProperties';
 
 function getKey(props?: SpringAnimatorProps) {
-  return `spring:${props && props.spring != null ? props.spring : '_'}:${props && props.friction != null ? props.friction : '_'}`;
+  return `spring:${props && props.spring != null
+    ? props.spring
+    : '_'}:${props && props.friction != null ? props.friction : '_'}`;
 }
 
 type SpringAnimatorProps = { spring?: number, friction?: number };
@@ -19,12 +21,12 @@ class SpringAnimatorImpl {
   _friction: number;
 
   key: string;
-  _updater: (f: Frame, p: AnimatedProperties) => void;
+  _updater: (f: ComputedFrame, p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _start: number;
-  _fromFrame: Frame;
+  _fromFrame: ComputedFrame;
   _fromProperties: AnimatedProperties;
-  _toFrame: Frame;
+  _toFrame: ComputedFrame;
   _toProperties: AnimatedProperties;
   _x: number;
   _v: number;
@@ -38,7 +40,14 @@ class SpringAnimatorImpl {
     this.key = getKey(props);
   }
 
-  start(fromFrame: Frame, fromProperties: AnimatedProperties, toFrame: Frame, toProperties: ?AnimatedProperties, updater: (f: Frame, p: AnimatedProperties) => void, onEnd: ?() => void) {
+  start(
+    fromFrame: ComputedFrame,
+    fromProperties: AnimatedProperties,
+    toFrame: ComputedFrame,
+    toProperties: ?AnimatedProperties,
+    updater: (f: ComputedFrame, p: AnimatedProperties) => void,
+    onEnd: ?() => void
+  ) {
     this._start = Date.now();
     this._fromFrame = { ...fromFrame };
     this._fromProperties = { ...fromProperties };
