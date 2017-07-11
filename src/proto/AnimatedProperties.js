@@ -1,6 +1,6 @@
 /* @flow */
 
-export function applyProperties(node: HTMLElement, frame: Rect, properties: ?AnimatedProperties) {
+export function applyProperties(node: HTMLElement, frame: Frame, properties: ?AnimatedProperties) {
   let transformString = `translate3d(${frame.x}px,${frame.y}px,0)`;
   if (properties) {
     if (typeof properties.rotation !== 'undefined') {
@@ -35,7 +35,7 @@ export function applyProperties(node: HTMLElement, frame: Rect, properties: ?Ani
   }
 }
 
-export function areFramesSame(a: Rect, b: Rect) {
+export function areFramesSame(a: Frame, b: Frame) {
   return (
     a.x === b.x &&
     a.y === b.y &&
@@ -69,7 +69,7 @@ export function arePropertiesSame(a: ?AnimatedProperties, b: ?AnimatedProperties
 function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
-export function interpolateFrame(from: Rect, to: Rect, t: number): Rect {
+export function interpolateFrame(from: Frame, to: Frame, t: number): Frame {
   return ['x', 'y', 'width', 'height'].reduce((hash, prop) => {
     if (from[prop] != null && to[prop] != null) {
       hash[prop] = interp(from[prop], to[prop], t);

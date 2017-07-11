@@ -19,12 +19,12 @@ class SpringAnimatorImpl {
   _friction: number;
 
   key: string;
-  _updater: (f: Rect, p: AnimatedProperties) => void;
+  _updater: (f: Frame, p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _start: number;
-  _fromFrame: Rect;
+  _fromFrame: Frame;
   _fromProperties: AnimatedProperties;
-  _toFrame: Rect;
+  _toFrame: Frame;
   _toProperties: AnimatedProperties;
   _x: number;
   _v: number;
@@ -38,7 +38,7 @@ class SpringAnimatorImpl {
     this.key = getKey(props);
   }
 
-  start(fromFrame: Rect, fromProperties: AnimatedProperties, toFrame: Rect, toProperties: ?AnimatedProperties, updater: (f: Rect, p: AnimatedProperties) => void, onEnd: ?() => void) {
+  start(fromFrame: Frame, fromProperties: AnimatedProperties, toFrame: Frame, toProperties: ?AnimatedProperties, updater: (f: Frame, p: AnimatedProperties) => void, onEnd: ?() => void) {
     this._start = Date.now();
     this._fromFrame = { ...fromFrame };
     this._fromProperties = { ...fromProperties };

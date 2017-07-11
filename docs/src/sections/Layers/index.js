@@ -34,7 +34,7 @@ export default {
       </Section>
       <Header>LayerProperties</Header>
       <DescriptionCode>
-        {`type Rect = {
+        {`type Frame = {
   x: number,
   y: number,
   width: number,

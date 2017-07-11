@@ -6,7 +6,7 @@ import Draggable from './Draggable';
 
 export default class Layer extends React.Component {
   props: {
-    frame: Rect,
+    frame: Frame,
     properties?: AnimatedProperties,
     animator?: Object,
     draggable?: boolean,
@@ -20,7 +20,7 @@ export default class Layer extends React.Component {
     onDragEnd?: (p: Point) => void,
   };
   _layer: HTMLElement;
-  _frame: Rect;
+  _frame: Frame;
   _properties: ?AnimatedProperties;
   _animator: ?Object;
   _draggable: ?Draggable;
@@ -65,7 +65,7 @@ export default class Layer extends React.Component {
   }
 
   _handlePropertiesChange = (
-    frame: Rect,
+    frame: Frame,
     properties: ?AnimatedProperties,
     animator: ?Object
   ) => {
@@ -119,7 +119,7 @@ export default class Layer extends React.Component {
     }
   };
 
-  _apply = (frame: Rect, properties: ?AnimatedProperties) => {
+  _apply = (frame: Frame, properties: ?AnimatedProperties) => {
     let prevPosition = {
       x: this._frame.x,
       y: this._frame.y,

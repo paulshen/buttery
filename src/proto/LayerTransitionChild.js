@@ -5,9 +5,9 @@ import Layer from './Layer';
 
 export default class LayerTransitionChild extends React.Component {
   props: {
-    frame: Rect,
-    enterFrame?: Rect,
-    exitFrame?: Rect,
+    frame: Frame,
+    enterFrame?: Frame,
+    exitFrame?: Frame,
     properties?: AnimatedProperties,
     enterProperties?: AnimatedProperties,
     exitProperties?: AnimatedProperties,

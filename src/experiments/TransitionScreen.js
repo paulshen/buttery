@@ -15,7 +15,7 @@ class App extends React.Component {
   state: {
     constraintY: DragConstraintType,
     scrollY: number,
-    transitionAnimatedFrame: ?AnimatedProperties,
+    transitionAnimatedFrame: ?Frame,
     transitionExit: boolean,
   } = {
     constraintY: DragConstraint({ min: 587 - 2000, max: 0, bounce: true }),

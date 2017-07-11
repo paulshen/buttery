@@ -3,7 +3,7 @@ type Point = {
   y: number,
 };
 
-type Rect = {
+type Frame = {
   x: number,
   y: number,
   width: number,
