@@ -33,7 +33,7 @@ export default class Example extends React.Component {
           draggable={true}
           onMove={this._onMove}
           onDragEnd={this._onDragEnd}
-          style={{
+          properties={{
             backgroundColor: '#1693A5',
           }}
         />

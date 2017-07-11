@@ -16,7 +16,7 @@ export default class Example extends React.Component {
     return (
       <Layer
         frame={Rect(50, (667 - 275) / 2, 275, 275)}
-        style={{
+        properties={{
           backgroundColor: '#c3f0f7',
         }}>
         <Layer
@@ -28,7 +28,7 @@ export default class Example extends React.Component {
             momentum: true,
           }}
           onDragEnd={this._onDragEnd}
-          style={{
+          properties={{
             backgroundColor: '#1693A5',
           }}
         />

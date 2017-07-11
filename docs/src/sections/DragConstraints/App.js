@@ -15,7 +15,7 @@ export default class Example extends React.Component {
     return (
       <Layer
         frame={Rect(50, 200, 275, 80)}
-        style={{
+        properties={{
           backgroundColor: '#c3f0f7',
         }}>
         <Layer
@@ -26,7 +26,7 @@ export default class Example extends React.Component {
             constraintY: DragConstraint({ min: 0, max: 0 }),
           }}
           onDragEnd={this._onDragEnd}
-          style={{
+          properties={{
             backgroundColor: '#1693A5',
           }}
         />

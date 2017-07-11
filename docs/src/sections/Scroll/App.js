@@ -13,7 +13,7 @@ export default class Example extends React.Component {
 
   render() {
     return (
-      <Layer frame={Rect(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
+      <Layer frame={Rect(0, 0, 375, 667)} properties={{ overflow: 'hidden' }}>
         <Layer
           frame={Rect(0, this.state.y, 375, 2000)}
           draggable={true}
@@ -27,7 +27,7 @@ export default class Example extends React.Component {
             momentum: true,
           }}
           onDragEnd={this._onDragEnd}
-          style={{
+          properties={{
             backgroundImage:
               'linear-gradient(to bottom, #a8f3f7 0%, #1e5799 100%)',
           }}

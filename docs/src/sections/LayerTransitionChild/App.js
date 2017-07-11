@@ -36,13 +36,19 @@ export default class Example extends React.Component {
       layers.push(
         <LayerTransitionChild
           frame={getFrame(i)}
-          enterProperties={{ opacity: 0 }}
-          properties={{ opacity: 1 }}
-          exitProperties={{ opacity: 0 }}
-          animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
-          style={{
+          enterProperties={{
             backgroundColor: 'lightblue',
+            opacity: 0,
           }}
+          properties={{
+            backgroundColor: 'lightblue',
+            opacity: 1,
+          }}
+          exitProperties={{
+            backgroundColor: 'lightblue',
+            opacity: 0,
+          }}
+          animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
           key={this.state.numStart + i}
         />
       );

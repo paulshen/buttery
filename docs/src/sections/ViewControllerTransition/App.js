@@ -27,7 +27,7 @@ export default class App extends React.Component {
       <Layer frame={Rect(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
         <Layer
           frame={Rect(0, 0, 375, 667)}
-          style={{
+          properties={{
             backgroundColor: '#f0f0f0',
           }}
           onClick={this._showScreen}
@@ -41,7 +41,7 @@ export default class App extends React.Component {
               animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
               onClick={this._hideScreen}
               key={this.state.screenIndex}
-              style={{
+              properties={{
                 backgroundColor: '#d0d0d0',
               }}
             />}

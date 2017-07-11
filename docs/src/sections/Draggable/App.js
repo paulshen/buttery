@@ -9,7 +9,7 @@ export default class Example extends React.Component {
         <Layer
           frame={Rect(100, 140, 80, 80)}
           draggable={true}
-          style={{
+          properties={{
             backgroundColor: '#1693A5',
           }}
         />

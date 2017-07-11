@@ -43,11 +43,11 @@ export default class Example extends React.Component {
         </div>
         <Layer
           frame={MyFrames[this.state.index]}
-          properties={{ opacity: 1 - this.state.index * 0.2 }}
-          animator={this.state.animator}
-          style={{
+          properties={{
             backgroundColor: '#1693A5',
+            opacity: 1 - this.state.index * 0.2,
           }}
+          animator={this.state.animator}
         />
       </div>
     );
