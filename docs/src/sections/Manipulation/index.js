@@ -1,5 +1,10 @@
 import React from 'react';
-import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
+import {
+  Section,
+  Paragraph,
+  InlineCode,
+  Header
+} from '../../components/Description';
 import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
@@ -7,19 +12,26 @@ import App from './App';
 
 export default {
   name: 'Manipulation',
-  description: () => (
+  description: () =>
     <div>
       <Section>
-        <Paragraph>Layers can be updated just like any other React component. No surprises here!</Paragraph>
-        <Paragraph>For performance, Wasabi does a deep equality test on <InlineCode>LayerProperties</InlineCode> to determine whether to update the layer.</Paragraph>
+        <Paragraph>
+          Layers can be updated just like any other React component. No
+          surprises here!
+        </Paragraph>
+        <Paragraph>
+          For performance, Wasabi does a deep equality test on{' '}
+          <InlineCode>LayerProperties</InlineCode> to determine whether to
+          update the layer.
+        </Paragraph>
       </Section>
       <DescriptionCode>
-{`<Layer
+        {`<Layer
+  frame={MyFrames[this.state.index]}
   properties={MyProperties[this.state.index]}
 />`}
       </DescriptionCode>
-    </div>
-  ),
+    </div>,
   App,
   Source,
 };
