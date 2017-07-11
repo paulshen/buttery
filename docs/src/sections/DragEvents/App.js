@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layer, Rect } from '../../proto';
+import { Layer, Rect, Drag } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
@@ -29,8 +29,7 @@ export default class Example extends React.Component {
           {this.state.lastEventMessage}
         </div>
         <Layer
-          frame={Rect(this.state.x, this.state.y, 80, 80)}
-          draggable={true}
+          frame={Rect(Drag(this.state.x), Drag(this.state.y), 80, 80)}
           onMove={this._onMove}
           onDragEnd={this._onDragEnd}
           properties={{
