@@ -38,19 +38,19 @@ class App extends React.Component {
           >
             <Layer
               frame={Rect(0, 0, 375, 667)}
-              style={{
+              properties={{
                 backgroundColor: `rgb(220,220,${colorValue})`,
               }}
             />
             <Layer
               frame={Rect(375, 0, 375, 667)}
-              style={{
+              properties={{
                 backgroundColor: `rgb(220,${colorValue},220)`,
               }}
             />
             <Layer
               frame={Rect(750, 0, 375, 667)}
-              style={{
+              properties={{
                 backgroundColor: `rgb(${colorValue},220,220)`,
               }}
             />

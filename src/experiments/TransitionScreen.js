@@ -73,13 +73,13 @@ class App extends React.Component {
           >
             <Layer
               frame={Rect(0, 0, 375, 300)}
-              style={{
+              properties={{
                 backgroundColor: `rgb(255,153,153)`,
               }}
             />
             <Layer
               frame={Rect(0, 300, 375, 300)}
-              style={{
+              properties={{
                 alignItems: 'center',
                 backgroundColor: `rgb(200,153,153)`,
                 display: 'flex',
@@ -91,7 +91,7 @@ class App extends React.Component {
             {!this.state.transitionAnimatedFrame &&
               <Layer
                 frame={Rect(0, 600, 375, 300)}
-                style={{
+                properties={{
                   backgroundColor: 'blue',
                 }}
                 onClick={this._onClick}
@@ -99,13 +99,13 @@ class App extends React.Component {
               />}
             <Layer
               frame={Rect(0, 900, 375, 300)}
-              style={{
+              properties={{
                 backgroundColor: `rgb(153,153,200)`,
               }}
             />
             <Layer
               frame={Rect(0, 1200, 375, 300)}
-              style={{
+              properties={{
                 backgroundColor: `rgb(153,200,153)`,
               }}
             />
@@ -121,10 +121,10 @@ class App extends React.Component {
                   height: 200,
                 }}
                 exitFrame={this.state.transitionAnimatedFrame}
-                animator={SpringAnimator()}
-                style={{
+                properties={{
                   backgroundColor: 'red',
                 }}
+                animator={SpringAnimator()}
                 onClick={this._onClick}
                 onExit={this._onExit}
               />}

@@ -6,9 +6,9 @@ import ReactTransitionGroup from 'react-addons-transition-group';
 import { Layer, LayerTransitionChild, SpringAnimator } from '../proto';
 
 const Steps = [
-  { width: 10, height: 10, x: 100, y: 100, opacity: 0 },
-  { width: 10, height: 12, x: 110, y: 90, opacity: 1 },
-  { width: 10, height: 10, x: 90, y: 180, opacity: 0 },
+  { width: 10, height: 10, x: 100, y: 100, opacity: 0, backgroundColor: '#438DED' },
+  { width: 10, height: 12, x: 110, y: 90, opacity: 1, backgroundColor: '#438DED' },
+  { width: 10, height: 10, x: 90, y: 180, opacity: 0, backgroundColor: '#438DED' },
 ];
 
 class App extends React.Component {
@@ -46,9 +46,6 @@ class App extends React.Component {
           properties={Steps[1]}
           exitProperties={Steps[2]}
           animator={SpringAnimator()}
-          style={{
-            backgroundColor: '#438DED',
-          }}
           key={i}
         />
       );
@@ -67,7 +64,7 @@ class App extends React.Component {
               x: 200,
               y: 500,
             }}
-            style={{
+            properties={{
               backgroundColor: '#97B2C9',
             }}
             onClick={this._onAddClick}
@@ -79,7 +76,7 @@ class App extends React.Component {
               x: 300,
               y: 500,
             }}
-            style={{
+            properties={{
               backgroundColor: '#97B2C9',
             }}
             onClick={this._onSubtractClick}

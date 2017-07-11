@@ -57,22 +57,20 @@ class App extends React.Component {
         <div style={Styles.Chrome}>
           <Layer
             frame={Rect(0, 0, 375, 667)}
-            style={{
+            properties={{
               backgroundColor: 'skyblue',
             }}
           />
           <Layer
             frame={Rect(0, 0, 375, 667)}
             properties={{
-              opacity: (550 - this.state.y) / 300,
-            }}
-            style={{
               backgroundColor: '#000000',
+              opacity: (550 - this.state.y) / 300,
             }}
           />
           <Layer
             frame={Rect(0, this.state.scrollY, 375, 1200)}
-            style={{
+            properties={{
               backgroundColor: 'blue',
             }}
             animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
@@ -105,25 +103,23 @@ class App extends React.Component {
             >
               <Layer
                 frame={Rect(0, 0, 300, 200)}
-                style={{ backgroundColor: 'red' }}
+                properties={{ backgroundColor: 'red' }}
               />
               <Layer
                 frame={Rect(300, 0, 300, 200)}
-                style={{ backgroundColor: 'purple' }}
+                properties={{ backgroundColor: 'purple' }}
               />
               <Layer
                 frame={Rect(600, 0, 300, 200)}
-                style={{ backgroundColor: 'yellow' }}
+                properties={{ backgroundColor: 'yellow' }}
               />
             </Layer>
           </Layer>
           <Layer
             frame={Rect(0, 0, 375, Math.max(Math.min(this.state.y, 100), 60))}
             properties={{
-              opacity: this.state.y <= 100 ? 1 : 0,
-            }}
-            style={{
               backgroundColor: '#000000',
+              opacity: this.state.y <= 100 ? 1 : 0,
             }}
             onClick={this._onHeaderClick}
           />
@@ -137,9 +133,9 @@ class App extends React.Component {
               50
             )}
             properties={{
+              color: '#FFFFFF',
               opacity: interpolate(400, 100, 0, 1)(this.state.y),
             }}
-            style={{ color: '#FFFFFF' }}
           >
             Messages
           </Layer>

@@ -48,11 +48,11 @@ class App extends React.Component {
         <div style={Styles.Chrome}>
           <Layer
             frame={Rect(0, 0, 375, 80)}
-            style={{ backgroundColor: '#ADD8C7' }}
+            properties={{ backgroundColor: '#ADD8C7' }}
           />
           <Layer
             frame={Rect(0, 80, 375, 587)}
-            style={{ backgroundColor: '#FCFBE3', overflow: 'hidden' }}
+            properties={{ backgroundColor: '#FCFBE3', overflow: 'hidden' }}
           >
             <Layer
               frame={Rect(0, this.state.scrollY, 375, 2000)}
@@ -70,7 +70,7 @@ class App extends React.Component {
             >
               <Layer
                 frame={Rect(167, -50, 40, 40)}
-                style={{
+                properties={{
                   backgroundColor: `rgba(255,153,153,${Math.min(
                     Math.max(this.state.y / 80, 0),
                     1

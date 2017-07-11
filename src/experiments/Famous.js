@@ -21,6 +21,7 @@ function Screen({
     <Layer
       frame={Rect(x, 0, 375, 667)}
       properties={{
+        backgroundColor,
         opacity:
           scrollX > -375 * index
             ? 1
@@ -30,7 +31,6 @@ function Screen({
             ? 1
             : 1 - Math.max((scrollX + 375 * index) / -10000, 0),
       }}
-      style={{ backgroundColor }}
     />
   );
 }

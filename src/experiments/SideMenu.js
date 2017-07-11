@@ -48,6 +48,7 @@ class App extends React.Component {
           <Layer
             frame={Rect(100, 200, 80, 80)}
             properties={{
+              backgroundColor: '#FE9D63',
               rotation: this.state.numClicks * 120,
               scaleX: this.state.numClicks % 2 === 0 ? 1 : 1.5,
               scaleY: this.state.numClicks % 2 === 0 ? 1 : 1.5,
@@ -56,9 +57,6 @@ class App extends React.Component {
               shadowBlur: this.state.numClicks % 2 === 1 ? 16 : 0,
               shadowSpread: this.state.numClicks % 2 === 1 ? 1 : 0,
             }}
-            style={{
-              backgroundColor: '#FE9D63',
-            }}
             animator={SpringAnimator()}
             onClick={this._onClick}
           />
@@ -66,10 +64,8 @@ class App extends React.Component {
             <Layer
               frame={Rect(0, 0, 375, 667)}
               properties={{
-                opacity: Math.max(Math.min(this.state.menuX / 175 + 1, 1), 0),
-              }}
-              style={{
                 backgroundColor: 'rgba(0,0,0,0.3)',
+                opacity: Math.max(Math.min(this.state.menuX / 175 + 1, 1), 0),
               }}
             />}
           <ReactTransitionGroup>
@@ -91,7 +87,7 @@ class App extends React.Component {
               >
                 <Layer
                   frame={Rect(0, 0, 200, 667)}
-                  style={{
+                  properties={{
                     backgroundColor: 'black',
                   }}
                 />

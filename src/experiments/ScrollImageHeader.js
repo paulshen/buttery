@@ -45,24 +45,22 @@ class App extends React.Component {
         <div style={Styles.Chrome}>
           <Layer
             frame={Rect(0, 0, 375, 200)}
-            properties={{ scale: Math.max(1 + (this.state.y - 140) / 200, 1) }}
-            style={{
+            properties={{
               backgroundImage:
                 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w400/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)',
               transformOrigin: '50% 0%',
+              scale: Math.max(1 + (this.state.y - 140) / 200, 1),
             }}
           />
           <Layer
             frame={Rect(0, this._getTextY(), 375, 40)}
             properties={{
+              color: '#ffffff',
+              fontSize: '32px',
               scale: Math.min(
                 Math.max(1 + (this.state.y - 140) / 240, 0.5),
                 1.5
               ),
-            }}
-            style={{
-              color: '#ffffff',
-              fontSize: '32px',
               textAlign: 'center',
               textShadow: '0 1px 5px rgba(0,0,0,0.4)',
             }}
@@ -71,11 +69,11 @@ class App extends React.Component {
           </Layer>
           <Layer
             frame={Rect(0, 60, 375, 607)}
-            style={{ overflow: 'hidden', pointerEvents: 'none' }}
+            properties={{ overflow: 'hidden', pointerEvents: 'none' }}
           >
             <Layer
               frame={Rect(0, this.state.scrollY, 375, 2000)}
-              style={{
+              properties={{
                 backgroundImage:
                   'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)',
                 pointerEvents: 'all',

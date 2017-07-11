@@ -33,7 +33,7 @@ class App extends React.Component {
         <div style={Styles.Chrome}>
           <Layer
             frame={Steps[this.state.step]}
-            style={{
+            properties={{
               backgroundColor: '#438DED',
             }}
             animator={Animators[this.state.step]}
@@ -45,7 +45,7 @@ class App extends React.Component {
               x: 200,
               y: 500,
             }}
-            style={{
+            properties={{
               backgroundColor: '#97B2C9',
             }}
             onClick={this._onClick}

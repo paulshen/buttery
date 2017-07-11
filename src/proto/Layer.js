@@ -1,7 +1,11 @@
 /* @flow */
 import React from 'react';
 
-import { applyProperties, areFramesSame, arePropertiesSame } from './AnimatedProperties';
+import {
+  applyProperties,
+  areFramesSame,
+  arePropertiesSame
+} from './AnimatedProperties';
 import Draggable from './Draggable';
 
 export default class Layer extends React.Component {
@@ -12,7 +16,6 @@ export default class Layer extends React.Component {
     draggable?: boolean,
     draggableProperties?: $PropertyType<Draggable, 'props'>,
     children?: any,
-    style?: any,
     onClick?: Function,
     onMove?: (p: Point) => void,
     onAnimationEnd?: () => void,
@@ -48,7 +51,10 @@ export default class Layer extends React.Component {
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
     let { animator, frame, properties, draggable } = nextProps;
-    if (!areFramesSame(frame, this.props.frame) || !arePropertiesSame(properties, this.props.properties)) {
+    if (
+      !areFramesSame(frame, this.props.frame) ||
+      !arePropertiesSame(properties, this.props.properties)
+    ) {
       this._handlePropertiesChange(frame, properties, animator);
     }
     if (draggable !== this.props.draggable) {
@@ -144,13 +150,15 @@ export default class Layer extends React.Component {
 
   _onDragEnd = (p: Point) => {
     this.props.onDragEnd && this.props.onDragEnd(p);
-    this._handlePropertiesChange(this.props.frame, this.props.properties, this.props.animator);
+    this._handlePropertiesChange(
+      this.props.frame,
+      this.props.properties,
+      this.props.animator
+    );
   };
 
   shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {
     return (
-      nextProps.style ||
-      this.props.style ||
       React.Children.count(nextProps.children) > 0 ||
       React.Children.count(this.props.children) > 0
     );
@@ -173,18 +181,13 @@ export default class Layer extends React.Component {
       properties,
       draggable,
       draggableProperties,
-      style,
       onMove,
       onDrag,
       onDragEnd,
       ...props
     } = this.props;
     return (
-      <div
-        {...props}
-        ref={c => (this._layer = c)}
-        style={style ? { ...Styles.Layer, ...style } : Styles.Layer}
-      >
+      <div {...props} ref={c => (this._layer = c)} style={Styles.Layer}>
         {children}
       </div>
     );
