@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator, Rect } from '../proto';
+import { DragConstraint, Layer, SpringAnimator, Frame } from '../proto';
 
 function interpolate(x1, x2, y1, y2) {
   return function(input) {
@@ -13,7 +13,7 @@ function interpolate(x1, x2, y1, y2) {
 function Header({ y, onClick }) {
   return (
     <Layer
-      frame={Rect(0, 0, 375, Math.max(y, 60))}
+      frame={Frame(0, 0, 375, Math.max(y, 60))}
       properties={{
         backgroundColor: '#000000',
         opacity: interpolate(400, 100, 0, 1)(y),
@@ -22,7 +22,7 @@ function Header({ y, onClick }) {
       onClick={onClick}
     >
       <Layer
-        frame={Rect(
+        frame={Frame(
           interpolate(90, 60, 20, 40)(y),
           y < 100
             ? interpolate(90, 60, 50, 24)(y)
@@ -43,7 +43,7 @@ function Header({ y, onClick }) {
 function PagerPage({ index, color }) {
   return (
     <Layer
-      frame={Rect(index * 300, 0, 300, 200)}
+      frame={Frame(index * 300, 0, 300, 200)}
       properties={{ backgroundColor: color }}
     />
   );
@@ -63,7 +63,7 @@ class Pager extends React.Component {
   render() {
     return (
       <Layer
-        frame={Rect(this.state.pageX, 400, 900, 200)}
+        frame={Frame(this.state.pageX, 400, 900, 200)}
         draggable={true}
         draggableProperties={{
           constraintY: DragConstraint({ min: 400, max: 400 }),
@@ -126,13 +126,13 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(0, 0, 375, 667)}
+            frame={Frame(0, 0, 375, 667)}
             properties={{
               backgroundColor: 'skyblue',
             }}
           />
           <Layer
-            frame={Rect(0, this.state.scrollY, 375, 1200)}
+            frame={Frame(0, this.state.scrollY, 375, 1200)}
             properties={{
               backgroundColor: 'blue',
             }}

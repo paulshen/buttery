@@ -8,14 +8,14 @@ import {
   Layer,
   LayerTransitionChild,
   SpringAnimator,
-  Rect
+  Frame
 } from '../proto';
 
 class App extends React.Component {
   state: {
     constraintY: DragConstraintType,
     scrollY: number,
-    transitionAnimatedFrame: ?Frame,
+    transitionAnimatedFrame: ?FrameType,
     transitionExit: boolean,
   } = {
     constraintY: DragConstraint({ min: 587 - 2000, max: 0, bounce: true }),
@@ -36,8 +36,8 @@ class App extends React.Component {
         transitionExit: true,
       });
     } else {
-      let frame = this._transitionLayer.getFrame();
-      let scrollFrame = this._scrollLayer.getFrame();
+      let frame = this._transitionLayer.getComputedFrame();
+      let scrollFrame = this._scrollLayer.getComputedFrame();
       frame.x += scrollFrame.x;
       frame.y += scrollFrame.y;
       this.setState({
@@ -58,7 +58,7 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(0, this.state.scrollY, 375, 2000)}
+            frame={Frame(0, this.state.scrollY, 375, 2000)}
             draggable={
               !this.state.transitionAnimatedFrame && !this.state.transitionExit
             }
@@ -72,13 +72,13 @@ class App extends React.Component {
             ref={c => (this._scrollLayer = c)}
           >
             <Layer
-              frame={Rect(0, 0, 375, 300)}
+              frame={Frame(0, 0, 375, 300)}
               properties={{
                 backgroundColor: `rgb(255,153,153)`,
               }}
             />
             <Layer
-              frame={Rect(0, 300, 375, 300)}
+              frame={Frame(0, 300, 375, 300)}
               properties={{
                 alignItems: 'center',
                 backgroundColor: `rgb(200,153,153)`,
@@ -90,7 +90,7 @@ class App extends React.Component {
             </Layer>
             {!this.state.transitionAnimatedFrame &&
               <Layer
-                frame={Rect(0, 600, 375, 300)}
+                frame={Frame(0, 600, 375, 300)}
                 properties={{
                   backgroundColor: 'blue',
                 }}
@@ -98,13 +98,13 @@ class App extends React.Component {
                 ref={c => (this._transitionLayer = c)}
               />}
             <Layer
-              frame={Rect(0, 900, 375, 300)}
+              frame={Frame(0, 900, 375, 300)}
               properties={{
                 backgroundColor: `rgb(153,153,200)`,
               }}
             />
             <Layer
-              frame={Rect(0, 1200, 375, 300)}
+              frame={Frame(0, 1200, 375, 300)}
               properties={{
                 backgroundColor: `rgb(153,200,153)`,
               }}

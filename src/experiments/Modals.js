@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, SpringAnimator, Rect } from '../proto';
+import { Layer, LayerTransitionChild, SpringAnimator, Frame } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -23,7 +23,7 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(100, 200, 80, 80)}
+            frame={Frame(100, 200, 80, 80)}
             properties={{
               backgroundColor: '#FE9D63',
               rotation: this.state.numClicks * 120,
@@ -40,14 +40,14 @@ class App extends React.Component {
           <ReactTransitionGroup>
             {this.state.numClicks % 2 === 1 &&
               <LayerTransitionChild
-                enterFrame={Rect(
+                enterFrame={Frame(
                   fromBottom ? 0 : 375,
                   fromBottom ? 667 : 0,
                   375,
                   667
                 )}
-                frame={Rect(0, 0, 375, 667)}
-                exitFrame={Rect(
+                frame={Frame(0, 0, 375, 667)}
+                exitFrame={Frame(
                   fromBottom ? 0 : 375,
                   fromBottom ? 667 : 0,
                   375,

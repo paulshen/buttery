@@ -8,7 +8,7 @@ import {
   Layer,
   LayerTransitionChild,
   SpringAnimator,
-  Rect
+  Frame
 } from '../proto';
 
 class App extends React.Component {
@@ -46,7 +46,7 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(100, 200, 80, 80)}
+            frame={Frame(100, 200, 80, 80)}
             properties={{
               backgroundColor: '#FE9D63',
               rotation: this.state.numClicks * 120,
@@ -62,7 +62,7 @@ class App extends React.Component {
           />
           {this.state.showMenu &&
             <Layer
-              frame={Rect(0, 0, 375, 667)}
+              frame={Frame(0, 0, 375, 667)}
               properties={{
                 backgroundColor: 'rgba(0,0,0,0.3)',
                 opacity: Math.max(Math.min(this.state.menuX / 175 + 1, 1), 0),
@@ -71,9 +71,9 @@ class App extends React.Component {
           <ReactTransitionGroup>
             {this.state.showMenu &&
               <LayerTransitionChild
-                enterFrame={Rect(-375, 0, 375, 667)}
-                frame={Rect(0, 0, 375, 667)}
-                exitFrame={Rect(-375, 0, 375, 667)}
+                enterFrame={Frame(-375, 0, 375, 667)}
+                frame={Frame(0, 0, 375, 667)}
+                exitFrame={Frame(-375, 0, 375, 667)}
                 draggable={true}
                 draggableProperties={{
                   constraintX: DragConstraint({ min: -375, max: 0 }),
@@ -86,7 +86,7 @@ class App extends React.Component {
                 key="menu"
               >
                 <Layer
-                  frame={Rect(0, 0, 200, 667)}
+                  frame={Frame(0, 0, 200, 667)}
                   properties={{
                     backgroundColor: 'black',
                   }}

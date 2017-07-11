@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator, Rect } from '../proto';
+import { DragConstraint, Layer, SpringAnimator, Frame } from '../proto';
 
 class App extends React.Component {
   state: {
@@ -44,7 +44,7 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(0, 0, 375, 200)}
+            frame={Frame(0, 0, 375, 200)}
             properties={{
               backgroundImage:
                 'url(http://d2h0v2e3t9v1o4.cloudfront.net/w400/for/http://s3.bypaulshen.com.s3.amazonaws.com/photos/iceland/DSCF4104.jpg)',
@@ -53,7 +53,7 @@ class App extends React.Component {
             }}
           />
           <Layer
-            frame={Rect(0, this._getTextY(), 375, 40)}
+            frame={Frame(0, this._getTextY(), 375, 40)}
             properties={{
               color: '#ffffff',
               fontSize: '32px',
@@ -68,11 +68,11 @@ class App extends React.Component {
             Iceland
           </Layer>
           <Layer
-            frame={Rect(0, 60, 375, 607)}
+            frame={Frame(0, 60, 375, 607)}
             properties={{ overflow: 'hidden', pointerEvents: 'none' }}
           >
             <Layer
-              frame={Rect(0, this.state.scrollY, 375, 2000)}
+              frame={Frame(0, this.state.scrollY, 375, 2000)}
               properties={{
                 backgroundImage:
                   'linear-gradient(to bottom, #bae4e5 0%, #2A8FBD 100%)',

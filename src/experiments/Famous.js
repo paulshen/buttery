@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, Rect } from '../proto';
+import { DragConstraint, Layer, Frame } from '../proto';
 
 function Screen({
   index,
@@ -19,7 +19,7 @@ function Screen({
       : Math.max((scrollX + 375 * index) / 4, -375);
   return (
     <Layer
-      frame={Rect(x, 0, 375, 667)}
+      frame={Frame(x, 0, 375, 667)}
       properties={{
         backgroundColor,
         opacity:
@@ -61,7 +61,7 @@ class App extends React.Component {
           <Screen scrollX={this.state.x} index={1} backgroundColor="#FBB829" />
           <Screen scrollX={this.state.x} index={2} backgroundColor="#FF9999" />
           <Layer
-            frame={Rect(this.state.scrollX, 0, 375 * 3, 667)}
+            frame={Frame(this.state.scrollX, 0, 375 * 3, 667)}
             draggable={true}
             draggableProperties={{
               constraintY: DragConstraint({ min: 0, max: 0 }),

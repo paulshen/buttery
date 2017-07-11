@@ -6,14 +6,14 @@ type Point = {
 type DragValue = { value: number };
 type NumberOrDragValue = number | DragValue;
 
-type Frame = {
+type FrameType = {
   x: NumberOrDragValue,
   y: NumberOrDragValue,
   width: number,
   height: number,
 };
 
-type ComputedFrame = {
+type ComputedFrameType = {
   x: number,
   y: number,
   width: number,

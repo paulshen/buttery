@@ -21,12 +21,12 @@ class SpringAnimatorImpl {
   _friction: number;
 
   key: string;
-  _updater: (f: ComputedFrame, p: AnimatedProperties) => void;
+  _updater: (f: ComputedFrameType, p: AnimatedProperties) => void;
   _onEnd: ?() => void;
   _start: number;
-  _fromFrame: ComputedFrame;
+  _fromFrame: ComputedFrameType;
   _fromProperties: AnimatedProperties;
-  _toFrame: ComputedFrame;
+  _toFrame: ComputedFrameType;
   _toProperties: AnimatedProperties;
   _x: number;
   _v: number;
@@ -41,11 +41,11 @@ class SpringAnimatorImpl {
   }
 
   start(
-    fromFrame: ComputedFrame,
+    fromFrame: ComputedFrameType,
     fromProperties: AnimatedProperties,
-    toFrame: ComputedFrame,
+    toFrame: ComputedFrameType,
     toProperties: ?AnimatedProperties,
-    updater: (f: ComputedFrame, p: AnimatedProperties) => void,
+    updater: (f: ComputedFrameType, p: AnimatedProperties) => void,
     onEnd: ?() => void
   ) {
     this._start = Date.now();

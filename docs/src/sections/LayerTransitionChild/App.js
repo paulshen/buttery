@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, Rect, SpringAnimator } from '../../proto';
+import { Layer, LayerTransitionChild, Frame, SpringAnimator } from '../../proto';
 
 function getFrame(i) {
   return {
@@ -55,7 +55,7 @@ export default class Example extends React.Component {
     }
 
     return (
-      <Layer frame={Rect(0, 0, 375, 667)}>
+      <Layer frame={Frame(0, 0, 375, 667)}>
         <button onClick={this._onClickAdd}>Add</button>
         <button onClick={this._onClickRemove}>Remove</button>
         <ReactTransitionGroup>

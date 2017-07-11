@@ -11,7 +11,7 @@ import Draggable from './Draggable';
 
 export default class Layer extends React.Component {
   props: {
-    frame: Frame,
+    frame: FrameType,
     properties?: AnimatedProperties,
     animator?: Object,
     draggable?: boolean,
@@ -24,7 +24,7 @@ export default class Layer extends React.Component {
     onDragEnd?: (p: Point) => void,
   };
   _layer: HTMLElement;
-  _computedFrame: ComputedFrame;
+  _computedFrame: ComputedFrameType;
   _properties: ?AnimatedProperties;
   _animator: ?Object;
   _draggable: ?Draggable;
@@ -78,7 +78,7 @@ export default class Layer extends React.Component {
   }
 
   _handlePropertiesChange = (
-    frame: ComputedFrame,
+    frame: ComputedFrameType,
     properties: ?AnimatedProperties,
     animator: ?Object
   ) => {
@@ -132,7 +132,7 @@ export default class Layer extends React.Component {
     }
   };
 
-  _getComputedFrame = (frame: Frame) => {
+  _getComputedFrame = (frame: FrameType) => {
     let x = frame.x;
     let y = frame.y;
     if (typeof x !== 'number') {
@@ -152,7 +152,7 @@ export default class Layer extends React.Component {
     return { x, y, width: frame.width, height: frame.height };
   };
 
-  _apply = (frame: ComputedFrame, properties: ?AnimatedProperties) => {
+  _apply = (frame: ComputedFrameType, properties: ?AnimatedProperties) => {
     let prevPosition = {
       x: this._computedFrame.x,
       y: this._computedFrame.y,

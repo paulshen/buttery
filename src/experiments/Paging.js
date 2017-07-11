@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, DragConstraint, Rect } from '../proto';
+import { Layer, DragConstraint, Frame } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -23,7 +23,7 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(this.state.x, 0, 1125, 667)}
+            frame={Frame(this.state.x, 0, 1125, 667)}
             onMove={this._onMove}
             draggable={true}
             draggableProperties={{
@@ -37,19 +37,19 @@ class App extends React.Component {
             }}
           >
             <Layer
-              frame={Rect(0, 0, 375, 667)}
+              frame={Frame(0, 0, 375, 667)}
               properties={{
                 backgroundColor: `rgb(220,220,${colorValue})`,
               }}
             />
             <Layer
-              frame={Rect(375, 0, 375, 667)}
+              frame={Frame(375, 0, 375, 667)}
               properties={{
                 backgroundColor: `rgb(220,${colorValue},220)`,
               }}
             />
             <Layer
-              frame={Rect(750, 0, 375, 667)}
+              frame={Frame(750, 0, 375, 667)}
               properties={{
                 backgroundColor: `rgb(${colorValue},220,220)`,
               }}

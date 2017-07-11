@@ -1,11 +1,11 @@
 /* @flow */
 
-export function Rect(
+export function Frame(
   x: NumberOrDragValue,
   y: NumberOrDragValue,
   width: number,
   height: number
-): Frame {
+): FrameType {
   return { x, y, width, height };
 }
 
@@ -15,6 +15,6 @@ export function Drag(value: number): DragValue {
   };
 }
 
-export function isFrameDraggable(f: Frame) {
+export function isFrameDraggable(f: FrameType) {
   return typeof f.x !== 'number' || typeof f.y !== 'number';
 }

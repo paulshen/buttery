@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
 
-export default function getChildrenDimensions(children: any): ?Frame {
+export default function getChildrenDimensions(children: any): ?FrameType {
   let bound;
   React.Children.forEach(children, (child) => {
     if (!bound) {

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { TimedAnimator, Layer, Rect, SpringAnimator } from '../../proto';
+import { TimedAnimator, Layer, Frame, SpringAnimator } from '../../proto';
 
 const MyFrames = [
-  Rect(100, 140, 60, 60),
-  Rect(100, 180, 80, 80),
-  Rect(100, 220, 100, 100),
+  Frame(100, 140, 60, 60),
+  Frame(100, 180, 80, 80),
+  Frame(100, 220, 100, 100),
 ];
 
 export default class Example extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DragConstraint, Layer, Rect } from '../../proto';
+import { DragConstraint, Layer, Frame } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
@@ -13,9 +13,9 @@ export default class Example extends React.Component {
 
   render() {
     return (
-      <Layer frame={Rect(0, 0, 375, 667)} properties={{ overflow: 'hidden' }}>
+      <Layer frame={Frame(0, 0, 375, 667)} properties={{ overflow: 'hidden' }}>
         <Layer
-          frame={Rect(0, this.state.y, 375, 2000)}
+          frame={Frame(0, this.state.y, 375, 2000)}
           draggable={true}
           draggableProperties={{
             constraintX: DragConstraint({ min: 0, max: 0 }),

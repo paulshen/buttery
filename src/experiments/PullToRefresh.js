@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator, Rect } from '../proto';
+import { DragConstraint, Layer, SpringAnimator, Frame } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -47,15 +47,15 @@ class App extends React.Component {
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
           <Layer
-            frame={Rect(0, 0, 375, 80)}
+            frame={Frame(0, 0, 375, 80)}
             properties={{ backgroundColor: '#ADD8C7' }}
           />
           <Layer
-            frame={Rect(0, 80, 375, 587)}
+            frame={Frame(0, 80, 375, 587)}
             properties={{ backgroundColor: '#FCFBE3', overflow: 'hidden' }}
           >
             <Layer
-              frame={Rect(0, this.state.scrollY, 375, 2000)}
+              frame={Frame(0, this.state.scrollY, 375, 2000)}
               draggable={true}
               draggableProperties={{
                 constraintX: DragConstraint({ min: 0, max: 0 }),
@@ -69,7 +69,7 @@ class App extends React.Component {
               onAnimationEnd={this._onAnimationEnd}
             >
               <Layer
-                frame={Rect(167, -50, 40, 40)}
+                frame={Frame(167, -50, 40, 40)}
                 properties={{
                   backgroundColor: `rgba(255,153,153,${Math.min(
                     Math.max(this.state.y / 80, 0),
