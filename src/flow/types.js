@@ -16,7 +16,15 @@ type AnimatedValue = {
   value: ScalarValue,
   config: AnimatorConfig,
 };
-type DragValue = { type: 'drag', value: ScalarValue | AnimatedValue };
+type DragValue = {
+  type: 'drag',
+  value: ScalarValue | AnimatedValue,
+  config?: DragConfig,
+};
+type DragConfig = {
+  min?: number,
+  max?: number,
+};
 type InputValue = ScalarValue | AnimatedValue;
 
 interface Animator {

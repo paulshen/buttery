@@ -9,10 +9,11 @@ export function Frame(
   return { x, y, width, height };
 }
 
-export function Drag(value: InputValue): DragValue {
+export function Drag(value: InputValue, config?: DragConfig): DragValue {
   return {
     type: 'drag',
     value,
+    config,
   };
 }
 

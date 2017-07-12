@@ -1,6 +1,6 @@
 /* @flow */
 
-import { constrain, isConstrained } from './DragConstraint';
+import { constrain, constrainHardOnly, isConstrained } from './DragConfig';
 import Motion from './Motion';
 import createScroll from './motion/createScroll';
 import createSpring from './motion/createSpring';
@@ -17,6 +17,10 @@ export default class Draggable {
     pageSize?: number,
     onTouchEnd?: (p: Point) => void,
   };
+  config: {
+    x?: ?DragConfig,
+    y?: ?DragConfig,
+  } = {};
   isControlledByDraggable = false;
 
   _layer: HTMLElement;
@@ -30,7 +34,13 @@ export default class Draggable {
   /* callback on end of drag animation */
   _onDragEnd: ?(p: Point) => void;
 
-  start(layer: HTMLElement, initialPoint: Point, onDragStart: ?() => void, updater: (p: Point) => void, onDragEnd: ?(p: Point) => void) {
+  start(
+    layer: HTMLElement,
+    initialPoint: Point,
+    onDragStart: ?() => void,
+    updater: (p: Point) => void,
+    onDragEnd: ?(p: Point) => void
+  ) {
     this._layer = layer;
     this._p = { ...initialPoint };
     this._onDragStart = onDragStart;
@@ -90,15 +100,19 @@ export default class Draggable {
     let x = dragStart.x + (touch.clientX - this._touches[0].clientX);
     let y = dragStart.y + (touch.clientY - this._touches[0].clientY);
     this._p = {
-      x: this.props && this.props.constraintX ? constrain(x, this.props.constraintX) : x,
-      y: this.props && this.props.constraintY ? constrain(y, this.props.constraintY) : y,
+      x: constrain(x, this.config.x),
+      y: constrain(y, this.config.y),
     };
-    if (!this._dragCaptured &&
-        (Math.abs(this._p.x - dragStart.x) > DRAG_START_THRESHOLD ||
-         Math.abs(this._p.y - dragStart.y) > DRAG_START_THRESHOLD)) {
+    if (
+      !this._dragCaptured &&
+      (Math.abs(this._p.x - dragStart.x) > DRAG_START_THRESHOLD ||
+        Math.abs(this._p.y - dragStart.y) > DRAG_START_THRESHOLD)
+    ) {
       if (activeDraggables.length > 1) {
         // this draggable has captured the event. end other active listeners
-        activeDraggables.forEach((draggable) => draggable !== this && draggable.end());
+        activeDraggables.forEach(
+          draggable => draggable !== this && draggable.end()
+        );
       }
       this._dragCaptured = true;
     }
@@ -154,30 +168,53 @@ export default class Draggable {
         };
       }
       if (pageSize) {
-        // $FlowAssert
-        let targetX = Math.min(Math.max(Math.round(this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)), props.constraintX.min / pageSize), props.constraintX.max / pageSize) * pageSize;
-        // TODO: y
-        let springX = createSpring(targetX);
-        this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
-          let [vX, shouldStopX] = springX(p.x, vm.x, dt);
-          return [{ x: vX, y: 0 }, shouldStopX];
-        });
-        this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+        // TODO
+        // // $FlowAssert
+        // let targetX =
+        //   Math.min(
+        //     Math.max(
+        //       Math.round(
+        //         this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)
+        //       ),
+        //       props.constraintX.min / pageSize
+        //     ),
+        //     props.constraintX.max / pageSize
+        //   ) * pageSize;
+        // // TODO: y
+        // let springX = createSpring(targetX);
+        // this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
+        //   let [vX, shouldStopX] = springX(p.x, vm.x, dt);
+        //   return [{ x: vX, y: 0 }, shouldStopX];
+        // });
+        // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       } else if (momentum) {
-        let scrollX = props.constraintX ? createScroll(props.constraintX) : Friction;
-        let scrollY = props.constraintY ? createScroll(props.constraintY) : Friction;
-        this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
-          if (vm.x && vm.y && !isConstrained(p.x, props.constraintX) && !isConstrained(p.y, props.constraintY)) {
-            let vHypotenuse = Math.sqrt(vm.x * vm.x + vm.y * vm.y);
-            let [nextV, shouldStop] = Friction(0, vHypotenuse, dt);
-            return [{ x: vm.x / vHypotenuse * nextV, y: vm.y / vHypotenuse * nextV }, shouldStop];
-          }
-
-          let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
-          let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
-          return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
-        });
-        this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+        // TODO
+        // let scrollX = props.constraintX
+        //   ? createScroll(props.constraintX)
+        //   : Friction;
+        // let scrollY = props.constraintY
+        //   ? createScroll(props.constraintY)
+        //   : Friction;
+        // this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
+        //   if (
+        //     vm.x &&
+        //     vm.y &&
+        //     !isConstrained(p.x, props.constraintX) &&
+        //     !isConstrained(p.y, props.constraintY)
+        //   ) {
+        //     let vHypotenuse = Math.sqrt(vm.x * vm.x + vm.y * vm.y);
+        //     let [nextV, shouldStop] = Friction(0, vHypotenuse, dt);
+        //     return [
+        //       { x: vm.x / vHypotenuse * nextV, y: vm.y / vHypotenuse * nextV },
+        //       shouldStop,
+        //     ];
+        //   }
+        //
+        //   let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
+        //   let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
+        //   return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
+        // });
+        // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       }
     } else {
       this.isControlledByDraggable = false;
@@ -207,7 +244,7 @@ export default class Draggable {
   };
 
   _applyHardConstraints = (p: Point) => ({
-    x: this.props && this.props.constraintX && !this.props.constraintX.bounce ? constrain(p.x, this.props.constraintX) : p.x,
-    y: this.props && this.props.constraintY && !this.props.constraintY.bounce ? constrain(p.y, this.props.constraintY) : p.y,
+    x: constrainHardOnly(p.x, this.config.x),
+    y: constrainHardOnly(p.y, this.config.y),
   });
 }

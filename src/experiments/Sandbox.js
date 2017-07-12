@@ -30,7 +30,10 @@ class App extends React.Component {
           <button onClick={this._toggle}>Toggle</button>
           <Layer
             frame={Frame(
-              Drag(Animated(this.state.selected ? 200 : 100, timed())),
+              Drag(Animated(this.state.selected ? 200 : 100, timed()), {
+                min: 50,
+                max: 150,
+              }),
               Animated(this.state.selected ? 200 : 100, spring()),
               100,
               100

@@ -141,12 +141,11 @@ export default class Layer extends React.Component {
         if (!this._draggable) {
           this._createDraggable();
         }
-        if (this._draggable && !this._draggable.isControlledByDraggable) {
+        let draggable = ((this._draggable: any): Draggable);
+        draggable.config[property] = to.config;
+        if (!draggable.isControlledByDraggable) {
           this._handleTargetPropertyChange(to.value, from, property);
         }
-        // if (this._draggable) {
-        //   this._draggable.props = nextProps.draggableProperties;
-        // }
       }
     } else {
       this._updates[property] = to;
