@@ -30,3 +30,11 @@ export function createAnimator(
   }
   return animators[layerID][key];
 }
+
+export function removeAnimator(layer: Layer, key: string) {
+  let layerID = layer.getID();
+  if (animators[layerID] && animators[layerID][key]) {
+    animators[layerID][key].stop();
+    delete animators[layerID][key];
+  }
+}

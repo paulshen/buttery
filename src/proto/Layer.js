@@ -9,7 +9,7 @@ import {
   getTargetValue,
   getDifferingProperties
 } from './AnimatedProperties';
-import { getAnimator, createAnimator } from './Animators';
+import { getAnimator, createAnimator, removeAnimator } from './Animators';
 import Draggable from './Draggable';
 
 type Updates = { [key: string]: ScalarValue };
@@ -60,22 +60,12 @@ export default class Layer extends React.Component {
     let { frame, properties } = this.props;
     this._applyUpdates(this._computedFrame);
     this._applyUpdates(this._computedStyles);
-    let { x, y } = frame;
-    let isDragX = typeof x === 'object' && x.type === 'drag';
-    let isDragY = typeof y === 'object' && y.type === 'drag';
-    if (isDragX || isDragY) {
-      let draggable = this._getDraggable();
-      if (isDragX) {
-        draggable.setConfig('x', ((x: any): Object).config || {});
-      }
-      if (isDragY) {
-        draggable.setConfig('y', ((y: any): Object).config || {});
-      }
-    }
+    this._updateDraggable(frame);
   }
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
     let { animator, frame, properties, draggable } = nextProps;
+    this._updateDraggable(frame);
     let nextTargetFrame = this._getTargetValues(frame);
     let differingFrameProperties = getDifferingProperties(
       this._getTargetValues(frame),
@@ -133,21 +123,41 @@ export default class Layer extends React.Component {
             });
           });
         }
-      } else if (to.type === 'drag') {
-        let draggable = this._getDraggable();
-        draggable.setConfig(((property: any): 'x' | 'y'), to.config || {});
-        if (!draggable.isActive()) {
-          this._handleTargetPropertyChange(
-            updates,
-            to.value,
-            fromScalar,
-            from,
-            property
-          );
-        }
+      } else if (
+        to.type === 'drag' &&
+        (!this._draggable || !this._draggable.isActive())
+      ) {
+        this._handleTargetPropertyChange(
+          updates,
+          to.value,
+          fromScalar,
+          from,
+          property
+        );
       }
     } else {
+      removeAnimator(this, property);
       updates[property] = to;
+    }
+  };
+
+  _updateDraggable = (frame: FrameType) => {
+    let { x, y } = frame;
+    let isDragX = typeof x === 'object' && x.type === 'drag';
+    let isDragY = typeof y === 'object' && y.type === 'drag';
+    if (isDragX || isDragY) {
+      let draggable = this._getDraggable();
+      draggable.setConfig(
+        'x',
+        isDragX ? ((x: any): Object).config || {} : null
+      );
+      draggable.setConfig(
+        'y',
+        isDragY ? ((y: any): Object).config || {} : null
+      );
+    } else if (this._draggable) {
+      this._draggable.stop();
+      this._draggable = null;
     }
   };
 
@@ -167,21 +177,37 @@ export default class Layer extends React.Component {
   };
 
   _onDragStart = () => {
-    let xAnimator = getAnimator(this, 'x');
-    xAnimator && xAnimator.stop();
-    let yAnimator = getAnimator(this, 'y');
-    yAnimator && yAnimator.stop();
+    removeAnimator(this, 'x');
+    removeAnimator(this, 'y');
   };
 
   _dragUpdater = (p: Point) => {
-    if (this._draggable && this._draggable.isActive()) {
-      // TODO: only pass updates
-      this._applyUpdates({
-        x: p.x,
-        y: p.y,
-      });
-      this.props.onDrag && this.props.onDrag(p);
-    }
+    // TODO: only pass updates
+    this._applyUpdates({
+      x: p.x,
+      y: p.y,
+    });
+    this.props.onDrag && this.props.onDrag(p);
+  };
+
+  _onDragEnd = (p: Point) => {
+    let updates = {};
+    this._handleTargetPropertyChange(
+      updates,
+      this.props.frame.x,
+      this._computedFrame.x,
+      null,
+      'x'
+    );
+    this._handleTargetPropertyChange(
+      updates,
+      this.props.frame.y,
+      this._computedFrame.y,
+      null,
+      'y'
+    );
+    this._applyUpdates(updates);
+    this.props.onDragEnd && this.props.onDragEnd(p);
   };
 
   _getTargetValues = (obj: Object): Object =>
@@ -255,26 +281,6 @@ export default class Layer extends React.Component {
 
   _onAnimationEnd = () => {
     this.props.onAnimationEnd && this.props.onAnimationEnd();
-  };
-
-  _onDragEnd = (p: Point) => {
-    let updates = {};
-    this._handleTargetPropertyChange(
-      updates,
-      this.props.frame.x,
-      this._computedFrame.x,
-      null,
-      'x'
-    );
-    this._handleTargetPropertyChange(
-      updates,
-      this.props.frame.y,
-      this._computedFrame.y,
-      null,
-      'y'
-    );
-    this._applyUpdates(updates);
-    this.props.onDragEnd && this.props.onDragEnd(p);
   };
 
   shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {
