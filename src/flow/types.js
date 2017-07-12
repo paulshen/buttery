@@ -4,14 +4,29 @@ type Point = {
 };
 
 type ScalarValue = number;
-type TimedAnimatorConfig = { duration: number };
+type TimedAnimatorConfig = { duration: number, type: 'timed' };
+type SpringAnimatorConfig = {
+  spring: number,
+  friction: number,
+  type: 'spring',
+};
 type AnimatedValue = {
   value: ScalarValue,
-  config: TimedAnimatorConfig,
+  config: TimedAnimatorConfig | SpringAnimatorConfig,
   type: 'animated',
 };
 type DragValue = { value: ScalarValue | AnimatedValue, type: 'drag' };
 type InputValue = ScalarValue | AnimatedValue;
+
+interface Animator {
+  start(
+    from: ScalarValue,
+    to: ScalarValue,
+    updater: (value: ScalarValue) => void
+  ): void,
+  getValue(): ScalarValue,
+  stop(): void,
+}
 
 type FrameType = {
   x: InputValue | DragValue,

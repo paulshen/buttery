@@ -126,15 +126,16 @@ export default class Layer extends React.Component {
   ) => {
     if (typeof to === 'object') {
       if (to.type === 'animated') {
-        if (typeof from === 'undefined') {
+        if (from == null) {
           this._updates[property] = to.value;
         } else {
           // TODO: reuse previous animator if same config?
           let animator = createAnimator(this, property, {
-            duration: 300,
+            spring: 0.0005,
+            friction: 0.01,
+            type: 'spring',
           });
           animator.start(from, to.value, value => {
-            // TODO
             this._applyUpdates({
               [property]: value,
             });
@@ -198,10 +199,10 @@ export default class Layer extends React.Component {
   };
 
   _onDragStart = () => {
-    // TODO
-    // if (this._animator) {
-    //   this._animator.stop();
-    // }
+    let xAnimator = getAnimator(this, 'x');
+    xAnimator && xAnimator.stop();
+    let yAnimator = getAnimator(this, 'y');
+    yAnimator && yAnimator.stop();
   };
 
   _dragUpdater = (p: Point) => {
