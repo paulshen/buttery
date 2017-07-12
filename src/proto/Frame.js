@@ -1,20 +1,17 @@
 /* @flow */
 
 export function Frame(
-  x: NumberOrDragValue,
-  y: NumberOrDragValue,
-  width: number,
-  height: number
+  x: InputValue | DragValue,
+  y: InputValue | DragValue,
+  width: InputValue,
+  height: InputValue
 ): FrameType {
   return { x, y, width, height };
 }
 
-export function Drag(value: number): DragValue {
+export function Drag(value: InputValue): DragValue {
   return {
     value,
+    type: 'drag',
   };
-}
-
-export function isFrameDraggable(f: FrameType) {
-  return typeof f.x !== 'number' || typeof f.y !== 'number';
 }

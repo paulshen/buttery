@@ -3,21 +3,28 @@ type Point = {
   y: number,
 };
 
-type DragValue = { value: number };
-type NumberOrDragValue = number | DragValue;
+type ScalarValue = number;
+type TimedAnimatorConfig = { duration: number };
+type AnimatedValue = {
+  value: ScalarValue,
+  config: TimedAnimatorConfig,
+  type: 'animated',
+};
+type DragValue = { value: ScalarValue | AnimatedValue, type: 'drag' };
+type InputValue = ScalarValue | AnimatedValue;
 
 type FrameType = {
-  x: NumberOrDragValue,
-  y: NumberOrDragValue,
-  width: number,
-  height: number,
+  x: InputValue | DragValue,
+  y: InputValue | DragValue,
+  width: InputValue,
+  height: InputValue,
 };
 
 type ComputedFrameType = {
-  x: number,
-  y: number,
-  width: number,
-  height: number,
+  x: ScalarValue,
+  y: ScalarValue,
+  width: ScalarValue,
+  height: ScalarValue,
 };
 
 type Vector = {
@@ -27,17 +34,17 @@ type Vector = {
 
 type AnimatedProperties = {
   backgroundColor?: string,
-  opacity?: number,
-  rotation?: number,
-  scaleX?: number,
-  scaleY?: number,
-  scale?: number,
-  borderRadius?: number,
-  shadowX?: ?number,
-  shadowY?: ?number,
-  shadowBlur?: ?number,
+  opacity?: InputValue,
+  rotation?: InputValue,
+  scaleX?: InputValue,
+  scaleY?: InputValue,
+  scale?: InputValue,
+  borderRadius?: InputValue,
+  shadowX?: ?InputValue,
+  shadowY?: ?InputValue,
+  shadowBlur?: ?InputValue,
   shadowColor?: ?string,
-  shadowSpread?: ?number,
+  shadowSpread?: ?InputValue,
 };
 
 type DragConstraintType = {

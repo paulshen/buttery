@@ -1,5 +1,5 @@
 /* @flow */
-import App from './experiments/Famous';
+import App from './experiments/Sandbox';
 
 export default App;
 

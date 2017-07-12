@@ -47,14 +47,16 @@ export function applyProperties(
   });
 }
 
-function arePointValuesSame(a: NumberOrDragValue, b: NumberOrDragValue) {
-  if (typeof a === 'number' && typeof b === 'number') {
-    return a === b;
+export function getTargetValue(value: ScalarValue | AnimatedValue | DragValue | any) {
+  if (typeof value === 'object') {
+    if (value.type === 'drag') {
+      return getTargetValue(value.value);
+    }
+    if (value.type === 'animated') {
+      return value.value;
+    }
   }
-  if (typeof a === 'object' && typeof b === 'object') {
-    return a.value === b.value;
-  }
-  return false;
+  return value;
 }
 
 export function areFramesSame(a: ComputedFrameType, b: ComputedFrameType) {
@@ -84,6 +86,33 @@ export function arePropertiesSame(
     }
   }
   return true;
+}
+export function getDifferingProperties<T: Object>(a: ?T, b: ?T): $Keys<T>[] {
+  if (!a !== !b) {
+    if (a) {
+      return Object.keys(a);
+    } else if (b) {
+      return Object.keys(b);
+    }
+  }
+  if (!a || !b) {
+    return [];
+  }
+
+  let differingProperties = [];
+  for (let key in a) {
+    if (!(key in b) || a[key] !== b[key]) {
+      differingProperties.push(key);
+    }
+  }
+  for (let key in b) {
+    if (!(key in a) || a[key] !== b[key]) {
+      if (differingProperties.indexOf(key) === -1) {
+        differingProperties.push(key);
+      }
+    }
+  }
+  return differingProperties;
 }
 
 function interp(from: number, to: number, t: number) {
