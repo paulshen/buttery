@@ -38,3 +38,13 @@ export function removeAnimator(layer: Layer, key: string) {
     delete animators[layerID][key];
   }
 }
+
+export function removeAnimatorsForLayer(layer: Layer) {
+  let layerID = layer.getID();
+  if (animators[layerID]) {
+    Object.keys(animators[layerID]).forEach(key => {
+      animators[layerID][key] && animators[layerID][key].stop();
+    });
+    delete animators[layerID];
+  }
+}

@@ -9,7 +9,12 @@ import {
   getTargetValue,
   getDifferingProperties
 } from './AnimatedProperties';
-import { getAnimator, createAnimator, removeAnimator } from './Animators';
+import {
+  getAnimator,
+  createAnimator,
+  removeAnimator,
+  removeAnimatorsForLayer
+} from './Animators';
 import Draggable from './Draggable';
 
 type Updates = { [key: string]: ScalarValue };
@@ -291,13 +296,10 @@ export default class Layer extends React.Component {
   }
 
   componentWillUnmount() {
-    // TODO
-    // if (this._animator) {
-    //   this._animator.stop();
-    // }
-    // if (this._draggable) {
-    //   this._draggable.stop();
-    // }
+    removeAnimatorsForLayer(this);
+    if (this._draggable) {
+      this._draggable.stop();
+    }
   }
 
   render() {
