@@ -67,13 +67,18 @@ export default class Layer extends React.Component {
     let { frame, properties } = this.props;
     this._applyUpdates(this._computedFrame);
     this._applyUpdates(this._computedStyles);
-    if (
-      (typeof frame.x === 'object' && frame.x.type === 'drag') ||
-      (typeof frame.y === 'object' && frame.y.type === 'drag')
-    ) {
-      this._createDraggable();
+    let { x, y } = frame;
+    let isDragX = typeof x === 'object' && x.type === 'drag';
+    let isDragY = typeof y === 'object' && y.type === 'drag';
+    if (isDragX || isDragY) {
+      let draggable = this._getDraggable();
+      if (isDragX) {
+        draggable.setConfig('x', ((x: any): Object).config || {});
+      }
+      if (isDragY) {
+        draggable.setConfig('y', ((y: any): Object).config || {});
+      }
     }
-    // this._apply(this._getComputedFrame(frame), properties);
   }
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
@@ -84,8 +89,8 @@ export default class Layer extends React.Component {
       this._getTargetValues(this.props.frame)
     );
     let differingStyleProperties = getDifferingProperties(
-      this._getTargetValues(properties),
-      this._getTargetValues(this.props.properties)
+      this._getTargetValues(properties || {}),
+      this._getTargetValues(this.props.properties || {})
     );
     if (
       differingFrameProperties.length > 0 ||
@@ -96,13 +101,15 @@ export default class Layer extends React.Component {
         this._handleTargetPropertyChange(
           frame[property],
           this._computedFrame[property],
+          this.props.frame[property],
           property
         )
       );
       differingStyleProperties.forEach(property =>
         this._handleTargetPropertyChange(
-          properties[property],
+          properties && properties[property],
           this._computedStyles[property],
+          this.props.properties && this.props.properties[property],
           property
         )
       );
@@ -121,30 +128,34 @@ export default class Layer extends React.Component {
 
   _handleTargetPropertyChange = (
     to: InputValue | DragValue | any,
-    from: ?(ScalarValue | any),
+    fromScalar: ?(ScalarValue | any),
+    from: ?(InputValue | DragValue | any),
     property: string
   ) => {
+    // TODO: handle previous animate and drag values
     if (typeof to === 'object') {
       if (to.type === 'animated') {
-        if (from == null) {
+        if (fromScalar == null) {
           this._updates[property] = to.value;
         } else {
           // TODO: reuse previous animator if same config?
           let animator = createAnimator(this, property, to.config);
-          animator.start(from, to.value, value => {
+          animator.start(fromScalar, to.value, value => {
             this._applyUpdates({
               [property]: value,
             });
           });
         }
       } else if (to.type === 'drag') {
-        if (!this._draggable) {
-          this._createDraggable();
-        }
-        let draggable = ((this._draggable: any): Draggable);
-        draggable.config[property] = to.config;
-        if (!draggable.isControlledByDraggable) {
-          this._handleTargetPropertyChange(to.value, from, property);
+        let draggable = this._getDraggable();
+        draggable.setConfig(((property: any): 'x' | 'y'), to.config || {});
+        if (!draggable.isActive()) {
+          this._handleTargetPropertyChange(
+            to.value,
+            fromScalar,
+            from,
+            property
+          );
         }
       }
     } else {
@@ -181,16 +192,19 @@ export default class Layer extends React.Component {
   //   }
   // };
   //
-  _createDraggable = () => {
-    this._draggable = new Draggable();
-    // this._draggable.props = draggableProperties;
-    this._draggable.start(
-      this._layer,
-      this._computedFrame,
-      this._onDragStart,
-      this._dragUpdater,
-      this._onDragEnd
-    );
+  _getDraggable = () => {
+    if (!this._draggable) {
+      let draggable = new Draggable();
+      draggable.start(
+        this._layer,
+        this._computedFrame,
+        this._onDragStart,
+        this._dragUpdater,
+        this._onDragEnd
+      );
+      this._draggable = draggable;
+    }
+    return this._draggable;
   };
 
   _onDragStart = () => {
@@ -201,7 +215,7 @@ export default class Layer extends React.Component {
   };
 
   _dragUpdater = (p: Point) => {
-    if (this._draggable && this._draggable.isControlledByDraggable) {
+    if (this._draggable && this._draggable.isActive()) {
       // TODO: only pass updates
       this._applyUpdates({
         x: p.x,
@@ -246,7 +260,7 @@ export default class Layer extends React.Component {
       return value.value;
     }
     if (value.type === 'drag') {
-      if (this._draggable && this._draggable.isControlledByDraggable) {
+      if (this._draggable && this._draggable.isActive()) {
         return this._draggable.getPoint()[key];
       }
       return this._getValue(value.value, key);
@@ -263,7 +277,7 @@ export default class Layer extends React.Component {
       styleUpdates.transform = transformString;
       this._computedFrame.x = x;
       this._computedFrame.y = y;
-      if (this._draggable && !this._draggable.isControlledByDraggable) {
+      if (this._draggable && !this._draggable.isActive()) {
         this._draggable.setPoint({ x, y });
       }
     }
@@ -315,11 +329,13 @@ export default class Layer extends React.Component {
     this._handleTargetPropertyChange(
       this.props.frame.x,
       this._computedFrame.x,
+      null,
       'x'
     );
     this._handleTargetPropertyChange(
       this.props.frame.y,
       this._computedFrame.y,
+      null,
       'y'
     );
     this._applyUpdates(this._updates);

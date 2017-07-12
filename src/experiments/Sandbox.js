@@ -34,7 +34,7 @@ class App extends React.Component {
                 min: 50,
                 max: 150,
               }),
-              Animated(this.state.selected ? 200 : 100, spring()),
+              Drag(Animated(this.state.selected ? 200 : 100, spring())),
               100,
               100
             )}

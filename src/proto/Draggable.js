@@ -17,11 +17,11 @@ export default class Draggable {
     pageSize?: number,
     onTouchEnd?: (p: Point) => void,
   };
-  config: {
+  _config: {
     x?: ?DragConfig,
     y?: ?DragConfig,
   } = {};
-  isControlledByDraggable = false;
+  _isControlledByDraggable = false;
 
   _layer: HTMLElement;
   _p: Point;
@@ -54,6 +54,10 @@ export default class Draggable {
     document.addEventListener('mouseup', this._onTouchEnd, false);
   }
 
+  setConfig(property: 'x' | 'y', config: ?DragConfig) {
+    this._config[property] = config;
+  }
+
   setPoint(p: Point) {
     this._p = { ...p };
   }
@@ -62,8 +66,12 @@ export default class Draggable {
     return this._p;
   }
 
+  isActive() {
+    return this._isControlledByDraggable;
+  }
+
   stop() {
-    this.isControlledByDraggable = false;
+    this._isControlledByDraggable = false;
     if (this._motion) {
       this._motion.stop();
     }
@@ -75,11 +83,17 @@ export default class Draggable {
     document.removeEventListener('mouseup', this._onTouchEnd);
   }
 
+  end() {
+    this._dragStart = null;
+    this._isControlledByDraggable = false;
+    activeDraggables = activeDraggables.filter(d => d !== this);
+  }
+
   _onTouchStart = (e: Event) => {
     if (this._motion) {
       this._motion.stop();
     }
-    this.isControlledByDraggable = true;
+    this._isControlledByDraggable = true;
     this._dragCaptured = false;
     // TODO: handle when already constrained
     this._dragStart = { ...this._p };
@@ -97,11 +111,17 @@ export default class Draggable {
       return;
     }
     let touch = this._getTouch(e);
-    let x = dragStart.x + (touch.clientX - this._touches[0].clientX);
-    let y = dragStart.y + (touch.clientY - this._touches[0].clientY);
+    let x = dragStart.x;
+    if (this._config.x) {
+      x += touch.clientX - this._touches[0].clientX;
+    }
+    let y = dragStart.y;
+    if (this._config.y) {
+      y += touch.clientY - this._touches[0].clientY;
+    }
     this._p = {
-      x: constrain(x, this.config.x),
-      y: constrain(y, this.config.y),
+      x: constrain(x, this._config.x),
+      y: constrain(y, this._config.y),
     };
     if (
       !this._dragCaptured &&
@@ -120,12 +140,6 @@ export default class Draggable {
       this._updater(this._p);
     }
     this._addTouch(touch);
-  };
-
-  end = () => {
-    this._dragStart = null;
-    this.isControlledByDraggable = false;
-    activeDraggables = activeDraggables.filter(d => d !== this);
   };
 
   _onTouchEnd = () => {
@@ -217,7 +231,7 @@ export default class Draggable {
         // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
       }
     } else {
-      this.isControlledByDraggable = false;
+      this._isControlledByDraggable = false;
       this._onDragEnd && this._onDragEnd(this._p);
     }
   };
@@ -237,14 +251,14 @@ export default class Draggable {
   };
 
   _onMotionEnd = (p: Point) => {
-    this.isControlledByDraggable = false;
+    this._isControlledByDraggable = false;
     const onDragEnd = this._onDragEnd;
     // reapply hard constraints here. motion might cause overshoot.
     onDragEnd && onDragEnd(this._applyHardConstraints(p));
   };
 
   _applyHardConstraints = (p: Point) => ({
-    x: constrainHardOnly(p.x, this.config.x),
-    y: constrainHardOnly(p.y, this.config.y),
+    x: constrainHardOnly(p.x, this._config.x),
+    y: constrainHardOnly(p.y, this._config.y),
   });
 }
