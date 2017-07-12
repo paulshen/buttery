@@ -2,10 +2,7 @@
 import React from 'react';
 import CSSPropertyOperations from 'react-dom/lib/CSSPropertyOperations';
 
-import {
-  getTargetValue,
-  getDifferingProperties
-} from './AnimatedProperties';
+import { getTargetValue, getDifferingProperties } from './AnimatedProperties';
 import {
   getAnimator,
   createAnimator,
@@ -33,18 +30,10 @@ export default class Layer extends React.Component {
   };
   _id: ?string;
   _layer: HTMLElement;
-  _computedFrame: ComputedFrameType;
-  _computedStyles: { [property: string]: any };
+  _computedFrame: ComputedFrameType = (({}: any): ComputedFrameType);
+  _computedStyles: { [property: string]: any } = {};
   _animator: ?Object;
   _draggable: ?Draggable;
-
-  constructor(props: $PropertyType<Layer, 'props'>) {
-    super();
-    this._computedFrame = this._getTargetValues(props.frame);
-    this._computedStyles = props.style
-      ? this._getTargetValues(props.style)
-      : {};
-  }
 
   getID = (): string => {
     if (!this._id) {
@@ -60,8 +49,8 @@ export default class Layer extends React.Component {
 
   componentDidMount() {
     let { frame, style } = this.props;
-    this._applyUpdates(this._computedFrame);
-    this._applyUpdates(this._computedStyles);
+    this._applyUpdates(this._getTargetValues(frame));
+    style && this._applyUpdates(this._getTargetValues(style));
     this._updateDraggable(frame);
   }
 
@@ -111,7 +100,6 @@ export default class Layer extends React.Component {
     from: ?(InputValue | DragValue | any),
     property: string
   ) => {
-    // TODO: handle previous animate and drag values
     if (typeof to === 'object') {
       if (to.type === 'animated') {
         if (fromScalar == null) {
@@ -184,7 +172,6 @@ export default class Layer extends React.Component {
   };
 
   _dragUpdater = (p: Point) => {
-    // TODO: only pass updates
     this._applyUpdates({
       x: p.x,
       y: p.y,
@@ -251,15 +238,22 @@ export default class Layer extends React.Component {
   _applyUpdates = (updates: Updates) => {
     let styleUpdates = {};
     if (typeof updates.x !== 'undefined' || typeof updates.y !== 'undefined') {
-      // TODO: onMove
-      let x = updates.x || this._computedFrame.x;
-      let y = updates.y || this._computedFrame.y;
-      let transformString = `translate3d(${x}px,${y}px,0)`;
-      styleUpdates.transform = transformString;
-      this._computedFrame.x = x;
-      this._computedFrame.y = y;
-      if (this._draggable && !this._draggable.isActive()) {
-        this._draggable.setPoint({ x, y });
+      if (
+        updates.x !== this._computedFrame.x ||
+        updates.y !== this._computedFrame.y
+      ) {
+        let p = {
+          x: updates.x || this._computedFrame.x,
+          y: updates.y || this._computedFrame.y,
+        };
+        let transformString = `translate3d(${p.x}px,${p.y}px,0)`;
+        styleUpdates.transform = transformString;
+        this._computedFrame.x = p.x;
+        this._computedFrame.y = p.y;
+        if (this._draggable && !this._draggable.isActive()) {
+          this._draggable.setPoint(p);
+        }
+        this.props.onMove && this.props.onMove(p);
       }
     }
     Object.keys(updates).forEach(property => {
