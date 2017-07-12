@@ -15,6 +15,8 @@ import {
 class App extends React.Component {
   state = {
     selected: false,
+    x: 100,
+    y: 100,
   };
 
   _toggle = () => {
@@ -30,15 +32,12 @@ class App extends React.Component {
           <button onClick={this._toggle}>Toggle</button>
           <Layer
             frame={Frame(
-              this.state.selected
-                ? Drag(Animated(200, timed()))
-                : Animated(100, spring()),
-              this.state.selected
-                ? Drag(Animated(200, spring()))
-                : Animated(100, timed()),
+              Drag(this.state.x, { min: 0, max: 200, bounce: true }),
+              Drag(this.state.y),
               100,
               100
             )}
+            onDragEnd={({ x, y }) => this.setState({ x, y })}
             style={{
               backgroundColor: this.state.selected ? 'blue' : 'red',
             }}

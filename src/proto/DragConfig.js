@@ -34,11 +34,14 @@ export function constrain(value: number, config: ?DragConfig): number {
   if (!config) {
     return value;
   }
+  if (config.bounce === true) {
+    return constrainBounce(value, config.min, config.max);
+  }
   return constrainHard(value, config.min, config.max);
 }
 
 export function constrainHardOnly(value: number, config: ?DragConfig): number {
-  if (!config) {
+  if (!config || config.bounce === true) {
     return value;
   }
   return constrainHard(value, config.min, config.max);
