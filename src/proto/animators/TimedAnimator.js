@@ -1,52 +1,44 @@
 /* @flow */
-import { interpolateFrame, interpolateProperties } from '../AnimatedProperties';
+import type Layer from '../Layer';
 
-function getKey(props: TimedAnimatorProps) {
-  return `timed:${props.duration}`;
+function interp(from: number, to: number, t: number) {
+  return from + (to - from) * t;
 }
 
-type TimedAnimatorProps = { duration: number };
-export default function TimedAnimator(props: TimedAnimatorProps) {
-  return {
-    props,
-    Klass: TimedAnimatorImpl,
-    key: getKey(props),
-  };
-}
-
-class TimedAnimatorImpl {
-  key: string;
-  _updater: (f: ComputedFrameType, p: AnimatedProperties) => void;
-  _onEnd: ?() => void;
-  _duration: number;
+export default class TimedAnimator implements Animator {
+  _layer: Layer;
+  _key: string;
+  _config: TimedAnimatorConfig;
   _start: number;
-  _fromFrame: ComputedFrameType;
-  _fromProperties: AnimatedProperties;
-  _toFrame: ComputedFrameType;
-  _toProperties: AnimatedProperties;
+  _from: ScalarValue;
+  _to: ScalarValue;
+  _value: ScalarValue;
+  _updater: (value: ScalarValue) => void;
+  _onEnd: ?Function;
   _raf: number;
 
-  constructor(props: TimedAnimatorProps) {
-    this._duration = props.duration;
-    this.key = getKey(props);
+  constructor(layer: Layer, key: string, config: TimedAnimatorConfig) {
+    this._layer = layer;
+    this._key = key;
+    this._config = config;
   }
 
   start(
-    fromFrame: ComputedFrameType,
-    fromProperties: AnimatedProperties,
-    toFrame: ComputedFrameType,
-    toProperties: ?AnimatedProperties,
-    updater: (f: ComputedFrameType, p: AnimatedProperties) => void,
-    onEnd: ?() => void
+    from: ScalarValue,
+    to: ScalarValue,
+    updater: (value: ScalarValue) => void,
+    onEnd: ?Function
   ) {
     this._start = Date.now();
-    this._fromFrame = { ...fromFrame };
-    this._fromProperties = { ...fromProperties };
-    this._toFrame = { ...toFrame };
-    this._toProperties = { ...toProperties };
+    this._from = from;
+    this._to = to;
     this._updater = updater;
-    this._onEnd = onEnd;
     this._tick();
+    this._onEnd = onEnd;
+  }
+
+  getValue(): ScalarValue {
+    return this._value;
   }
 
   stop() {
@@ -55,15 +47,13 @@ class TimedAnimatorImpl {
 
   _tick = () => {
     let now = Date.now();
-    let t = Math.min((now - this._start) / this._duration, 1);
-    this._updater(
-      interpolateFrame(this._fromFrame, this._toFrame, t),
-      interpolateProperties(this._fromProperties, this._toProperties, t)
-    );
+    let t = Math.min((now - this._start) / this._config.duration, 1);
+    this._value = interp(this._from, this._to, t);
+    this._updater(this._value);
     if (t < 1) {
       this._raf = window.requestAnimationFrame(this._tick);
     } else {
-      this._onEnd && this._onEnd();
+      // this._onEnd && this._onEnd();
     }
   };
 }

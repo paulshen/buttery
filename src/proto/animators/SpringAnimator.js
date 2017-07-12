@@ -1,64 +1,50 @@
 /* @flow */
-import { interpolateFrame, interpolateProperties } from '../AnimatedProperties';
+import type Layer from '../Layer';
 
-function getKey(props?: SpringAnimatorProps) {
-  return `spring:${props && props.spring != null
-    ? props.spring
-    : '_'}:${props && props.friction != null ? props.friction : '_'}`;
+function interp(from: number, to: number, t: number) {
+  return from + (to - from) * t;
 }
 
-type SpringAnimatorProps = { spring?: number, friction?: number };
-export default function SpringAnimator(props?: SpringAnimatorProps) {
-  return {
-    props,
-    Klass: SpringAnimatorImpl,
-    key: getKey(props),
-  };
-}
-
-class SpringAnimatorImpl {
-  _spring: number;
-  _friction: number;
-
-  key: string;
-  _updater: (f: ComputedFrameType, p: AnimatedProperties) => void;
-  _onEnd: ?() => void;
+export default class SpringAnimator implements Animator {
+  _layer: Layer;
+  _key: string;
+  _config: SpringAnimatorConfig;
   _start: number;
-  _fromFrame: ComputedFrameType;
-  _fromProperties: AnimatedProperties;
-  _toFrame: ComputedFrameType;
-  _toProperties: AnimatedProperties;
+  _lastUpdate: number;
+  _from: ScalarValue;
+  _to: ScalarValue;
   _x: number;
   _v: number;
-  _lastUpdate: number;
+  _value: ScalarValue;
+  _updater: (value: ScalarValue) => void;
+  _onEnd: ?Function;
   _raf: number;
 
-  constructor(props?: SpringAnimatorProps) {
-    let p = props || {};
-    this._spring = p.spring || 0.0005;
-    this._friction = p.friction || 0.01;
-    this.key = getKey(props);
+  constructor(layer: Layer, key: string, config: SpringAnimatorConfig) {
+    this._layer = layer;
+    this._key = key;
+    this._config = config;
   }
 
   start(
-    fromFrame: ComputedFrameType,
-    fromProperties: AnimatedProperties,
-    toFrame: ComputedFrameType,
-    toProperties: ?AnimatedProperties,
-    updater: (f: ComputedFrameType, p: AnimatedProperties) => void,
-    onEnd: ?() => void
+    from: ScalarValue,
+    to: ScalarValue,
+    updater: (value: ScalarValue) => void,
+    onEnd: ?Function
   ) {
     this._start = Date.now();
-    this._fromFrame = { ...fromFrame };
-    this._fromProperties = { ...fromProperties };
-    this._toFrame = { ...toFrame };
-    this._toProperties = { ...toProperties };
+    this._from = from;
+    this._to = to;
+    this._updater = updater;
     this._x = 0;
     this._v = 0;
-    this._updater = updater;
-    this._onEnd = onEnd;
     this._lastUpdate = Date.now();
-    this._raf = window.requestAnimationFrame(this._tick);
+    this._tick();
+    this._onEnd = onEnd;
+  }
+
+  getValue(): ScalarValue {
+    return this._value;
   }
 
   stop() {
@@ -69,13 +55,14 @@ class SpringAnimatorImpl {
     let now = Date.now();
     let dt = now - this._lastUpdate;
     if (this._x !== 1) {
-      this._v -= ((this._x - 1) * this._spring + this._friction * this._v) * dt;
+      this._v -=
+        ((this._x - 1) * this._config.spring +
+          this._config.friction * this._v) *
+        dt;
     }
     this._x += this._v * dt;
-    this._updater(
-      interpolateFrame(this._fromFrame, this._toFrame, this._x),
-      interpolateProperties(this._fromProperties, this._toProperties, this._x)
-    );
+    this._value = interp(this._from, this._to, this._x);
+    this._updater(this._value);
     if (Math.abs(this._x - 1) < 0.00001 && Math.abs(this._v) < 0.00001) {
       this._onEnd && this._onEnd();
     } else {
