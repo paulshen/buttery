@@ -31,7 +31,7 @@ class App extends React.Component {
           <Layer
             frame={Frame(
               this.state.selected
-                ? Drag(Animated(200, timed(5000)))
+                ? Drag(Animated(200, timed()))
                 : Animated(100, spring()),
               this.state.selected
                 ? Drag(Animated(200, spring()))
@@ -39,7 +39,7 @@ class App extends React.Component {
               100,
               100
             )}
-            properties={{
+            style={{
               backgroundColor: this.state.selected ? 'blue' : 'red',
             }}
           />

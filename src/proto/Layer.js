@@ -3,9 +3,6 @@ import React from 'react';
 import CSSPropertyOperations from 'react-dom/lib/CSSPropertyOperations';
 
 import {
-  applyProperties,
-  areFramesSame,
-  arePropertiesSame,
   getTargetValue,
   getDifferingProperties
 } from './AnimatedProperties';
@@ -23,7 +20,7 @@ let nextId = 100;
 export default class Layer extends React.Component {
   props: {
     frame: FrameType,
-    properties?: AnimatedProperties,
+    style?: AnimatedProperties,
     animator?: Object,
     draggable?: boolean,
     draggableProperties?: $PropertyType<Draggable, 'props'>,
@@ -44,8 +41,8 @@ export default class Layer extends React.Component {
   constructor(props: $PropertyType<Layer, 'props'>) {
     super();
     this._computedFrame = this._getTargetValues(props.frame);
-    this._computedStyles = props.properties
-      ? this._getTargetValues(props.properties)
+    this._computedStyles = props.style
+      ? this._getTargetValues(props.style)
       : {};
   }
 
@@ -62,14 +59,14 @@ export default class Layer extends React.Component {
   });
 
   componentDidMount() {
-    let { frame, properties } = this.props;
+    let { frame, style } = this.props;
     this._applyUpdates(this._computedFrame);
     this._applyUpdates(this._computedStyles);
     this._updateDraggable(frame);
   }
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
-    let { animator, frame, properties, draggable } = nextProps;
+    let { animator, frame, style, draggable } = nextProps;
     this._updateDraggable(frame);
     let nextTargetFrame = this._getTargetValues(frame);
     let differingFrameProperties = getDifferingProperties(
@@ -77,8 +74,8 @@ export default class Layer extends React.Component {
       this._getTargetValues(this.props.frame)
     );
     let differingStyleProperties = getDifferingProperties(
-      this._getTargetValues(properties || {}),
-      this._getTargetValues(this.props.properties || {})
+      this._getTargetValues(style || {}),
+      this._getTargetValues(this.props.style || {})
     );
     if (
       differingFrameProperties.length > 0 ||
@@ -97,9 +94,9 @@ export default class Layer extends React.Component {
       differingStyleProperties.forEach(property =>
         this._handleTargetPropertyChange(
           updates,
-          properties && properties[property],
+          style && style[property],
           this._computedStyles[property],
-          this.props.properties && this.props.properties[property],
+          this.props.style && this.props.style[property],
           property
         )
       );
@@ -265,19 +262,20 @@ export default class Layer extends React.Component {
         this._draggable.setPoint({ x, y });
       }
     }
-    if (typeof updates.width !== 'undefined') {
-      styleUpdates.width = updates.width;
-      this._computedFrame.width = updates.width;
-    }
-    if (typeof updates.height !== 'undefined') {
-      styleUpdates.height = updates.height;
-      this._computedFrame.height = updates.height;
-    }
-    // TODO: handle properties and random properties
-    if (typeof updates.backgroundColor !== 'undefined') {
-      styleUpdates.backgroundColor = updates.backgroundColor;
-      this._computedStyles.backgroundColor = updates.backgroundColor;
-    }
+    Object.keys(updates).forEach(property => {
+      if (property === 'x' || property === 'y') {
+        return;
+      }
+      let value = updates[property];
+      styleUpdates[property] = value;
+      if (property === 'width' || property === 'height') {
+        this._computedFrame[property] = value;
+      } else if (value == null) {
+        delete this._computedStyles[property];
+      } else {
+        this._computedStyles[property] = value;
+      }
+    });
     CSSPropertyOperations.setValueForStyles(this._layer, styleUpdates, {
       _currentElement: {},
       _debugID: 'HACK',
@@ -307,7 +305,7 @@ export default class Layer extends React.Component {
       children,
       animator,
       frame,
-      properties,
+      style,
       draggable,
       draggableProperties,
       onMove,
