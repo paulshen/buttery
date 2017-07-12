@@ -2,7 +2,15 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, Frame, Animated, Drag } from '../proto';
+import {
+  DragConstraint,
+  Layer,
+  Frame,
+  Animated,
+  Drag,
+  timed,
+  spring
+} from '../proto';
 
 class App extends React.Component {
   state = {
@@ -22,8 +30,8 @@ class App extends React.Component {
           <button onClick={this._toggle}>Toggle</button>
           <Layer
             frame={Frame(
-              Drag(Animated(this.state.selected ? 200 : 100)),
-              Animated(this.state.selected ? 200 : 100),
+              Drag(Animated(this.state.selected ? 200 : 100, timed())),
+              Animated(this.state.selected ? 200 : 100, spring()),
               100,
               100
             )}

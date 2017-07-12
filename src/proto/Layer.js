@@ -130,11 +130,7 @@ export default class Layer extends React.Component {
           this._updates[property] = to.value;
         } else {
           // TODO: reuse previous animator if same config?
-          let animator = createAnimator(this, property, {
-            spring: 0.0005,
-            friction: 0.01,
-            type: 'spring',
-          });
+          let animator = createAnimator(this, property, to.config);
           animator.start(from, to.value, value => {
             this._applyUpdates({
               [property]: value,
