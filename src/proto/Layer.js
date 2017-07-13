@@ -252,8 +252,8 @@ export default class Layer extends React.Component {
         updates.y !== this._computedFrame.y
       ) {
         let p = {
-          x: updates.x || this._computedFrame.x,
-          y: updates.y || this._computedFrame.y,
+          x: updates.x != null ? updates.x : this._computedFrame.x,
+          y: updates.y != null ? updates.y : this._computedFrame.y,
         };
         let transformString = `translate3d(${p.x}px,${p.y}px,0)`;
         styleUpdates.transform = transformString;
