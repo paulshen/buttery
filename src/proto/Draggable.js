@@ -1,40 +1,10 @@
 /* @flow */
 
-import { constrain, constrainHardOnly, isConstrained } from './DragConfig';
-import Motion from './Motion';
-import createScroll from './motion/createScroll';
-import createSpring from './motion/createSpring';
-import Friction from './motion/Friction';
+import { constrain, constrainHardOnly } from './DragConfig';
+import DragMomentumAnimator from './animators/DragMomentumAnimator';
 
 let activeDraggables = [];
 const DRAG_START_THRESHOLD = 3;
-
-function getPageTarget(x: number, v: number, config: DragConfig) {
-  let pageSize = ((config.pageSize: any): number);
-  let min = ((config.min: any): number);
-  let max = ((config.max: any): number);
-  let pageIndex = Math.min(
-    Math.max(
-      Math.round((x - min) / pageSize + Math.min(Math.max(v, -0.5), 0.5)),
-      0
-    ),
-    (max - min) / pageSize
-  );
-  return min + pageIndex * pageSize;
-}
-
-function getMomentumFunction(x: number, v: number, config: ?DragConfig) {
-  if (config && config.momentum === true) {
-    let { pageSize } = config;
-    if (pageSize) {
-      return createSpring(getPageTarget(x, v, config));
-    } else if (config.min != null || config.max != null) {
-      return createScroll(config);
-    }
-    return Friction;
-  }
-  return (x, v, dt) => [0, true];
-}
 
 export default class Draggable {
   _config: {
@@ -48,7 +18,7 @@ export default class Draggable {
   _dragStart: ?Point;
   _dragCaptured: boolean;
   _touches: Object[];
-  _motion: Motion;
+  _dragAnimator: ?DragMomentumAnimator;
   _onDragStart: ?() => void;
   _layerUpdater: (p: Point) => void;
   /* callback on end of drag animation */
@@ -92,8 +62,8 @@ export default class Draggable {
 
   stop() {
     this._isControlledByDraggable = false;
-    if (this._motion) {
-      this._motion.stop();
+    if (this._dragAnimator) {
+      this._dragAnimator.stop();
     }
     this._layer.removeEventListener('touchstart', this._onTouchStart);
     this._layer.removeEventListener('touchmove', this._onTouchMove);
@@ -110,8 +80,8 @@ export default class Draggable {
   }
 
   _onTouchStart = (e: Event) => {
-    if (this._motion) {
-      this._motion.stop();
+    if (this._dragAnimator) {
+      this._dragAnimator.stop();
     }
     this._isControlledByDraggable = true;
     this._dragCaptured = false;
@@ -199,30 +169,11 @@ export default class Draggable {
         };
       }
 
-      let fX = getMomentumFunction(this._p.x, v.x, this._config.x);
-      let fY = getMomentumFunction(this._p.y, v.y, this._config.y);
-      this._motion = new Motion((p: Point, vm: Vector, dt: number) => {
-        if (
-          momentumX &&
-          momentumY &&
-          vm.x &&
-          vm.y &&
-          !isConstrained(p.x, this._config.x) &&
-          !isConstrained(p.y, this._config.y)
-        ) {
-          let vHypotenuse = Math.sqrt(vm.x * vm.x + vm.y * vm.y);
-          let [nextV, shouldStop] = Friction(0, vHypotenuse, dt);
-          return [
-            { x: vm.x / vHypotenuse * nextV, y: vm.y / vHypotenuse * nextV },
-            shouldStop,
-          ];
-        }
-
-        let [vX, shouldStopX] = fX(p.x, vm.x, dt);
-        let [vY, shouldStopY] = fY(p.y, vm.y, dt);
-        return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
-      });
-      this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+      this._dragAnimator = new DragMomentumAnimator(
+        this._config.x,
+        this._config.y
+      );
+      this._dragAnimator.start(this._p, v, this._updater, this._onMomentumEnd);
     } else {
       this._isControlledByDraggable = false;
       this._onDragEnd && this._onDragEnd(this._p);
@@ -243,7 +194,7 @@ export default class Draggable {
     this._layerUpdater(this._p);
   };
 
-  _onMotionEnd = (p: Point) => {
+  _onMomentumEnd = (p: Point) => {
     this._isControlledByDraggable = false;
     const onDragEnd = this._onDragEnd;
     // reapply hard constraints here. motion might cause overshoot.
