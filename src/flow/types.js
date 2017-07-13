@@ -31,17 +31,6 @@ type DragConfig = {
 };
 type InputValue = ScalarValue | AnimatedValue;
 
-interface Animator {
-  start(
-    from: ScalarValue,
-    to: ScalarValue,
-    updater: (value: ScalarValue) => void,
-    onEnd: ?Function
-  ): void,
-  getValue(): ScalarValue,
-  stop(): void,
-}
-
 type FrameType = {
   x: InputValue | DragValue,
   y: InputValue | DragValue,

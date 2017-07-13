@@ -1,7 +1,7 @@
 /* @flow */
 
 import { constrain, constrainHardOnly } from './DragConfig';
-import DragMomentumAnimator from './animators/DragMomentumAnimator';
+import DragMomentumAnimator from './DragMomentumAnimator';
 
 let activeDraggables = [];
 const DRAG_START_THRESHOLD = 3;

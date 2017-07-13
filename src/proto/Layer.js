@@ -8,7 +8,7 @@ import {
   createAnimator,
   removeAnimator,
   removeAnimatorsForLayer
-} from './Animators';
+} from './AnimatorManager';
 import Draggable from './Draggable';
 
 type Updates = { [key: string]: ScalarValue };

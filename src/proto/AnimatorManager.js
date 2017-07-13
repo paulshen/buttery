@@ -1,7 +1,6 @@
 /* @flow */
 import type Layer from './Layer';
-import TimedAnimator from './animators/TimedAnimator';
-import SpringAnimator from './animators/SpringAnimator';
+import Animator from './Animator';
 
 let animators: { [layerID: string]: { [key: string]: Animator } } = {};
 
@@ -22,12 +21,7 @@ export function createAnimator(
   if (animators[layerID][key]) {
     animators[layerID][key].stop();
   }
-  if (config.type === 'timed') {
-    animators[layerID][key] = new TimedAnimator(layer, key, config);
-  }
-  if (config.type === 'spring') {
-    animators[layerID][key] = new SpringAnimator(layer, key, config);
-  }
+  animators[layerID][key] = new Animator(layer, key, config);
   return animators[layerID][key];
 }
 

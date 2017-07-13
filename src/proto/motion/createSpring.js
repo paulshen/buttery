@@ -1,12 +1,25 @@
 /* @flow */
-const SpringK = 0.0001;
-const FrictionK = 0.02;
-export default function createSpring(target: number) {
-  return function Spring(x: number, vParam: number, dt: number) {
+export default function createSpring(
+  target: number,
+  springK: number,
+  frictionK: number
+) {
+  return function Spring(
+    xParam: number,
+    vParam: number,
+    elapsed: number,
+    dt: number
+  ) {
+    let x = xParam;
     let v = vParam;
     if (x !== target) {
-      v -= ((x - target) * SpringK + FrictionK * v) * dt;
+      v -= ((x - target) * springK + frictionK * v) * dt;
     }
-    return [v, Math.abs(x - target) < 0.01 && Math.abs(v) < 0.01];
+    x += v * dt;
+    return [
+      x,
+      v,
+      Math.abs(x - target) / target < 0.00001 && Math.abs(v) < 0.00001,
+    ];
   };
 }

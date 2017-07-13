@@ -1,8 +1,8 @@
 /* @flow */
-import { constrain, constrainHardOnly, isConstrained } from '../DragConfig';
-import createScroll from '../motion/createScroll';
-import createSpring from '../motion/createSpring';
-import Friction from '../motion/Friction';
+import { constrain, constrainHardOnly, isConstrained } from './DragConfig';
+import createScroll from './motion/createScroll';
+import createSpring from './motion/createSpring';
+import Friction from './motion/Friction';
 
 function getPageTarget(x: number, v: number, config: DragConfig) {
   let pageSize = ((config.pageSize: any): number);
@@ -22,20 +22,30 @@ function getMomentumFunction(x: number, v: number, config: ?DragConfig) {
   if (config && config.momentum === true) {
     let { pageSize } = config;
     if (pageSize) {
-      return createSpring(getPageTarget(x, v, config));
+      return createSpring(getPageTarget(x, v, config), 0.0001, 0.02);
     } else if (config.min != null || config.max != null) {
       return createScroll(config);
     }
     return Friction;
   }
-  return (x, v, dt) => [0, true];
+  return (x, v, elapsed, dt) => [x, 0, true];
 }
 
 export default class DragMomentumAnimator {
   _xConfig: ?DragConfig;
   _yConfig: ?DragConfig;
-  _fX: (x: ScalarValue, v: number, dt: number) => [number, boolean];
-  _fY: (x: ScalarValue, v: number, dt: number) => [number, boolean];
+  _fX: (
+    x: ScalarValue,
+    v: number,
+    elapsed: number,
+    dt: number
+  ) => [number, number, boolean];
+  _fY: (
+    x: ScalarValue,
+    v: number,
+    elapsed: number,
+    dt: number
+  ) => [number, number, boolean];
   _p: Point;
   _v: Vector;
   _updater: (p: Point) => void;
@@ -69,6 +79,7 @@ export default class DragMomentumAnimator {
   _tick = () => {
     let now = Date.now();
     let dt = now - this._lastUpdateTime;
+    let nextP;
     let nextV;
     let shouldStop;
     if (
@@ -84,24 +95,41 @@ export default class DragMomentumAnimator {
       let vHypotenuse = Math.sqrt(
         this._v.x * this._v.x + this._v.y * this._v.y
       );
-      let [nextVHyp, shouldStopHyp] = Friction(0, vHypotenuse, dt);
+      let [_, nextVHyp, shouldStopHyp] = Friction(
+        0,
+        vHypotenuse,
+        now - this._startTime,
+        dt
+      );
       nextV = {
         x: this._v.x / vHypotenuse * nextVHyp,
         y: this._v.y / vHypotenuse * nextVHyp,
       };
+      nextP = {
+        x: this._p.x + nextV.x * dt,
+        y: this._p.y + nextV.y * dt,
+      };
       shouldStop = shouldStopHyp;
     } else {
-      let [vX, shouldStopX] = this._fX(this._p.x, this._v.x, dt);
-      let [vY, shouldStopY] = this._fY(this._p.y, this._v.y, dt);
+      let [x, vX, shouldStopX] = this._fX(
+        this._p.x,
+        this._v.x,
+        now - this._startTime,
+        dt
+      );
+      let [y, vY, shouldStopY] = this._fY(
+        this._p.y,
+        this._v.y,
+        now - this._startTime,
+        dt
+      );
+      nextP = { x, y };
       nextV = { x: vX, y: vY };
       shouldStop = shouldStopX && shouldStopY;
     }
 
+    this._p = nextP;
     this._v = nextV;
-    this._p = {
-      x: this._p.x + this._v.x * dt,
-      y: this._p.y + this._v.y * dt,
-    };
     this._updater(this._p);
     this._lastUpdateTime = now;
     if (!shouldStop) {

@@ -3,8 +3,8 @@ import Friction from './Friction';
 import createSpring from './createSpring';
 
 // $FlowIgnore
-function Stop() {
-  return [0, true];
+function Stop(x: number) {
+  return [x, 0, true];
 }
 
 class ScrollMotion {
@@ -20,10 +20,14 @@ class ScrollMotion {
     if (this._accelerationFunction === Friction) {
       let { min, max, bounce } = this._config;
       if (typeof min === 'number' && x <= min) {
-        this._accelerationFunction = bounce ? createSpring(min) : Stop;
+        this._accelerationFunction = bounce
+          ? createSpring(min, 0.0001, 0.02)
+          : Stop;
       }
       if (typeof max === 'number' && x >= max) {
-        this._accelerationFunction = bounce ? createSpring(max) : Stop;
+        this._accelerationFunction = bounce
+          ? createSpring(max, 0.0001, 0.02)
+          : Stop;
       }
     }
     return this._accelerationFunction;
@@ -32,7 +36,7 @@ class ScrollMotion {
 
 export default function createScroll(config: DragConfig) {
   let s = new ScrollMotion(config);
-  return function(x: number, v: number, dt: number) {
-    return s.getAccelerationFunction(x)(x, v, dt);
+  return function(x: number, v: number, elapsed: number, dt: number) {
+    return s.getAccelerationFunction(x)(x, v, elapsed, dt);
   };
 }
