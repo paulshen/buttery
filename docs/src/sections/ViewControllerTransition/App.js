@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, Frame, SpringAnimator } from '../../proto';
+import { Layer, LayerTransitionChild, Frame, Animated, spring } from '../../proto';
 
 export default class App extends React.Component {
   state = {
@@ -27,7 +27,7 @@ export default class App extends React.Component {
       <Layer frame={Frame(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
         <Layer
           frame={Frame(0, 0, 375, 667)}
-          properties={{
+          style={{
             backgroundColor: '#f0f0f0',
           }}
           onClick={this._showScreen}
@@ -35,13 +35,14 @@ export default class App extends React.Component {
         <ReactTransitionGroup>
           {this.state.showScreen &&
             <LayerTransitionChild
-              enterFrame={Frame(375, 0, 375, 667)}
-              frame={Frame(0, 0, 375, 667)}
-              exitFrame={Frame(0, 667, 375, 667)}
-              animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
+              enterFrame={{ x: 375 }}
+              frame={Frame(Animated(0, spring()), 0, 375, 667)}
+              exitFrame={{
+                y: Animated(667, spring()),
+              }}
               onClick={this._hideScreen}
               key={this.state.screenIndex}
-              properties={{
+              style={{
                 backgroundColor: '#d0d0d0',
               }}
             />}

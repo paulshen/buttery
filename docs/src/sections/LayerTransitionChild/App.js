@@ -1,7 +1,13 @@
 import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, Frame, SpringAnimator } from '../../proto';
+import {
+  Layer,
+  LayerTransitionChild,
+  Frame,
+  Animated,
+  timed
+} from '../../proto';
 
 function getFrame(i) {
   return {
@@ -35,20 +41,17 @@ export default class Example extends React.Component {
     for (let i = 0; i < this.state.numEnd - this.state.numStart; i++) {
       layers.push(
         <LayerTransitionChild
-          frame={getFrame(i)}
-          enterProperties={{
-            backgroundColor: 'lightblue',
+          frame={getFrame(this.state.numStart + i)}
+          enterStyle={{
             opacity: 0,
           }}
-          properties={{
+          style={{
             backgroundColor: 'lightblue',
-            opacity: 1,
+            opacity: Animated(1, timed(500)),
           }}
-          exitProperties={{
-            backgroundColor: 'lightblue',
-            opacity: 0,
+          exitStyle={{
+            opacity: Animated(0, timed(500)),
           }}
-          animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
           key={this.state.numStart + i}
         />
       );
