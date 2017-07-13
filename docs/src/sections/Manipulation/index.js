@@ -20,7 +20,7 @@ export default {
           surprises here!
         </Paragraph>
         <Paragraph>
-          For performance, Wasabi does a deep equality test on{' '}
+          For performance, react-prototyper does a deep equality test on{' '}
           <InlineCode>LayerProperties</InlineCode> to determine whether to
           update the layer.
         </Paragraph>
@@ -28,7 +28,6 @@ export default {
       <DescriptionCode>
         {`<Layer
   frame={MyFrames[this.state.index]}
-  properties={MyProperties[this.state.index]}
 />`}
       </DescriptionCode>
     </div>,

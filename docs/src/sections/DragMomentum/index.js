@@ -1,5 +1,11 @@
 import React from 'react';
-import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
+import {
+  Section,
+  Paragraph,
+  InlineCode,
+  Header,
+  Table
+} from '../../components/Description';
 import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
@@ -7,38 +13,35 @@ import App from './App';
 
 export default {
   name: 'Drag Momentum',
-  description: () => (
+  description: () =>
     <div>
       <Section>
-        <Paragraph>Layers can have momentum behavior at the end of drag events.</Paragraph>
+        <Paragraph>
+          Dragged values support momentum behavior at the end of drag events. If
+          the drag ends with some velocity, the layer will continue to move as
+          it slows down to a stop.
+        </Paragraph>
         <DescriptionCode>
-{`<Layer
-  draggable={true}
-  draggableProps={{
-    momentum: true,
-  }}
-/>`}
+          {`Drag(value, { momentum: true })`}
         </DescriptionCode>
       </Section>
       <Section>
-        <Header>Bouncy drag constraints</Header>
-        <Paragraph>Drag constraints combined with momentum can emulate scroll, paging, and other behaviors.</Paragraph>
-        <Paragraph>Setting a DragConstraint's <InlineCode>bounce</InlineCode> prop to <InlineCode>true</InlineCode> will allow the layer to overshoot and act as a spring.</Paragraph>
+        <Header>Bouncy drag behavior</Header>
+        <Paragraph>
+          If a drag configuration sets <InlineCode>bounce</InlineCode> to{' '}
+          <InlineCode>true</InlineCode> and a constraint (<InlineCode>min</InlineCode>{' '}
+          and/or <InlineCode>max</InlineCode>), the layer will bounce if the
+          layer is dragged past the boundary.
+        </Paragraph>
         <DescriptionCode>
-{`<Layer
-  draggable={true}
-  draggableProps={{
-    constraintX: DragConstraint({
-      min: 0, max: 100, bounce: true
-    }),
-    momentum: true,
-  }}
-/>`}
+          {`Drag(this.state.x, { min: 0, max: 200, bounce: true })`}
         </DescriptionCode>
-        <Paragraph>Fling the square against the constraints to see the momentum and bounce behavior.</Paragraph>
+        <Paragraph>
+          Fling the square against the constraints to see the momentum and
+          bounce behavior.
+        </Paragraph>
       </Section>
-    </div>
-  ),
+    </div>,
   App,
   Source,
   folds: [],

@@ -16,44 +16,32 @@ export default {
     <div>
       <Section>
         <Paragraph>
-          Layers are the building blocks of Wasabi. Use them as you would{' '}
-          <InlineCode>{`<div>`}</InlineCode>s.
+          Layers are the building blocks of react-prototyper. Use them as you
+          would <InlineCode>{`<div>`}</InlineCode>s.
         </Paragraph>
         <Paragraph>
           All layers must have the prop <InlineCode>frame</InlineCode>, which is
-          an object with numbers <InlineCode>x</InlineCode>, <InlineCode>y</InlineCode>,{' '}
-          <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>.
-          Additionally, layers can optionally set{' '}
-          <InlineCode>properties</InlineCode> which includes other style
-          properties that can be animated.
+          an object with numbers <InlineCode>x</InlineCode>,{' '}
+          <InlineCode>y</InlineCode>, <InlineCode>width</InlineCode>, and{' '}
+          <InlineCode>height</InlineCode>.
         </Paragraph>
         <Paragraph>
-          Layers are absolutely positioned by Wasabi. This allows Wasabi to
-          optimize performance by skipping the browser's layout computations.
+          Layers are absolutely positioned by react-prototyper. This allows
+          react-prototyper to optimize performance by skipping the browser's
+          layout computations.
         </Paragraph>
       </Section>
-      <Header>LayerProperties</Header>
       <DescriptionCode>
-        {`type Frame = {
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-}
+        {`<Layer
+  frame={{
+    x: 100,
+    y: 100,
+    width: 200,
+    height: 200
+  }}
+/>
 
-type AnimatedProperties = {
-  opacity?: number,
-  rotation?: number,
-  scaleX?: number,
-  scaleY?: number,
-  scale?: number,
-  borderRadius?: number,
-  shadowX?: ?number,
-  shadowY?: ?number,
-  shadowBlur?: ?number,
-  shadowColor?: ?string,
-  shadowSpread?: ?number,
-};`}
+<Layer frame={Frame(100, 100, 200, 200)} />`}
       </DescriptionCode>
     </div>,
   App,

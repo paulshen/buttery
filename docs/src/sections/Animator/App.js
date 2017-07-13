@@ -4,32 +4,42 @@ import { Layer, Frame, Animated, spring, timed } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    toggled: false,
+    toggledPosition: false,
+    toggledDimension: false,
   };
 
-  _onClick = () => {
+  _onClickPosition = () => {
     this.setState({
-      toggled: !this.state.toggled,
+      toggledPosition: !this.state.toggledPosition,
+    });
+  };
+
+  _onClickDimension = () => {
+    this.setState({
+      toggledDimension: !this.state.toggledDimension,
     });
   };
 
   render() {
     // We simply add an animator instance to the Layer. Whenever Layer
     // properties change, they are animated.
-    let { toggled } = this.state;
+    let { toggledPosition, toggledDimension } = this.state;
     return (
       <div>
         <div style={{ position: 'absolute' }}>
-          <button onClick={this._onClick}>
-            Toggle
+          <button onClick={this._onClickPosition}>
+            Toggle position
+          </button>
+          <button onClick={this._onClickDimension}>
+            Toggle dimensions
           </button>
         </div>
         <Layer
           frame={Frame(
-            100,
-            Animated(toggled ? 180 : 140, toggled ? timed(300): spring()),
-            80,
-            Animated(toggled ? 120 : 60, toggled ? timed(700): spring()),
+            Animated(toggledPosition ? 100 : 140, timed(600)),
+            Animated(toggledPosition ? 180 : 140, timed(300)),
+            Animated(toggledDimension ? 120 : 60, spring()),
+            Animated(toggledDimension ? 120 : 60, spring(0.0002, 0.01)),
           )}
           style={{
             backgroundColor: '#1693A5',

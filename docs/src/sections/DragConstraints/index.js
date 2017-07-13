@@ -1,5 +1,11 @@
 import React from 'react';
-import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
+import {
+  Section,
+  Paragraph,
+  InlineCode,
+  Header,
+  Table
+} from '../../components/Description';
 import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
@@ -7,48 +13,65 @@ import App from './App';
 
 export default {
   name: 'Drag Constraints',
-  description: () => (
+  description: () =>
     <div>
       <Section>
-        <Paragraph>Draggable layers support an optional <InlineCode>draggableProps</InlineCode> property for configuring draggable behavior.</Paragraph>
+        <Paragraph>
+          Drag values accept an optional config property.
+        </Paragraph>
         <DescriptionCode>
-{`import { Layer, DragConstraint } from 'proto';
+          {`type DragConfig = {
+  min?: number,
+  max?: number,
+  bounce?: boolean,
+  momentum?: boolean,
+};
 
 <Layer
-  draggable={true}
-  draggableProps={{
-    constraintX: DragConstraint({
-      min: 0, max: 100
-    }),
-    constraintY: DragConstraint({
-      min: 50, max: 50
-    }),
-  }}
+  frame={Frame(
+    Drag(100, { min: 0, max: 200 }),
+    Drag(200, { min: 0, max: 200 }),
+    100,
+    100,
+  )}
 />`}
         </DescriptionCode>
       </Section>
       <Section>
-        <Header>Draggable Props</Header>
-        <Paragraph>All props are optional</Paragraph>
+        <Header>DragConfig</Header>
+        <Paragraph>All properties are optional</Paragraph>
         <Table>
-          <tr><td>Prop</td><td>Notes</td></tr>
-          <tr><td><InlineCode>constraintX</InlineCode></td><td>Use <InlineCode>DragConstraint</InlineCode> to constrain x values</td></tr>
-          <tr><td><InlineCode>constraintY</InlineCode></td><td>Use <InlineCode>DragConstraint</InlineCode> to constrain y values</td></tr>
-          <tr><td><InlineCode>momentum</InlineCode></td><td>See DragMomentum</td></tr>
+          <tr>
+            <td>Prop</td>
+            <td>Notes</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>min</InlineCode>
+            </td>
+            <td>number</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>max</InlineCode>
+            </td>
+            <td>number</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>bounce</InlineCode>
+            </td>
+            <td>boolean</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>momentum</InlineCode>
+            </td>
+            <td>boolean</td>
+          </tr>
         </Table>
       </Section>
-      <Section>
-        <Header>DragConstraint</Header>
-        <Paragraph>All props are optional</Paragraph>
-        <Table>
-          <tr><td>Prop</td><td>Notes</td></tr>
-          <tr><td><InlineCode>min</InlineCode></td><td>number</td></tr>
-          <tr><td><InlineCode>max</InlineCode></td><td>number</td></tr>
-          <tr><td><InlineCode>bounce</InlineCode></td><td>boolean</td></tr>
-        </Table>
-      </Section>
-    </div>
-  ),
+    </div>,
   App,
   Source,
   folds: [],

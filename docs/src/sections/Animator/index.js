@@ -1,5 +1,11 @@
 import React from 'react';
-import { Section, Paragraph, InlineCode, Header, Table } from '../../components/Description';
+import {
+  Section,
+  Paragraph,
+  InlineCode,
+  Header,
+  Table
+} from '../../components/Description';
 import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
@@ -7,41 +13,79 @@ import App from './App';
 
 export default {
   name: 'Animator',
-  description: () => (
+  description: () =>
     <div>
       <Section>
-        <Paragraph>Animate updates to <InlineCode>LayerProperties</InlineCode> by setting the <InlineCode>animator</InlineCode> prop.</Paragraph>
+        <Paragraph>
+          Frame and style properties can be animated by using an{' '}
+          <InlineCode>AnimatedValue</InlineCode>.
+        </Paragraph>
         <DescriptionCode>
-{`<Layer
-  properties={...}
-  animator={TimedAnimator({ duration: 300 })}
-/>`}
+          {`Animated(value: number, config: AnimatorConfig, onEnd?: Function)
+
+<Layer
+  frame={Frame(
+    Animated(this.state.x, timed(300)),
+    Animated(this.state.y, spring()),
+    Animated(this.state.width, timed(500)),
+    Animated(this.state.height, spring(0.005, 0.01)),
+  )}
+/>
+`}
         </DescriptionCode>
       </Section>
       <Header>Animators</Header>
       <Section>
-        <Paragraph>There are two included animators.</Paragraph>
+        <Paragraph>
+          There are two included types of animator configurations.
+        </Paragraph>
       </Section>
       <Section>
-        <Header>TimedAnimator(props)</Header>
-        <Paragraph><InlineCode>TimedAnimator</InlineCode> is a simple animator that animates changes to <InlineCode>LayerProperties</InlineCode> over a given duration.</Paragraph>
+        <Header>timed(duration)</Header>
+        <Paragraph>
+          If a <InlineCode>timed</InlineCode> configuration is specified, the
+          value is animated linearly over the given duration.
+        </Paragraph>
         <Table>
-          <tr><td>Prop</td><td>Notes</td></tr>
-          <tr><td><InlineCode>duration</InlineCode></td><td>In milliseconds, required.</td></tr>
+          <tr>
+            <td>Prop</td>
+            <td>Notes</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>duration</InlineCode>
+            </td>
+            <td>In milliseconds, required.</td>
+          </tr>
         </Table>
       </Section>
       <Section>
-        <Header>SpringAnimator(props)</Header>
-        <Paragraph><InlineCode>SpringAnimator</InlineCode> is an animator that uses spring physics to animate changes to <InlineCode>LayerProperties</InlineCode></Paragraph>
+        <Header>spring(?springK, ?frictionK)</Header>
+        <Paragraph>
+          If a <InlineCode>spring</InlineCode> configuration is specified, the
+          value is animated using spring physics.
+        </Paragraph>
         <Table>
-          <tr><td>Prop</td><td>Notes</td></tr>
-          <tr><td><InlineCode>spring</InlineCode></td><td>Spring constant. Default 0.0005</td></tr>
-          <tr><td><InlineCode>friction</InlineCode></td><td>Friction constant. Default 0.01</td></tr>
+          <tr>
+            <td>Prop</td>
+            <td>Notes</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>springK</InlineCode>
+            </td>
+            <td>Spring constant. Default 0.0005</td>
+          </tr>
+          <tr>
+            <td>
+              <InlineCode>frictionK</InlineCode>
+            </td>
+            <td>Friction constant. Default 0.01</td>
+          </tr>
         </Table>
       </Section>
-    </div>
-  ),
+    </div>,
   App,
   Source,
-  folds: [5,6,7],
+  folds: [5, 6, 7],
 };

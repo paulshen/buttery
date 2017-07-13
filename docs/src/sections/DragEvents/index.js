@@ -1,5 +1,10 @@
 import React from 'react';
-import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
+import {
+  Section,
+  Paragraph,
+  InlineCode,
+  Header
+} from '../../components/Description';
 import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
@@ -7,14 +12,25 @@ import App from './App';
 
 export default {
   name: 'Drag Events',
-  description: () => (
+  description: () =>
     <div>
       <Section>
-        <Paragraph>Layers support React event handlers (e.g. <InlineCode>onClick</InlineCode>) as you expect. Props are transferred onto the underlying div.</Paragraph>
-        <Paragraph>Draggable layers fire an <InlineCode>onDragEnd</InlineCode> event with the ending point. You usually want to update <InlineCode>properties</InlineCode> on this event.</Paragraph>
-        <Paragraph>You can also subscribe to every update with <InlineCode>onMove</InlineCode>.</Paragraph>
+        <Paragraph>
+          Layers support React event handlers (e.g.{' '}
+          <InlineCode>onClick</InlineCode>) as you expect. Props are transferred
+          onto the underlying div.
+        </Paragraph>
+        <Paragraph>
+          When a drag interaction is finished, the layer will fire the callback{' '}
+          <InlineCode>onDragEnd</InlineCode> with the ending point. You usually
+          want to update a layer's frame on this event.
+        </Paragraph>
+        <Paragraph>
+          You can also subscribe to every update with{' '}
+          <InlineCode>onMove</InlineCode>.
+        </Paragraph>
         <DescriptionCode>
-{`class Example extends React.Component {
+          {`class Example extends React.Component {
   state = {
     x: 0,
     y: 0,
@@ -23,12 +39,7 @@ export default {
   render() {
     return (
       <Layer
-        properties={{
-          x: this.state.x,
-          y: this.state.y,
-          ...
-        }}
-        draggable={true}
+        frame={Frame(Drag(this.state.x), Drag(this.state.y), 100, 100)}
         onMove={
           ({ x, y }) => console.log(x, y)
         }
@@ -41,8 +52,7 @@ export default {
 }`}
         </DescriptionCode>
       </Section>
-    </div>
-  ),
+    </div>,
   App,
   Source,
 };

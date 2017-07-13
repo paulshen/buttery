@@ -1,5 +1,10 @@
 import React from 'react';
-import { Section, Paragraph, InlineCode, Header } from '../../components/Description';
+import {
+  Section,
+  Paragraph,
+  InlineCode,
+  Header
+} from '../../components/Description';
 import { DescriptionCode } from '../../Code';
 
 import Source from '!!raw!./App';
@@ -7,23 +12,36 @@ import App from './App';
 
 export default {
   name: 'Draggable',
-  description: () => (
+  description: () =>
     <div>
       <Section>
         <Paragraph>It's easy to make a layer draggable.</Paragraph>
         <DescriptionCode>
-{`<Layer
-  properties={...}
-  draggable={true}
-/>`}
+          {`Drag(value: number | AnimatedValue, config?: DragConfig)
+
+// X draggable
+<Layer
+  frame={Frame(Drag(100), 100, 200, 200)}
+/>
+
+// X and Y draggable
+<Layer
+  frame={Frame(Drag(100), Drag(100), 200, 200)}
+/>
+`}
         </DescriptionCode>
       </Section>
       <Section>
-        <Paragraph>While a layer is dragged, its position is controlled by the draggable. When the drag ends, position control is returned to the owner.</Paragraph>
-        <Paragraph>Try dragging the example layer. What happens when you finish dragging?</Paragraph>
+        <Paragraph>
+          While a layer is being dragged, its position is controlled by the
+          draggable. When the drag ends, the position control is returned to the
+          given value of the Drag.
+        </Paragraph>
+        <Paragraph>
+          Try dragging the example layer. What happens when you finish dragging?
+        </Paragraph>
       </Section>
-    </div>
-  ),
+    </div>,
   App,
   Source,
   folds: [9],
