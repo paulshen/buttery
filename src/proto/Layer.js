@@ -180,6 +180,16 @@ export default class Layer extends React.Component {
   };
 
   _onDragEnd = (p: Point) => {
+    if (this.props.onDragEnd) {
+      this.props.onDragEnd(p);
+      // this allows clients to modify props on before resetting
+      window.requestAnimationFrame(this._resetPointAfterDrag);
+    } else {
+      this._resetPointAfterDrag();
+    }
+  };
+
+  _resetPointAfterDrag = () => {
     let updates = {};
     this._handleTargetPropertyChange(
       updates,
@@ -196,7 +206,6 @@ export default class Layer extends React.Component {
       'y'
     );
     this._applyUpdates(updates);
-    this.props.onDragEnd && this.props.onDragEnd(p);
   };
 
   _getTargetValues = (obj: Object): Object =>
