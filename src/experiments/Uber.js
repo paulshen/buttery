@@ -69,6 +69,7 @@ class Pager extends React.Component {
             max: 0,
             bounce: true,
             momentum: true,
+            pageSize: (900 - 375) / 2,
           }),
           400,
           900,

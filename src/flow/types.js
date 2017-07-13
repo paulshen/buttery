@@ -26,6 +26,7 @@ type DragConfig = {
   max?: number,
   bounce?: boolean,
   momentum?: boolean,
+  pageSize?: number,
 };
 type InputValue = ScalarValue | AnimatedValue;
 

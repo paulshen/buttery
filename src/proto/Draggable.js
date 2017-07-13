@@ -9,6 +9,33 @@ import Friction from './motion/Friction';
 let activeDraggables = [];
 const DRAG_START_THRESHOLD = 3;
 
+function getPageTarget(x: number, v: number, config: DragConfig) {
+  let pageSize = ((config.pageSize: any): number);
+  let min = ((config.min: any): number);
+  let max = ((config.max: any): number);
+  let pageIndex = Math.min(
+    Math.max(
+      Math.round((x - min) / pageSize + Math.min(Math.max(v, -0.5), 0.5)),
+      0
+    ),
+    (max - min) / pageSize
+  );
+  return min + pageIndex * pageSize;
+}
+
+function getMomentumFunction(x: number, v: number, config: ?DragConfig) {
+  if (config && config.momentum === true) {
+    let { pageSize } = config;
+    if (pageSize) {
+      return createSpring(getPageTarget(x, v, config));
+    } else if (config.min != null || config.max != null) {
+      return createScroll(config);
+    }
+    return Friction;
+  }
+  return (x, v, dt) => [0, true];
+}
+
 export default class Draggable {
   _config: {
     x?: ?DragConfig,
@@ -172,28 +199,8 @@ export default class Draggable {
         };
       }
 
-      let scrollX;
-      if (momentumX) {
-        let xConfig = ((this._config.x: any): DragConfig);
-        if (xConfig.min != null || xConfig.max != null) {
-          scrollX = createScroll(xConfig);
-        } else {
-          scrollX = Friction;
-        }
-      } else {
-        scrollX = (x, v, dt) => [0, true];
-      }
-      let scrollY;
-      if (momentumY) {
-        let yConfig = ((this._config.y: any): DragConfig);
-        if (yConfig.min != null || yConfig.max != null) {
-          scrollY = createScroll(yConfig);
-        } else {
-          scrollY = Friction;
-        }
-      } else {
-        scrollY = (x, v, dt) => [0, true];
-      }
+      let fX = getMomentumFunction(this._p.x, v.x, this._config.x);
+      let fY = getMomentumFunction(this._p.y, v.y, this._config.y);
       this._motion = new Motion((p: Point, vm: Vector, dt: number) => {
         if (
           momentumX &&
@@ -211,8 +218,8 @@ export default class Draggable {
           ];
         }
 
-        let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
-        let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
+        let [vX, shouldStopX] = fX(p.x, vm.x, dt);
+        let [vY, shouldStopY] = fY(p.y, vm.y, dt);
         return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
       });
       this._motion.start(this._p, v, this._updater, this._onMotionEnd);
@@ -220,28 +227,6 @@ export default class Draggable {
       this._isControlledByDraggable = false;
       this._onDragEnd && this._onDragEnd(this._p);
     }
-
-    // if (pageSize) {
-    //   // TODO
-    //   // // $FlowAssert
-    //   // let targetX =
-    //   //   Math.min(
-    //   //     Math.max(
-    //   //       Math.round(
-    //   //         this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)
-    //   //       ),
-    //   //       props.constraintX.min / pageSize
-    //   //     ),
-    //   //     props.constraintX.max / pageSize
-    //   //   ) * pageSize;
-    //   // // TODO: y
-    //   // let springX = createSpring(targetX);
-    //   // this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
-    //   //   let [vX, shouldStopX] = springX(p.x, vm.x, dt);
-    //   //   return [{ x: vX, y: 0 }, shouldStopX];
-    //   // });
-    //   // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
-    // }
   };
 
   _addTouch = (touch: any) => {
