@@ -25,6 +25,7 @@ type DragConfig = {
   min?: number,
   max?: number,
   bounce?: boolean,
+  momentum?: boolean,
 };
 type InputValue = ScalarValue | AnimatedValue;
 

@@ -146,11 +146,10 @@ export default class Draggable {
     if (!this._dragStart) {
       return;
     }
-    if (this._touches.length > 2) {
-      this.props && this.props.onTouchEnd && this.props.onTouchEnd(this._p);
-      // splitting this allows clients to modify props on touchend
-      window.requestAnimationFrame(this._onTouchEndMotion);
-    }
+    this.props && this.props.onTouchEnd && this.props.onTouchEnd(this._p);
+    // splitting this allows clients to modify props on touchend
+    window.requestAnimationFrame(this._onTouchEndMotion);
+
     this._dragStart = null;
     activeDraggables = activeDraggables.filter(d => d !== this);
   };
@@ -167,10 +166,9 @@ export default class Draggable {
   };
 
   _onTouchEndMotion = () => {
-    const props = this.props;
-    let pageSize = props && props.pageSize;
-    let momentum = props && props.momentum;
-    if (props && (pageSize || momentum)) {
+    let momentumX = this._config.x && this._config.x.momentum === true;
+    let momentumY = this._config.y && this._config.y.momentum === true;
+    if (momentumX || momentumY) {
       let v = { x: 0, y: 0 };
       let lastTouch = this._touches[this._touches.length - 1];
       if (Date.now() - lastTouch.t < 50) {
@@ -181,59 +179,77 @@ export default class Draggable {
           y: (lastTouch.clientY - secondToLastTouch.clientY) / dt,
         };
       }
-      if (pageSize) {
-        // TODO
-        // // $FlowAssert
-        // let targetX =
-        //   Math.min(
-        //     Math.max(
-        //       Math.round(
-        //         this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)
-        //       ),
-        //       props.constraintX.min / pageSize
-        //     ),
-        //     props.constraintX.max / pageSize
-        //   ) * pageSize;
-        // // TODO: y
-        // let springX = createSpring(targetX);
-        // this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
-        //   let [vX, shouldStopX] = springX(p.x, vm.x, dt);
-        //   return [{ x: vX, y: 0 }, shouldStopX];
-        // });
-        // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
-      } else if (momentum) {
-        // TODO
-        // let scrollX = props.constraintX
-        //   ? createScroll(props.constraintX)
-        //   : Friction;
-        // let scrollY = props.constraintY
-        //   ? createScroll(props.constraintY)
-        //   : Friction;
-        // this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
-        //   if (
-        //     vm.x &&
-        //     vm.y &&
-        //     !isConstrained(p.x, props.constraintX) &&
-        //     !isConstrained(p.y, props.constraintY)
-        //   ) {
-        //     let vHypotenuse = Math.sqrt(vm.x * vm.x + vm.y * vm.y);
-        //     let [nextV, shouldStop] = Friction(0, vHypotenuse, dt);
-        //     return [
-        //       { x: vm.x / vHypotenuse * nextV, y: vm.y / vHypotenuse * nextV },
-        //       shouldStop,
-        //     ];
-        //   }
-        //
-        //   let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
-        //   let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
-        //   return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
-        // });
-        // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+
+      let scrollX;
+      if (momentumX) {
+        let xConfig = ((this._config.x: any): DragConfig);
+        if (xConfig.min != null || xConfig.max != null) {
+          scrollX = createScroll(xConfig);
+        } else {
+          scrollX = Friction;
+        }
+      } else {
+        scrollX = (x, v, dt) => [0, true];
       }
+      let scrollY;
+      if (momentumY) {
+        let yConfig = ((this._config.y: any): DragConfig);
+        if (yConfig.min != null || yConfig.max != null) {
+          scrollY = createScroll(yConfig);
+        } else {
+          scrollY = Friction;
+        }
+      } else {
+        scrollY = (x, v, dt) => [0, true];
+      }
+      this._motion = new Motion((p: Point, vm: Vector, dt: number) => {
+        if (
+          momentumX &&
+          momentumY &&
+          vm.x &&
+          vm.y &&
+          !isConstrained(p.x, this._config.x) &&
+          !isConstrained(p.y, this._config.y)
+        ) {
+          let vHypotenuse = Math.sqrt(vm.x * vm.x + vm.y * vm.y);
+          let [nextV, shouldStop] = Friction(0, vHypotenuse, dt);
+          return [
+            { x: vm.x / vHypotenuse * nextV, y: vm.y / vHypotenuse * nextV },
+            shouldStop,
+          ];
+        }
+
+        let [vX, shouldStopX] = scrollX(p.x, vm.x, dt);
+        let [vY, shouldStopY] = scrollY(p.y, vm.y, dt);
+        return [{ x: vX, y: vY }, shouldStopX && shouldStopY];
+      });
+      this._motion.start(this._p, v, this._updater, this._onMotionEnd);
     } else {
       this._isControlledByDraggable = false;
       this._onDragEnd && this._onDragEnd(this._p);
     }
+
+    // if (pageSize) {
+    //   // TODO
+    //   // // $FlowAssert
+    //   // let targetX =
+    //   //   Math.min(
+    //   //     Math.max(
+    //   //       Math.round(
+    //   //         this._p.x / pageSize + Math.min(Math.max(v.x, -0.5), 0.5)
+    //   //       ),
+    //   //       props.constraintX.min / pageSize
+    //   //     ),
+    //   //     props.constraintX.max / pageSize
+    //   //   ) * pageSize;
+    //   // // TODO: y
+    //   // let springX = createSpring(targetX);
+    //   // this._motion = new Motion(function(p: Point, vm: Vector, dt: number) {
+    //   //   let [vX, shouldStopX] = springX(p.x, vm.x, dt);
+    //   //   return [{ x: vX, y: 0 }, shouldStopX];
+    //   // });
+    //   // this._motion.start(this._p, v, this._updater, this._onMotionEnd);
+    // }
   };
 
   _addTouch = (touch: any) => {

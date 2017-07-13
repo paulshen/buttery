@@ -29,15 +29,28 @@ class App extends React.Component {
     return (
       <div style={Styles.Root}>
         <div style={Styles.Chrome}>
-          <button onClick={this._toggle}>Toggle</button>
           <Layer
             frame={Frame(
-              Drag(this.state.x, { min: 0, max: 200, bounce: true }),
-              Drag(this.state.y),
+              Drag(this.state.x, {
+                min: 0,
+                max: 275,
+                bounce: true,
+                momentum: true,
+              }),
+              Drag(this.state.y, {
+                min: 0,
+                max: 567,
+                bounce: true,
+                momentum: true,
+              }),
               100,
               100
             )}
-            onDragEnd={({ x, y }) => this.setState({ x, y })}
+            onDragEnd={({ x, y }) => {
+              console.log(x, y)
+              this.setState({ x, y });
+            }}
+            onClick={this._toggle}
             style={{
               backgroundColor: this.state.selected ? 'blue' : 'red',
             }}
