@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator, Frame } from '../proto';
+import { Layer, Frame, Animated, Drag, spring } from '../proto';
 
 function interpolate(x1, x2, y1, y2) {
   return function(input) {
@@ -14,7 +14,7 @@ function Header({ y, onClick }) {
   return (
     <Layer
       frame={Frame(0, 0, 375, Math.max(y, 60))}
-      properties={{
+      style={{
         backgroundColor: '#000000',
         opacity: interpolate(400, 100, 0, 1)(y),
         pointerEvents: y < 549 ? 'auto' : 'none',
@@ -30,7 +30,7 @@ function Header({ y, onClick }) {
           375,
           50
         )}
-        properties={{
+        style={{
           color: '#FFFFFF',
         }}
       >
@@ -44,7 +44,7 @@ function PagerPage({ index, color }) {
   return (
     <Layer
       frame={Frame(index * 300, 0, 300, 200)}
-      properties={{ backgroundColor: color }}
+      style={{ backgroundColor: color }}
     />
   );
 }
@@ -63,17 +63,17 @@ class Pager extends React.Component {
   render() {
     return (
       <Layer
-        frame={Frame(this.state.pageX, 400, 900, 200)}
-        draggable={true}
-        draggableProperties={{
-          constraintY: DragConstraint({ min: 400, max: 400 }),
-          constraintX: DragConstraint({
+        frame={Frame(
+          Drag(this.state.pageX, {
             min: 375 - 900,
             max: 0,
             bounce: true,
+            momentum: true,
           }),
-          pageSize: 300,
-        }}
+          400,
+          900,
+          200
+        )}
         onDragEnd={this._onDragEnd}
       >
         <PagerPage index={0} color="red" />
@@ -127,25 +127,24 @@ class App extends React.Component {
         <div style={Styles.Chrome}>
           <Layer
             frame={Frame(0, 0, 375, 667)}
-            properties={{
+            style={{
               backgroundColor: 'skyblue',
             }}
           />
           <Layer
-            frame={Frame(0, this.state.scrollY, 375, 1200)}
-            properties={{
-              backgroundColor: 'blue',
-            }}
-            animator={SpringAnimator({ spring: 0.0001, friction: 0.02 })}
-            draggable={true}
-            draggableProperties={{
-              constraintX: DragConstraint({ min: 0, max: 0 }),
-              constraintY: DragConstraint({
+            frame={Frame(
+              0,
+              Drag(Animated(this.state.scrollY, spring(0.0001, 0.02)), {
                 min: 667 - 1200,
                 max: this.state.y < 100 ? 100 : 550,
                 bounce: true,
+                momentum: this.state.y < 100,
               }),
-              momentum: this.state.y < 100,
+              375,
+              1200
+            )}
+            style={{
+              backgroundColor: 'blue',
             }}
             onDragEnd={this._onDragEnd}
             onMove={this._onMove}
