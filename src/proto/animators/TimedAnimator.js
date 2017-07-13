@@ -53,7 +53,7 @@ export default class TimedAnimator implements Animator {
     if (t < 1) {
       this._raf = window.requestAnimationFrame(this._tick);
     } else {
-      // this._onEnd && this._onEnd();
+      this._onEnd && this._onEnd();
     }
   };
 }

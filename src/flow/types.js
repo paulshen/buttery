@@ -15,6 +15,7 @@ type AnimatedValue = {
   type: 'animated',
   value: ScalarValue,
   config: AnimatorConfig,
+  onEnd: ?Function,
 };
 type DragValue = {
   type: 'drag',
@@ -34,7 +35,8 @@ interface Animator {
   start(
     from: ScalarValue,
     to: ScalarValue,
-    updater: (value: ScalarValue) => void
+    updater: (value: ScalarValue) => void,
+    onEnd: ?Function
   ): void,
   getValue(): ScalarValue,
   stop(): void,

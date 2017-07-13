@@ -3,13 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, SpringAnimator } from '../proto';
-
-const Steps = [
-  { width: 10, height: 10, x: 100, y: 100, opacity: 0, backgroundColor: '#438DED' },
-  { width: 10, height: 12, x: 110, y: 90, opacity: 1, backgroundColor: '#438DED' },
-  { width: 10, height: 10, x: 90, y: 180, opacity: 0, backgroundColor: '#438DED' },
-];
+import { Layer, Frame, LayerTransitionChild, Animated, spring } from '../proto';
 
 class App extends React.Component {
   state = {
@@ -35,17 +29,23 @@ class App extends React.Component {
       let position = i - this.state.subtractClicks;
       children.push(
         <LayerTransitionChild
-          enterFrame={Steps[0]}
+          enterFrame={{ x: 0, y: 0 }}
           frame={{
-            ...Steps[1],
-            x: Steps[1].x + 20 * Math.floor(position / 20),
-            y: Steps[1].y + 20 * (position % 20),
+            x: Animated(100 + 20 * Math.floor(position / 20), spring()),
+            y: Animated(100 + 20 * (position % 20), spring()),
+            width: 10,
+            height: 10,
           }}
-          exitFrame={Steps[2]}
-          enterProperties={Steps[0]}
-          properties={Steps[1]}
-          exitProperties={Steps[2]}
-          animator={SpringAnimator()}
+          exitFrame={{
+            x: Animated(0, spring()),
+            y: Animated(0, spring()),
+          }}
+          enterStyle={{ opacity: 0 }}
+          style={{
+            opacity: Animated(1, spring()),
+            backgroundColor: '#438DED',
+          }}
+          exitStyle={{ opacity: Animated(0, spring()) }}
           key={i}
         />
       );
@@ -58,25 +58,15 @@ class App extends React.Component {
             {children}
           </ReactTransitionGroup>
           <Layer
-            frame={{
-              width: 50,
-              height: 50,
-              x: 200,
-              y: 500,
-            }}
-            properties={{
+            frame={Frame(200, 500, 50, 50)}
+            style={{
               backgroundColor: '#97B2C9',
             }}
             onClick={this._onAddClick}
           />
           <Layer
-            frame={{
-              width: 50,
-              height: 50,
-              x: 300,
-              y: 500,
-            }}
-            properties={{
+            frame={Frame(300, 500, 50, 50)}
+            style={{
               backgroundColor: '#97B2C9',
             }}
             onClick={this._onSubtractClick}

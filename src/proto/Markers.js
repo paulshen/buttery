@@ -17,11 +17,16 @@ export function Drag(value: InputValue, config?: DragConfig): DragValue {
   };
 }
 
-export function Animated(value: ScalarValue, config: AnimatorConfig) {
+export function Animated(
+  value: ScalarValue,
+  config: AnimatorConfig,
+  onEnd?: Function
+) {
   return {
     type: 'animated',
     value,
     config,
+    onEnd,
   };
 }
 

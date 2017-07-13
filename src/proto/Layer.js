@@ -19,8 +19,6 @@ export default class Layer extends React.Component {
     frame: FrameType,
     style?: AnimatedProperties,
     animator?: Object,
-    draggable?: boolean,
-    draggableProperties?: $PropertyType<Draggable, 'props'>,
     children?: any,
     onClick?: Function,
     onMove?: (p: Point) => void,
@@ -107,11 +105,12 @@ export default class Layer extends React.Component {
         } else {
           // TODO: reuse previous animator if same config?
           let animator = createAnimator(this, property, to.config);
+          let { onEnd } = to;
           animator.start(fromScalar, to.value, value => {
             this._applyUpdates({
               [property]: value,
             });
-          });
+          }, () => this._onAnimationEnd(onEnd));
         }
       } else if (
         to.type === 'drag' &&
@@ -285,7 +284,8 @@ export default class Layer extends React.Component {
     });
   };
 
-  _onAnimationEnd = () => {
+  _onAnimationEnd = (onEnd: ?Function) => {
+    onEnd && onEnd();
     this.props.onAnimationEnd && this.props.onAnimationEnd();
   };
 

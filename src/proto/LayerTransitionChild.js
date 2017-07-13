@@ -6,13 +6,11 @@ import Layer from './Layer';
 export default class LayerTransitionChild extends React.Component {
   props: {
     frame: FrameType,
-    enterFrame?: FrameType,
-    exitFrame?: FrameType,
-    properties?: AnimatedProperties,
-    enterProperties?: AnimatedProperties,
-    exitProperties?: AnimatedProperties,
-    draggable?: boolean,
-    animator?: Object,
+    enterFrame?: $Shape<FrameType>,
+    exitFrame?: $Shape<FrameType>,
+    style?: AnimatedProperties,
+    enterStyle?: $Shape<AnimatedProperties>,
+    exitStyle?: $Shape<AnimatedProperties>,
     onEnter?: Function,
     onExit?: Function,
   };
@@ -54,8 +52,8 @@ export default class LayerTransitionChild extends React.Component {
     if (stage === 'show' && this._enterCallback) {
       this._enterCallback();
       this._enterCallback = null;
-    // This else is important - the above `this._enterCallback()` will continue
-    // execution here after `componentWillLeave`
+      // This else is important - the above `this._enterCallback()` will continue
+      // execution here after `componentWillLeave`
     } else if (stage === 'exiting' && this._exitCallback) {
       this._exitCallback();
       this._exitCallback = null;
@@ -65,35 +63,47 @@ export default class LayerTransitionChild extends React.Component {
 
   render() {
     let { stage } = this.state;
-    let { enterFrame, frame, exitFrame, enterProperties, properties, exitProperties, onEnter, onExit, draggable, ...props } = this.props;
-    let f;
-    let p;
+    let {
+      enterFrame,
+      frame,
+      exitFrame,
+      enterStyle,
+      style,
+      exitStyle,
+      onEnter,
+      onExit,
+      ...props
+    } = this.props;
+    let f = frame;
+    let s = style;
     switch (stage) {
-    case 'show':
-    case 'shown':
-      f = frame;
-      p = properties;
-      break;
     case 'entering':
-      f = enterFrame || frame;
-      p = enterProperties || properties;
+      if (enterFrame) {
+        f = { ...f, ...enterFrame };
+      }
+      if (enterStyle) {
+        s = { ...s, ...enterStyle };
+      }
       break;
     case 'exiting':
-      f = exitFrame || frame;
-      p = exitProperties || properties;
+      if (exitFrame) {
+        f = { ...f, ...exitFrame };
+      }
+      if (exitStyle) {
+        s = { ...s, ...exitStyle };
+      }
+      break;
+    case 'show':
+    case 'shown':
       break;
     default:
       throw new Error('unexpected case');
-    }
-    if (stage !== 'shown') {
-      draggable = false;
     }
     return (
       <Layer
         {...props}
         frame={f}
-        properties={p}
-        draggable={draggable}
+        style={s}
         onAnimationEnd={this._onAnimationEnd}
       />
     );
