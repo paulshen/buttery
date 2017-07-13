@@ -16,18 +16,29 @@ export default class Example extends React.Component {
     return (
       <Layer
         frame={Frame(50, (667 - 275) / 2, 275, 275)}
-        properties={{
+        style={{
           backgroundColor: '#c3f0f7',
-        }}>
+        }}
+      >
         <Layer
-          frame={Frame(Drag(this.state.x), Drag(this.state.y), 80, 80)}
-          draggableProperties={{
-            constraintX: DragConstraint({ min: 0, max: 275 - 80, bounce: true }),
-            constraintY: DragConstraint({ min: 0, max: 275 - 80, bounce: true }),
-            momentum: true,
-          }}
+          frame={Frame(
+            Drag(this.state.x, {
+              min: 0,
+              max: 275 - 80,
+              bounce: true,
+              momentum: true,
+            }),
+            Drag(this.state.y, {
+              min: 0,
+              max: 275 - 80,
+              bounce: true,
+              momentum: true,
+            }),
+            80,
+            80
+          )}
           onDragEnd={this._onDragEnd}
-          properties={{
+          style={{
             backgroundColor: '#1693A5',
           }}
         />

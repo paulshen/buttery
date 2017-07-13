@@ -1,53 +1,39 @@
 import React from 'react';
 
-import { TimedAnimator, Layer, Frame, SpringAnimator } from '../../proto';
-
-const MyFrames = [
-  Frame(100, 140, 60, 60),
-  Frame(100, 180, 80, 80),
-  Frame(100, 220, 100, 100),
-];
+import { Layer, Frame, Animated, spring, timed } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    index: 0,
-    animator: null,
+    toggled: false,
   };
 
-  _onClick = animatorType => {
+  _onClick = () => {
     this.setState({
-      index: (this.state.index + 1) % MyFrames.length,
-      animator:
-        animatorType === 'spring'
-          ? SpringAnimator()
-          : TimedAnimator({ duration: 200 }),
+      toggled: !this.state.toggled,
     });
   };
 
   render() {
     // We simply add an animator instance to the Layer. Whenever Layer
     // properties change, they are animated.
+    let { toggled } = this.state;
     return (
       <div>
         <div style={{ position: 'absolute' }}>
-          <div>
-            <button onClick={() => this._onClick('timed')}>
-              Toggle with TimedAnimator
-            </button>
-          </div>
-          <div>
-            <button onClick={() => this._onClick('spring')}>
-              Toggle with SpringAnimator
-            </button>
-          </div>
+          <button onClick={this._onClick}>
+            Toggle
+          </button>
         </div>
         <Layer
-          frame={MyFrames[this.state.index]}
-          properties={{
+          frame={Frame(
+            100,
+            Animated(toggled ? 180 : 140, toggled ? timed(300): spring()),
+            80,
+            Animated(toggled ? 120 : 60, toggled ? timed(700): spring()),
+          )}
+          style={{
             backgroundColor: '#1693A5',
-            opacity: 1 - this.state.index * 0.2,
           }}
-          animator={this.state.animator}
         />
       </div>
     );

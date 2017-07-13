@@ -13,7 +13,7 @@ export default class Example extends React.Component {
             width: 120,
             height: 80,
           }}
-          properties={{
+          style={{
             backgroundColor: '#1693A5',
             borderRadius: 4,
           }}

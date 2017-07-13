@@ -32,7 +32,7 @@ export default class Example extends React.Component {
           frame={Frame(Drag(this.state.x), Drag(this.state.y), 80, 80)}
           onMove={this._onMove}
           onDragEnd={this._onDragEnd}
-          properties={{
+          style={{
             backgroundColor: '#1693A5',
           }}
         />

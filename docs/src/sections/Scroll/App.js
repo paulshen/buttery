@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DragConstraint, Layer, Frame } from '../../proto';
+import { DragConstraint, Layer, Frame, Drag } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
@@ -13,21 +13,21 @@ export default class Example extends React.Component {
 
   render() {
     return (
-      <Layer frame={Frame(0, 0, 375, 667)} properties={{ overflow: 'hidden' }}>
+      <Layer frame={Frame(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
         <Layer
-          frame={Frame(0, this.state.y, 375, 2000)}
-          draggable={true}
-          draggableProperties={{
-            constraintX: DragConstraint({ min: 0, max: 0 }),
-            constraintY: DragConstraint({
+          frame={Frame(
+            0,
+            Drag(this.state.y, {
               min: 667 - 2000,
               max: 0,
               bounce: true,
+              momentum: true,
             }),
-            momentum: true,
-          }}
+            375,
+            2000
+          )}
           onDragEnd={this._onDragEnd}
-          properties={{
+          style={{
             backgroundImage:
               'linear-gradient(to bottom, #a8f3f7 0%, #1e5799 100%)',
           }}
