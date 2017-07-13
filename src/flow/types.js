@@ -72,9 +72,3 @@ type AnimatedProperties = {
   shadowColor?: ?string,
   shadowSpread?: ?InputValue,
 };
-
-type DragConstraintType = {
-  min?: number,
-  max?: number,
-  bounce: boolean,
-};

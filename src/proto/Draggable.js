@@ -10,13 +10,6 @@ let activeDraggables = [];
 const DRAG_START_THRESHOLD = 3;
 
 export default class Draggable {
-  props: ?{
-    momentum?: boolean,
-    constraintX?: DragConstraintType,
-    constraintY?: DragConstraintType,
-    pageSize?: number,
-    onTouchEnd?: (p: Point) => void,
-  };
   _config: {
     x?: ?DragConfig,
     y?: ?DragConfig,
@@ -146,7 +139,6 @@ export default class Draggable {
     if (!this._dragStart) {
       return;
     }
-    this.props && this.props.onTouchEnd && this.props.onTouchEnd(this._p);
     // splitting this allows clients to modify props on touchend
     window.requestAnimationFrame(this._onTouchEndMotion);
 
