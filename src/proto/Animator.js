@@ -29,7 +29,7 @@ export default class Animator {
   constructor(
     layer: Layer,
     key: string,
-    config: TimedAnimatorConfig | SpringAnimatorConfig
+    config: AnimatorConfig
   ) {
     this._layer = layer;
     this._key = key;

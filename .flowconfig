@@ -6,7 +6,7 @@
 [include]
 
 [libs]
-src/flow
+src/proto/types.js
 
 [options]
 suppress_comment= \\(.\\|\n\\)*\\$FlowIgnore

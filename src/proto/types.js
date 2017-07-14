@@ -1,10 +1,9 @@
-type Point = {
-  x: number,
-  y: number,
-};
-
 type ScalarValue = number;
-type TimedAnimatorConfig = { type: 'timed', duration: number };
+
+type TimedAnimatorConfig = {
+  type: 'timed',
+  duration: number,
+};
 type SpringAnimatorConfig = {
   type: 'spring',
   spring: number,
@@ -17,6 +16,7 @@ type AnimatedValue = {
   config: AnimatorConfig,
   onEnd: ?Function,
 };
+
 type DragValue = {
   type: 'drag',
   value: ScalarValue | AnimatedValue,
@@ -29,8 +29,8 @@ type DragConfig = {
   momentum?: boolean,
   pageSize?: number,
 };
-type InputValue = ScalarValue | AnimatedValue;
 
+type InputValue = ScalarValue | AnimatedValue;
 type FrameType = {
   x: InputValue | DragValue,
   y: InputValue | DragValue,
@@ -43,6 +43,11 @@ type ComputedFrameType = {
   y: ScalarValue,
   width: ScalarValue,
   height: ScalarValue,
+};
+
+type Point = {
+  x: number,
+  y: number,
 };
 
 type Vector = {

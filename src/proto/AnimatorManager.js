@@ -12,7 +12,7 @@ export function getAnimator(layer: Layer, key: string): ?Animator {
 export function createAnimator(
   layer: Layer,
   key: string,
-  config: TimedAnimatorConfig | SpringAnimatorConfig
+  config: AnimatorConfig
 ): Animator {
   let layerID = layer.getID();
   if (!animators[layerID]) {
