@@ -25,6 +25,7 @@ export default class Layer extends React.Component {
     onMove?: (p: Point) => void,
     onAnimationEnd?: () => void,
     onDrag?: (p: Point) => void,
+    onDragRelease?: (p: Point) => void,
     onDragEnd?: (p: Point) => void,
   };
   _id: ?string;
@@ -163,6 +164,7 @@ export default class Layer extends React.Component {
         this._computedStyles,
         this._onDragStart,
         this._dragUpdater,
+        this._onDragRelease,
         this._onDragEnd
       );
       this._draggable = draggable;
@@ -181,6 +183,10 @@ export default class Layer extends React.Component {
       y: p.y,
     });
     this.props.onDrag && this.props.onDrag(p);
+  };
+
+  _onDragRelease = (p: Point) => {
+    this.props.onDragRelease && this.props.onDragRelease(p);
   };
 
   _onDragEnd = (p: Point) => {
@@ -288,6 +294,7 @@ export default class Layer extends React.Component {
       style,
       onMove,
       onDrag,
+      onDragRelease,
       onDragEnd,
       ...props
     } = this.props;

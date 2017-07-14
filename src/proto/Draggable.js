@@ -21,20 +21,22 @@ export default class Draggable {
   _dragAnimator: ?DragMomentumAnimator;
   _onDragStart: ?() => void;
   _layerUpdater: (p: Point) => void;
-  /* callback on end of drag animation */
-  _onDragEnd: ?(p: Point) => void;
+  _onDragRelease: (p: Point) => void;
+  _onDragEnd: (p: Point) => void;
 
   start(
     layer: HTMLElement,
     initialPoint: Point,
     onDragStart: ?() => void,
     updater: (p: Point) => void,
-    onDragEnd: ?(p: Point) => void
+    onDragRelease: (p: Point) => void,
+    onDragEnd: (p: Point) => void
   ) {
     this._layer = layer;
     this._p = { ...initialPoint };
     this._onDragStart = onDragStart;
     this._layerUpdater = updater;
+    this._onDragRelease = onDragRelease;
     this._onDragEnd = onDragEnd;
     this._layer.addEventListener('touchstart', this._onTouchStart, false);
     this._layer.addEventListener('touchmove', this._onTouchMove, false);
@@ -136,6 +138,7 @@ export default class Draggable {
     if (!this._dragStart) {
       return;
     }
+    this._onDragRelease(this._p);
     // splitting this allows clients to modify props on touchend
     window.requestAnimationFrame(this._onTouchEndMotion);
 
@@ -196,9 +199,8 @@ export default class Draggable {
 
   _onMomentumEnd = (p: Point) => {
     this._isControlledByDraggable = false;
-    const onDragEnd = this._onDragEnd;
     // reapply hard constraints here. motion might cause overshoot.
-    onDragEnd && onDragEnd(this._applyHardConstraints(p));
+    this._onDragEnd(this._applyHardConstraints(p));
   };
 
   _applyHardConstraints = (p: Point) => ({
