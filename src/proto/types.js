@@ -56,16 +56,10 @@ type Vector = {
 };
 
 type AnimatedProperties = {
-  backgroundColor?: string,
-  opacity?: InputValue,
-  rotation?: InputValue,
-  scaleX?: InputValue,
-  scaleY?: InputValue,
-  scale?: InputValue,
-  borderRadius?: InputValue,
-  shadowX?: ?InputValue,
-  shadowY?: ?InputValue,
-  shadowBlur?: ?InputValue,
-  shadowColor?: ?string,
-  shadowSpread?: ?InputValue,
+  opacity?: ?InputValue,
+  rotation?: ?InputValue,
+  scaleX?: ?InputValue,
+  scaleY?: ?InputValue,
+  scale?: ?InputValue,
+  borderRadius?: ?InputValue,
 };
