@@ -53,7 +53,7 @@ export default class Layer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
-    let { animator, frame, style, draggable } = nextProps;
+    let { animator, frame, style } = nextProps;
     this._updateDraggable(frame);
     let nextTargetFrame = this._getTargetValues(frame);
     let differingFrameProperties = getDifferingProperties(
@@ -309,8 +309,6 @@ export default class Layer extends React.Component {
       animator,
       frame,
       style,
-      draggable,
-      draggableProperties,
       onMove,
       onDrag,
       onDragEnd,
