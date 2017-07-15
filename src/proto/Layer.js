@@ -245,14 +245,14 @@ export default class Layer extends React.Component {
     this._handleTargetPropertyChange(
       updates,
       'x',
-      this.props.frame.x,
-      this._computedStyles.x
+      this._computedStyles.x,
+      this.props.frame.x
     );
     this._handleTargetPropertyChange(
       updates,
       'y',
-      this.props.frame.y,
-      this._computedStyles.y
+      this._computedStyles.y,
+      this.props.frame.y
     );
     this._applyUpdates(updates);
   };
