@@ -1,16 +1,19 @@
 /* @flow */
-import createSpring from './motion/createSpring';
+import createSpring from './steppers/createSpring';
 import type Layer from './Layer';
 
 function interp(from: number, to: number, t: number) {
   return from + (to - from) * t;
 }
 
+const STEPS_PER_SEC = 60;
+const SEC_PER_STEP = 1 / STEPS_PER_SEC;
+
 export default class Animator {
   _layer: Layer;
   _key: string;
-  _start: number;
-  _lastUpdate: number;
+  _startTime: number;
+  _stepsCompleted: number;
   _from: ScalarValue;
   _to: ScalarValue;
   _x: ScalarValue;
@@ -26,11 +29,7 @@ export default class Animator {
   _onEnd: ?Function;
   _raf: number;
 
-  constructor(
-    layer: Layer,
-    key: string,
-    config: AnimatorConfig
-  ) {
+  constructor(layer: Layer, key: string, config: AnimatorConfig) {
     this._layer = layer;
     this._key = key;
     if (config.type === 'timed') {
@@ -38,8 +37,8 @@ export default class Animator {
       this._stepper = (() => (
         x: number,
         v: number,
-        elapsed: number,
-        dt: number
+        secPerStep: number,
+        elapsed: number
       ) => {
         if (elapsed > duration) {
           return [1, 0, true];
@@ -58,10 +57,10 @@ export default class Animator {
     updater: (value: ScalarValue) => void,
     onEnd: ?Function
   ) {
-    this._start = Date.now();
+    this._startTime = Date.now();
+    this._stepsCompleted = 0;
     this._x = 0;
     this._v = 0;
-    this._lastUpdate = Date.now();
     this._value = from;
     this._from = from;
     this._to = to;
@@ -80,20 +79,28 @@ export default class Animator {
 
   _tick = () => {
     let now = Date.now();
-    let [nextX, nextV, shouldStop] = this._stepper(
-      this._x,
-      this._v,
-      now - this._start,
-      now - this._lastUpdate
-    );
-    this._x = nextX;
-    this._v = nextV;
+    let shouldStop = false;
+    let stepsNeeded =
+      Math.floor((now - this._startTime) / STEPS_PER_SEC) -
+      this._stepsCompleted;
+
+    for (let i = 0; i < stepsNeeded && !shouldStop; i++) {
+      let [nextX, nextV, stepShouldStop] = this._stepper(
+        this._x,
+        this._v,
+        SEC_PER_STEP,
+        now - this._startTime
+      );
+      this._x = nextX;
+      this._v = nextV;
+      shouldStop = stepShouldStop;
+    }
+    this._stepsCompleted = stepsNeeded;
     this._value = interp(this._from, this._to, this._x);
     this._updater(this._value);
     if (shouldStop) {
       this._onEnd && this._onEnd();
     } else {
-      this._lastUpdate = now;
       this._raf = window.requestAnimationFrame(this._tick);
     }
   };

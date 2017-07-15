@@ -39,7 +39,7 @@ export default class Example extends React.Component {
             Animated(toggledPosition ? 100 : 140, timed(600)),
             Animated(toggledPosition ? 180 : 140, timed(300)),
             Animated(toggledDimension ? 120 : 60, spring()),
-            Animated(toggledDimension ? 120 : 60, spring(0.0002, 0.01)),
+            Animated(toggledDimension ? 120 : 60, spring(12, 1)),
           )}
           style={{
             backgroundColor: '#1693A5',

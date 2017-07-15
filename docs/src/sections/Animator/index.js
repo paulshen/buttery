@@ -28,7 +28,7 @@ export default {
     Animated(this.state.x, timed(300)),
     Animated(this.state.y, spring()),
     Animated(this.state.width, timed(500)),
-    Animated(this.state.height, spring(0.005, 0.01)),
+    Animated(this.state.height, spring(180, 12)),
   )}
 />
 `}
@@ -74,13 +74,13 @@ export default {
             <td>
               <InlineCode>springK</InlineCode>
             </td>
-            <td>Spring constant. Default 0.0005</td>
+            <td>Spring constant. Default 180</td>
           </tr>
           <tr>
             <td>
               <InlineCode>frictionK</InlineCode>
             </td>
-            <td>Friction constant. Default 0.01</td>
+            <td>Friction constant. Default 12</td>
           </tr>
         </Table>
       </Section>

@@ -38,8 +38,8 @@ export function timed(duration: number = 300): TimedAnimatorConfig {
 }
 
 export function spring(
-  spring: number = 0.0005,
-  friction: number = 0.01
+  spring: number = 180,
+  friction: number = 12
 ): SpringAnimatorConfig {
   return {
     type: 'spring',
