@@ -48,56 +48,77 @@ export default class Layer extends React.Component {
 
   componentDidMount() {
     let { frame, style } = this.props;
-    this._applyUpdates(this._getTargetValues(frame));
-    style && this._applyUpdates(this._getTargetValues(style));
+    let updates = this._getTargetValues(frame);
+    if (style) {
+      updates = {
+        ...updates,
+        ...this._getTargetValues(style),
+      }
+    }
+    this._applyUpdates(updates);
     this._updateDraggable(frame);
   }
 
   componentWillReceiveProps(nextProps: $PropertyType<Layer, 'props'>) {
     let { animator, frame, style } = nextProps;
     this._updateDraggable(frame);
-    let nextTargetFrame = this._getTargetValues(frame);
-    let differingFrameProperties = getDifferingProperties(
-      this._getTargetValues(frame),
-      this._getTargetValues(this.props.frame)
+    let nextValues = this._getTargetValues(frame);
+    if (style) {
+      nextValues = {
+        ...nextValues,
+        ...this._getTargetValues(style),
+      };
+    }
+    let prevValues = this._getTargetValues(this.props.frame);
+    if (this.props.style) {
+      prevValues = {
+        ...prevValues,
+        ...this._getTargetValues(this.props.style),
+      };
+    }
+    let differingProperties = getDifferingProperties(
+      nextValues,
+      prevValues
     );
-    let differingStyleProperties = getDifferingProperties(
-      this._getTargetValues(style || {}),
-      this._getTargetValues(this.props.style || {})
-    );
-    if (
-      differingFrameProperties.length > 0 ||
-      differingStyleProperties.length > 0
-    ) {
+    if ( differingProperties.length > 0 ) {
       let updates = {};
-      differingFrameProperties.forEach(property =>
+      differingProperties.forEach(property => {
+        let value;
+        if (frame.hasOwnProperty(property)) {
+          value = frame[property];
+        } else {
+          value = style && style[property];
+        }
         this._handleTargetPropertyChange(
           updates,
-          frame[property],
+          property,
           this._computedStyles[property],
-          this.props.frame[property],
-          property
+          value
         )
-      );
-      differingStyleProperties.forEach(property =>
-        this._handleTargetPropertyChange(
-          updates,
-          style && style[property],
-          this._computedStyles[property],
-          this.props.style && this.props.style[property],
-          property
-        )
-      );
+      });
       this._applyUpdates(updates);
     }
   }
 
+  /**
+   * Resolve values to target scalars (e.g. Animated and Drag)
+   * "Target" may not be the live value (e.g. in middle of drag or animation)
+   */
+  _getTargetValues = (obj: Object): Object =>
+    Object.keys(obj).reduce((acc, key) => {
+      acc[key] = getTargetValue(obj[key]);
+      return acc;
+    }, {});
+
+  /**
+   * Updates the passed updates map for given property and from/to values.
+   * Should be called by properties that have changed target value.
+   */
   _handleTargetPropertyChange = (
     updates: Object,
-    to: InputValue | DragValue | any,
+    property: string,
     fromScalar: ?(ScalarValue | any),
-    from: ?(InputValue | DragValue | any),
-    property: string
+    to: InputValue | DragValue | any
   ) => {
     if (typeof to === 'object') {
       if (to.type === 'animated') {
@@ -124,16 +145,36 @@ export default class Layer extends React.Component {
       ) {
         this._handleTargetPropertyChange(
           updates,
-          to.value,
+          property,
           fromScalar,
-          from,
-          property
+          to.value
         );
       }
     } else {
       removeAnimator(this, property);
       updates[property] = to;
     }
+  };
+
+  /**
+   * Applies updates to DOM and handles if point changed
+   */
+  _applyUpdates = (updates: Object) => {
+    if (applyUpdates(this._layer, updates, this._computedStyles)) {
+      let p = {
+        x: this._computedStyles.x,
+        y: this._computedStyles.y,
+      }
+      if (this._draggable && !this._draggable.isActive()) {
+        this._draggable.setPoint(p);
+      }
+      this.props.onMove && this.props.onMove(p);
+    }
+  };
+
+  _onAnimationEnd = (onEnd: ?Function) => {
+    onEnd && onEnd();
+    this.props.onAnimationEnd && this.props.onAnimationEnd();
   };
 
   _updateDraggable = (frame: FrameType) => {
@@ -203,73 +244,17 @@ export default class Layer extends React.Component {
     let updates = {};
     this._handleTargetPropertyChange(
       updates,
+      'x',
       this.props.frame.x,
-      this._computedStyles.x,
-      null,
-      'x'
+      this._computedStyles.x
     );
     this._handleTargetPropertyChange(
       updates,
+      'y',
       this.props.frame.y,
-      this._computedStyles.y,
-      null,
-      'y'
+      this._computedStyles.y
     );
     this._applyUpdates(updates);
-  };
-
-  _getTargetValues = (obj: Object): Object =>
-    Object.keys(obj).reduce((acc, key) => {
-      acc[key] = getTargetValue(obj[key]);
-      return acc;
-    }, {});
-
-  _getComputedFrame = (frame: FrameType): ComputedFrameType => ({
-    x: this._getValue(frame.x, 'x'),
-    y: this._getValue(frame.y, 'y'),
-    width: this._getValue(frame.width, 'width'),
-    height: this._getValue(frame.height, 'height'),
-  });
-
-  _getValue = (
-    value: ScalarValue | AnimatedValue | DragValue,
-    key: string
-  ): ScalarValue => {
-    if (typeof value === 'number') {
-      return value;
-    }
-    if (value.type === 'animated') {
-      let animator = getAnimator(this, key);
-      if (animator) {
-        return animator.getValue();
-      }
-      return value.value;
-    }
-    if (value.type === 'drag') {
-      if (this._draggable && this._draggable.isActive()) {
-        return this._draggable.getPoint()[key];
-      }
-      return this._getValue(value.value, key);
-    }
-    throw new Error('unknown value type');
-  };
-
-  _applyUpdates = (updates: Object) => {
-    if (applyUpdates(this._layer, updates, this._computedStyles)) {
-      let p = {
-        x: this._computedStyles.x,
-        y: this._computedStyles.y,
-      }
-      if (this._draggable && !this._draggable.isActive()) {
-        this._draggable.setPoint(p);
-      }
-      this.props.onMove && this.props.onMove(p);
-    }
-  };
-
-  _onAnimationEnd = (onEnd: ?Function) => {
-    onEnd && onEnd();
-    this.props.onAnimationEnd && this.props.onAnimationEnd();
   };
 
   shouldComponentUpdate(nextProps: $PropertyType<Layer, 'props'>) {
