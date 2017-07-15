@@ -1,5 +1,6 @@
 /* @flow */
 import createSpring from './steppers/createSpring';
+import createTimed from './steppers/createTimed';
 import type Layer from './Layer';
 
 function interp(from: number, to: number, t: number) {
@@ -33,18 +34,7 @@ export default class Animator {
     this._layer = layer;
     this._key = key;
     if (config.type === 'timed') {
-      let { duration } = config;
-      this._stepper = (() => (
-        x: number,
-        v: number,
-        secPerStep: number,
-        elapsed: number
-      ) => {
-        if (elapsed > duration) {
-          return [1, 0, true];
-        }
-        return [elapsed / duration, 1 / duration, false];
-      })();
+      this._stepper = createTimed(config.duration);
     }
     if (config.type === 'spring') {
       this._stepper = createSpring(1, config.spring, config.friction);
