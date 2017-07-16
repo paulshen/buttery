@@ -20,12 +20,12 @@ class ScrollMotion {
       let { min, max, bounce } = this._config;
       if (typeof min === 'number' && x <= min) {
         this._accelerationFunction = bounce
-          ? createSpring(min, 0.00008, 0.025)
+          ? createSpring(min, 100, 20)
           : Stop;
       }
       if (typeof max === 'number' && x >= max) {
         this._accelerationFunction = bounce
-          ? createSpring(max, 0.00008, 0.025)
+          ? createSpring(max, 80, 20)
           : Stop;
       }
     }

@@ -83,7 +83,7 @@ export default class DragMomentumAnimator {
     let now = Date.now();
     let shouldStop = false;
     let stepsNeeded =
-      (now - this._startTime) * STEPS_PER_SEC - this._stepsCompleted;
+      (now - this._startTime) / 1000 / SEC_PER_STEP - this._stepsCompleted;
 
     for (let i = 0; i < stepsNeeded && !shouldStop; i++) {
       let nextP;
@@ -137,7 +137,7 @@ export default class DragMomentumAnimator {
       this._v = nextV;
     }
 
-    this._stepsCompleted = stepsNeeded;
+    this._stepsCompleted += stepsNeeded;
     this._updater(this._p);
     if (!shouldStop) {
       this._raf = window.requestAnimationFrame(this._tick);

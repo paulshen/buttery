@@ -71,7 +71,7 @@ export default class Animator {
     let now = Date.now();
     let shouldStop = false;
     let stepsNeeded =
-      Math.floor((now - this._startTime) / STEPS_PER_SEC) -
+      Math.floor((now - this._startTime) / 1000 / SEC_PER_STEP) -
       this._stepsCompleted;
 
     for (let i = 0; i < stepsNeeded && !shouldStop; i++) {
@@ -85,7 +85,7 @@ export default class Animator {
       this._v = nextV;
       shouldStop = stepShouldStop;
     }
-    this._stepsCompleted = stepsNeeded;
+    this._stepsCompleted += stepsNeeded;
     this._value = interp(this._from, this._to, this._x);
     this._updater(this._value);
     if (shouldStop) {

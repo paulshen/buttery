@@ -165,7 +165,7 @@ export default class Draggable {
       let lastTouch = this._touches[this._touches.length - 1];
       if (Date.now() - lastTouch.t < 50) {
         let secondToLastTouch = this._touches[this._touches.length - 2];
-        let dt = lastTouch.t - secondToLastTouch.t;
+        let dt = (lastTouch.t - secondToLastTouch.t) / 1000;
         v = {
           x: (lastTouch.clientX - secondToLastTouch.clientX) / dt,
           y: (lastTouch.clientY - secondToLastTouch.clientY) / dt,
