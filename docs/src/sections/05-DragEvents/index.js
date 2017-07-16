@@ -18,12 +18,12 @@ export default {
         <Paragraph>
           Layers support React event handlers (e.g.{' '}
           <InlineCode>onClick</InlineCode>) as you expect. Props are transferred
-          onto the underlying div.
+          to the underlying div.
         </Paragraph>
         <Paragraph>
           When a drag interaction is finished, the layer will fire the callback{' '}
           <InlineCode>onDragEnd</InlineCode> with the ending point. You usually
-          want to update a layer's frame on this event.
+          want to update the layer's frame on this event.
         </Paragraph>
         <Paragraph>
           You can also subscribe to every update with{' '}
@@ -40,12 +40,8 @@ export default {
     return (
       <Layer
         frame={Frame(Drag(this.state.x), Drag(this.state.y), 100, 100)}
-        onMove={
-          ({ x, y }) => console.log(x, y)
-        }
-        onDragEnd={
-          ({ x, y }) => this.setState({ x, y })
-        }
+        onMove={({ x, y }) => console.log(x, y)}
+        onDragEnd={({ x, y }) => this.setState({ x, y })}
       />
     );
   }

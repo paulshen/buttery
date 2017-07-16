@@ -12,22 +12,15 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Drag Constraints',
+  name: 'Drag Config',
   description: () =>
     <div>
       <Section>
         <Paragraph>
-          Drag values accept an optional config property.
+          <InlineCode>Drag</InlineCode> accepts an optional config property.
         </Paragraph>
         <DescriptionCode>
-          {`type DragConfig = {
-  min?: number,
-  max?: number,
-  bounce?: boolean,
-  momentum?: boolean,
-};
-
-<Layer
+          {`<Layer
   frame={Frame(
     Drag(100, { min: 0, max: 200 }),
     Drag(200, { min: 0, max: 200 }),
@@ -39,35 +32,46 @@ export default {
       </Section>
       <Section>
         <Header>DragConfig</Header>
-        <Paragraph>All properties are optional</Paragraph>
+        <Paragraph>All properties are optional.</Paragraph>
         <Table>
           <tr>
             <td>Prop</td>
+            <td>Type</td>
             <td>Notes</td>
           </tr>
           <tr>
             <td>
               <InlineCode>min</InlineCode>
             </td>
-            <td>number</td>
+            <td>?number</td>
+            <td>Min value constraint</td>
           </tr>
           <tr>
             <td>
               <InlineCode>max</InlineCode>
             </td>
-            <td>number</td>
+            <td>?number</td>
+            <td>Max value constraint</td>
           </tr>
           <tr>
             <td>
               <InlineCode>bounce</InlineCode>
             </td>
-            <td>boolean</td>
+            <td>?boolean</td>
+            <td>
+              If <InlineCode>true</InlineCode>, the value can exceed the
+              constraints with elastic behavior.
+            </td>
           </tr>
           <tr>
             <td>
               <InlineCode>momentum</InlineCode>
             </td>
-            <td>boolean</td>
+            <td>?boolean</td>
+            <td>
+              If <InlineCode>true</InlineCode>, the layer will move with
+              momentum after end of drag.
+            </td>
           </tr>
         </Table>
       </Section>

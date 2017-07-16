@@ -19,11 +19,6 @@ export default {
           Layers can be updated just like any other React component. No
           surprises here!
         </Paragraph>
-        <Paragraph>
-          For performance, react-prototyper does a deep equality test on{' '}
-          <InlineCode>LayerProperties</InlineCode> to determine whether to
-          update the layer.
-        </Paragraph>
       </Section>
       <DescriptionCode>
         {`<Layer

@@ -150,6 +150,7 @@ const Styles = {
   SectionName: {
     fontSize: '24px',
     letterSpacing: '1px',
+    marginBottom: '12px',
   },
   Description: {
     fontSize: '16px',

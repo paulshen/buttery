@@ -23,15 +23,17 @@ export default {
         <Paragraph>
           react-prototyper provides{' '}
           <InlineCode>LayerTransitionChild</InlineCode> to make enter and leave
-          transitions easy. <InlineCode>LayerTransitionChild</InlineCode> are
-          rendered as children of
+          transitions easy. <InlineCode>LayerTransitionChild</InlineCode> should
+          be rendered as children of{' '}
           <InlineCode>ReactTransitionGroup</InlineCode>.
         </Paragraph>
         <Paragraph>
-          <InlineCode>LayerTransitionChild</InlineCode> operate just like Layer
-          but support additional props, <InlineCode>enterFrame</InlineCode>,{' '}
-          <InlineCode>exitFrame</InlineCode>,{' '}
-          <InlineCode>enterStyle</InlineCode>,  and{' '}
+          <InlineCode>LayerTransitionChild</InlineCode> operate just like{' '}
+          <InlineCode>Layer</InlineCode>
+          but support additional props, <InlineCode>
+            enterFrame
+          </InlineCode>, <InlineCode>exitFrame</InlineCode>,{' '}
+          <InlineCode>enterStyle</InlineCode>, and{' '}
           <InlineCode>exitStyle</InlineCode>.
         </Paragraph>
         <DescriptionCode>

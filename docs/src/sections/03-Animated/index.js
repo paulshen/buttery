@@ -34,7 +34,7 @@ export default {
 `}
         </DescriptionCode>
       </Section>
-      <Header>Animators</Header>
+      <Header>AnimatorConfig</Header>
       <Section>
         <Paragraph>
           There are two included types of animator configurations.

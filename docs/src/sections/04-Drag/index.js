@@ -11,7 +11,7 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Draggable',
+  name: 'Drag',
   description: () =>
     <div>
       <Section>
@@ -35,7 +35,7 @@ export default {
         <Paragraph>
           While a layer is being dragged, its position is controlled by the
           draggable. When the drag ends, the position control is returned to the
-          given value of the Drag.
+          <InlineCode>Drag</InlineCode>'s value (first argument).
         </Paragraph>
         <Paragraph>
           Try dragging the example layer. What happens when you finish dragging?
