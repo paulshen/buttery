@@ -5,7 +5,6 @@ import Radium from 'radium';
 import Code from './Code';
 import Output from './Output';
 import Sections from './sections';
-import Link from './components/Link';
 
 class CodePane extends React.Component {
   props: {
