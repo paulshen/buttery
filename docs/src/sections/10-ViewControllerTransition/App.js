@@ -24,26 +24,26 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Layer frame={Frame(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
+      <Layer frame={Frame(0, 0, 320, 320)} style={{ overflow: 'hidden' }}>
         <Layer
-          frame={Frame(0, 0, 375, 667)}
+          frame={Frame(0, 0, 320, 320)}
           style={{
-            backgroundColor: '#f0f0f0',
+            backgroundColor: '#ffffff',
           }}
           onClick={this._showScreen}
         />
         <ReactTransitionGroup>
           {this.state.showScreen &&
             <LayerTransitionChild
-              enterFrame={{ x: 375 }}
-              frame={Frame(Animated(0, spring()), 0, 375, 667)}
+              enterFrame={{ x: 320 }}
+              frame={Frame(Animated(0, spring(170, 26)), 0, 320, 320)}
               exitFrame={{
-                y: Animated(667, spring()),
+                y: Animated(320, spring(170, 26)),
               }}
               onClick={this._hideScreen}
               key={this.state.screenIndex}
               style={{
-                backgroundColor: '#d0d0d0',
+                backgroundColor: '#49c6ae',
               }}
             />}
         </ReactTransitionGroup>

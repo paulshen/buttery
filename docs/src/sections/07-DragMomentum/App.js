@@ -4,8 +4,8 @@ import { DragConstraint, Layer, Frame, Drag } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    x: 0,
-    y: 0,
+    x: 80,
+    y: 80,
   };
 
   _onDragEnd = ({ x, y }) => {
@@ -15,22 +15,22 @@ export default class Example extends React.Component {
   render() {
     return (
       <Layer
-        frame={Frame(50, (667 - 275) / 2, 275, 275)}
+        frame={Frame(40, 40, 240, 240)}
         style={{
-          backgroundColor: '#c3f0f7',
+          backgroundColor: '#def5f0',
         }}
       >
         <Layer
           frame={Frame(
             Drag(this.state.x, {
               min: 0,
-              max: 275 - 80,
+              max: 240 - 80,
               bounce: true,
               momentum: true,
             }),
             Drag(this.state.y, {
               min: 0,
-              max: 275 - 80,
+              max: 240 - 80,
               bounce: true,
               momentum: true,
             }),
@@ -39,7 +39,7 @@ export default class Example extends React.Component {
           )}
           onDragEnd={this._onDragEnd}
           style={{
-            backgroundColor: '#1693A5',
+            backgroundColor: '#49c6ae',
           }}
         />
       </Layer>

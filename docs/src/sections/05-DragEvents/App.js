@@ -4,8 +4,8 @@ import { Layer, Frame, Drag } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    x: 100,
-    y: 140,
+    x: 120,
+    y: 120,
     lastEventMessage: '',
   };
 
@@ -33,7 +33,7 @@ export default class Example extends React.Component {
           onMove={this._onMove}
           onDragEnd={this._onDragEnd}
           style={{
-            backgroundColor: '#1693A5',
+            backgroundColor: '#49c6ae',
           }}
         />
       </div>

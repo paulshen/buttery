@@ -15,14 +15,14 @@ export default Radium(Output);
 const Styles = {
   Root: {
     alignItems: 'center',
-    backgroundColor: '#999999',
+    backgroundColor: '#def5f0',
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
   },
   Chrome: {
     backgroundColor: '#ffffff',
-    height: '667px',
-    width: '375px',
+    height: '320px',
+    width: '320px',
   },
 };

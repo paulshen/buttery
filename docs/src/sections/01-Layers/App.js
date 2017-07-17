@@ -8,14 +8,13 @@ export default class Example extends React.Component {
       <div>
         <Layer
           frame={{
-            x: 100,
-            y: 140,
-            width: 120,
+            x: 120,
+            y: 120,
+            width: 80,
             height: 80,
           }}
           style={{
-            backgroundColor: '#1693A5',
-            borderRadius: 4,
+            backgroundColor: '#49c6ae',
           }}
         />
       </div>

@@ -4,45 +4,45 @@ import { Layer, Frame, Animated, spring, timed } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    toggledPosition: false,
-    toggledDimension: false,
+    toggledFrame: false,
+    toggledRadius: false,
   };
 
   _onClickPosition = () => {
     this.setState({
-      toggledPosition: !this.state.toggledPosition,
+      toggledFrame: !this.state.toggledFrame,
     });
   };
 
   _onClickDimension = () => {
     this.setState({
-      toggledDimension: !this.state.toggledDimension,
+      toggledRadius: !this.state.toggledRadius,
     });
   };
 
   render() {
     // We simply add an animator instance to the Layer. Whenever Layer
     // properties change, they are animated.
-    let { toggledPosition, toggledDimension } = this.state;
+    let { toggledFrame, toggledRadius } = this.state;
     return (
       <div>
         <div style={{ position: 'absolute' }}>
-          <button onClick={this._onClickPosition}>
-            Toggle position
-          </button>
-          <button onClick={this._onClickDimension}>
-            Toggle dimensions
-          </button>
+          <button onClick={this._onClickPosition}>Toggle frame</button>
+          <button onClick={this._onClickDimension}>Toggle radius</button>
         </div>
         <Layer
           frame={Frame(
-            Animated(toggledPosition ? 100 : 140, timed(600)),
-            Animated(toggledPosition ? 180 : 140, timed(300)),
-            Animated(toggledDimension ? 120 : 60, spring()),
-            Animated(toggledDimension ? 120 : 60, spring(12, 1)),
+            Animated(toggledFrame ? 100 : 120, spring()),
+            Animated(toggledFrame ? 100 : 120, spring()),
+            Animated(toggledFrame ? 120 : 80, spring()),
+            Animated(toggledFrame ? 120 : 80, spring())
           )}
           style={{
-            backgroundColor: '#1693A5',
+            backgroundColor: '#49c6ae',
+            borderRadius: Animated(
+              toggledRadius ? (toggledFrame ? 60 : 40) : 0,
+              timed(300)
+            ),
           }}
         />
       </div>

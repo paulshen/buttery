@@ -4,7 +4,7 @@ import { Layer, Frame, Drag } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    x: 0,
+    x: 80,
   };
 
   _onDragEnd = ({ x }) => {
@@ -14,21 +14,21 @@ export default class Example extends React.Component {
   render() {
     return (
       <Layer
-        frame={Frame(50, 200, 275, 80)}
+        frame={Frame(40, 120, 240, 80)}
         style={{
-          backgroundColor: '#c3f0f7',
+          backgroundColor: '#def5f0',
         }}
       >
         <Layer
           frame={Frame(
-            Drag(this.state.x, { min: 0, max: 275 - 80 }),
+            Drag(this.state.x, { min: 0, max: 240 - 80 }),
             0,
             80,
             80
           )}
           onDragEnd={this._onDragEnd}
           style={{
-            backgroundColor: '#1693A5',
+            backgroundColor: '#49c6ae',
           }}
         />
       </Layer>

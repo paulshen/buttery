@@ -11,8 +11,8 @@ import {
 
 function getFrame(i) {
   return {
-    x: 47.5 + 60 * (i % 5),
-    y: 40 + 60 * Math.floor(i / 5),
+    x: 50+ 60 * (i % 4),
+    y: 50 + 60 * Math.floor(i / 4),
     width: 40,
     height: 40,
   };
@@ -46,7 +46,7 @@ export default class Example extends React.Component {
             opacity: 0,
           }}
           style={{
-            backgroundColor: 'lightblue',
+            backgroundColor: '#49c6ae',
             opacity: Animated(1, timed(500)),
           }}
           exitStyle={{
@@ -58,9 +58,11 @@ export default class Example extends React.Component {
     }
 
     return (
-      <Layer frame={Frame(0, 0, 375, 667)}>
-        <button onClick={this._onClickAdd}>Add</button>
-        <button onClick={this._onClickRemove}>Remove</button>
+      <Layer frame={Frame(0, 0, 320, 320)}>
+        <div style={{ position: 'absolute' }}>
+          <button onClick={this._onClickAdd}>Add</button>
+          <button onClick={this._onClickRemove}>Remove</button>
+        </div>
         <ReactTransitionGroup>
           {layers}
         </ReactTransitionGroup>

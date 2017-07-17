@@ -2,6 +2,23 @@ import React from 'react';
 
 import { DragConstraint, Layer, Frame, Drag } from '../../proto';
 
+function Row() {
+  return (
+    <div style={{
+      display: 'flex',
+      height: '84px',
+      width: '100%',
+    }}>
+      <div style={{
+        backgroundColor: '#49c6ae',
+        borderRadius: '4px',
+        flex: 1,
+        margin: '16px 16px 0',
+      }} />
+    </div>
+  );
+}
+
 export default class Example extends React.Component {
   state = {
     y: 0,
@@ -13,25 +30,33 @@ export default class Example extends React.Component {
 
   render() {
     return (
-      <Layer frame={Frame(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
+      <Layer frame={Frame(0, 0, 320, 320)} style={{
+        overflow: 'hidden',
+      }}>
         <Layer
           frame={Frame(
             0,
             Drag(this.state.y, {
-              min: 667 - 2000,
+              min: 320 - (84 * 10 + 16),
               max: 0,
               bounce: true,
               momentum: true,
             }),
-            375,
-            2000
+            320,
+            84 * 10 + 16,
           )}
-          onDragEnd={this._onDragEnd}
-          style={{
-            backgroundImage:
-              'linear-gradient(to bottom, #a8f3f7 0%, #1e5799 100%)',
-          }}
-        />
+          onDragEnd={this._onDragEnd}>
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+        </Layer>
       </Layer>
     );
   }
