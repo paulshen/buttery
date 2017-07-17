@@ -17,6 +17,7 @@ export const Paragraph = (props) => <div {...props} style={Paragraph.Styles} />;
 Paragraph.Styles = {
   fontSize: '14px',
   marginBottom: '16px',
+  maxWidth: '540px',
 };
 
 export const InlineCode = (props) => <span {...props} style={InlineCode.Styles} />;

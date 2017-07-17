@@ -30,19 +30,19 @@ export default class Example extends React.Component {
 
   render() {
     return (
-      <Layer frame={Frame(0, 0, 320, 320)} style={{
+      <Layer frame={Frame(0, 0, 400, 400)} style={{
         overflow: 'hidden',
       }}>
         <Layer
           frame={Frame(
             0,
             Drag(this.state.y, {
-              min: 320 - (84 * 10 + 16),
+              min: 400 - (84 * 10 + 16),
               max: 0,
               bounce: true,
               momentum: true,
             }),
-            320,
+            400,
             84 * 10 + 16,
           )}
           onDragEnd={this._onDragEnd}>

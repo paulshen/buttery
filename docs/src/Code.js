@@ -16,6 +16,7 @@ class Code extends React.Component {
   componentDidMount() {
     this._codemirror = CodeMirror.fromTextArea(this._textarea, {
       mode: 'javascript',
+      readOnly: true,
       viewportMargin: Infinity,
       foldGutter: this.props.foldGutter,
       lineNumbers: this.props.showGutter,
@@ -23,7 +24,6 @@ class Code extends React.Component {
     });
     const { folds } = this.props;
     if (folds) {
-      console.log(folds);
       folds.forEach(fold => this._codemirror.foldCode(CodeMirror.Pos(fold, 0)));
     }
   }

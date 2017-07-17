@@ -4,7 +4,7 @@ import Radium from 'radium';
 function Output({ children }) {
   return (
     <div style={Styles.Root}>
-      <div style={Styles.Chrome}>
+      <div style={Styles.Chrome} className="output">
         {children}
       </div>
     </div>
@@ -14,15 +14,14 @@ export default Radium(Output);
 
 const Styles = {
   Root: {
-    alignItems: 'center',
-    backgroundColor: '#def5f0',
     display: 'flex',
     flex: 1,
+    fontSize: '12px',
     justifyContent: 'center',
   },
   Chrome: {
-    backgroundColor: '#ffffff',
-    height: '320px',
-    width: '320px',
+    backgroundColor: '#def5f0',
+    height: '400px',
+    width: '400px',
   },
 };

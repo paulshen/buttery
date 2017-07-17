@@ -32,15 +32,15 @@ export default class Example extends React.Component {
         </div>
         <Layer
           frame={Frame(
-            Animated(toggledFrame ? 100 : 120, spring()),
-            Animated(toggledFrame ? 100 : 120, spring()),
-            Animated(toggledFrame ? 120 : 80, spring()),
-            Animated(toggledFrame ? 120 : 80, spring())
+            Animated(toggledFrame ? 120 : 160, spring()),
+            Animated(toggledFrame ? 120 : 160, spring()),
+            Animated(toggledFrame ? 160 : 80, spring()),
+            Animated(toggledFrame ? 160 : 80, spring())
           )}
           style={{
             backgroundColor: '#49c6ae',
             borderRadius: Animated(
-              toggledRadius ? (toggledFrame ? 60 : 40) : 0,
+              toggledRadius ? (toggledFrame ? 80 : 40) : 0,
               timed(300)
             ),
           }}

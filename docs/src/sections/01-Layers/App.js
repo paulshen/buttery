@@ -8,8 +8,8 @@ export default class Example extends React.Component {
       <div>
         <Layer
           frame={{
-            x: 120,
-            y: 120,
+            x: 160,
+            y: 160,
             width: 80,
             height: 80,
           }}

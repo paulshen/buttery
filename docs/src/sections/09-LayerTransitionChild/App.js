@@ -11,8 +11,8 @@ import {
 
 function getFrame(i) {
   return {
-    x: 50+ 60 * (i % 4),
-    y: 50 + 60 * Math.floor(i / 4),
+    x: 60 + 60 * (i % 5),
+    y: 60 + 60 * Math.floor(i / 5),
     width: 40,
     height: 40,
   };

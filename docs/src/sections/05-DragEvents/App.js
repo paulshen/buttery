@@ -4,8 +4,8 @@ import { Layer, Frame, Drag } from '../../proto';
 
 export default class Example extends React.Component {
   state = {
-    x: 120,
-    y: 120,
+    x: 160,
+    y: 160,
     lastEventMessage: '',
   };
 
@@ -25,7 +25,7 @@ export default class Example extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ position: 'absolute' }}>
+        <div className="console">
           {this.state.lastEventMessage}
         </div>
         <Layer

@@ -7,7 +7,7 @@ export default class Example extends React.Component {
     return (
       <div>
         <Layer
-          frame={Frame(Drag(120), Drag(120), 80, 80)}
+          frame={Frame(Drag(160), Drag(160), 80, 80)}
           style={{
             backgroundColor: '#49c6ae',
           }}
