@@ -2,6 +2,8 @@
 
 Work in progress! Name TBD.
 
+If you're curious, check out the **EXTREMELY** work in progress [documentation](https://paulshen.github.io/react-prototyper/).
+
 ### What is this?
 
 React Prototyper provides a powerful `<Layer>` component for creating animated and interactive applications.
