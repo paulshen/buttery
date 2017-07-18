@@ -33,6 +33,7 @@ class HomePage extends React.Component {
           <div><Link to="/example/basic">Basic</Link></div>
           <div><Link to="/example/sidemenu">Side Menu</Link></div>
           <div><Link to="/example/pulltorefresh">Pull to Refresh</Link></div>
+          <div><Link to="/example/overlay">Overlay</Link></div>
         </Paragraph>
         <Route path={`/example/:exampleId`} component={Example} />
       </div>
