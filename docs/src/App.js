@@ -9,8 +9,8 @@ export default class App extends React.Component {
     return (
       <Router>
         <div>
-          <Route exact={true} path="/" component={HomePage} />
           <Route path="/docs" component={DocumentationPage} />
+          <Route path="/" component={HomePage} />
         </div>
       </Router>
     );
