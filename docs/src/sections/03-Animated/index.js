@@ -18,7 +18,11 @@ export default {
       <Section>
         <Paragraph>
           Frame and style properties can be animated by using an{' '}
-          <InlineCode>AnimatedValue</InlineCode>.
+          <InlineCode>AnimatedValue</InlineCode>. Use the{' '}
+          <InlineCode>Animated</InlineCode> function, which takes a value and a
+          required configuration. Whenever the scalar value of an{' '}
+          <InlineCode>AnimatedValue</InlineCode> changes, the transition will be
+          animated with the given configuration at the time of the value change.
         </Paragraph>
         <DescriptionCode>
           {`Animated(value: number, config: AnimatorConfig, onEnd?: Function)
@@ -28,10 +32,12 @@ export default {
     Animated(this.state.x, timed(300)),
     Animated(this.state.y, spring()),
     Animated(this.state.width, timed(500)),
-    Animated(this.state.height, spring(180, 12)),
+    Animated(this.state.height, spring(180, 12))
   )}
-/>
-`}
+  style={{
+    borderRadius: Animated(this.state.borderRadius, spring())
+  }}
+/>`}
         </DescriptionCode>
       </Section>
       <Header>AnimatorConfig</Header>

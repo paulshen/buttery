@@ -17,14 +17,10 @@ export default {
       <Section>
         <Paragraph>
           Layers can be updated just like any other React component. No
-          surprises here!
+          surprises here! react-prototyper will watch for changes to a layer's
+          frame and style.
         </Paragraph>
       </Section>
-      <DescriptionCode>
-        {`<Layer
-  frame={MyFrames[this.state.index]}
-/>`}
-      </DescriptionCode>
     </div>,
   App,
   Source,

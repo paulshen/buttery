@@ -17,13 +17,10 @@ export default {
       <Section>
         <Paragraph>
           Layers are the building blocks of react-prototyper. Use them as you
-          would <InlineCode>{`<div>`}</InlineCode>s.
-        </Paragraph>
-        <Paragraph>
-          All layers must have the prop <InlineCode>frame</InlineCode>, which is
-          an object with numbers <InlineCode>x</InlineCode>,{' '}
-          <InlineCode>y</InlineCode>, <InlineCode>width</InlineCode>, and{' '}
-          <InlineCode>height</InlineCode>.
+          would <InlineCode>{`<div>`}</InlineCode>s. All layers must have the
+          prop <InlineCode>frame</InlineCode>, which is an object with
+          properties <InlineCode>x</InlineCode>, <InlineCode>y</InlineCode>,{' '}
+          <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>.
         </Paragraph>
         <Paragraph>
           Layers are absolutely positioned by react-prototyper. This allows
@@ -41,24 +38,25 @@ export default {
   }}
 />
 
+// or equivalently with Frame() helper
 <Layer frame={Frame(100, 100, 200, 200)} />`}
       </DescriptionCode>
       <Section>
         <Paragraph>
           Layers support DOM inline styles. <InlineCode>transform</InlineCode>,{' '}
           <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>{' '}
-          are controlled by react-prototyper and should not be specified in{' '}
+          are controlled by react-prototyper and should not be set in{' '}
           <InlineCode>style</InlineCode>. The following properties are also
-          supported in style: <InlineCode>rotate</InlineCode>,{' '}
-          <InlineCode>scale</InlineCode>, <InlineCode>scaleX</InlineCode>,{' '}
-          <InlineCode>scaleY</InlineCode>.
+          supported as properties of <InlineCode>style</InlineCode>:{' '}
+          <InlineCode>rotate</InlineCode>, <InlineCode>scale</InlineCode>,{' '}
+          <InlineCode>scaleX</InlineCode>, <InlineCode>scaleY</InlineCode>.
         </Paragraph>
         <DescriptionCode>
           {`<Layer
   frame={Frame(100, 100, 200, 200)}
   style={{
     opacity: 0.5,
-    scale: 2,
+    scale: 2
   }}
 />`}
         </DescriptionCode>

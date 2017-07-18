@@ -19,30 +19,33 @@ export default {
         <DescriptionCode>
           {`Drag(value: number | AnimatedValue, config?: DragConfig)
 
-// X draggable
-<Layer
-  frame={Frame(Drag(100), 100, 200, 200)}
-/>
+// X draggable (y is fixed at 160)
+<Layer frame={Frame(Drag(160), 160, 80, 80)} />
 
-// X and Y draggable
-<Layer
-  frame={Frame(Drag(100), Drag(100), 200, 200)}
-/>
-`}
+// both X and Y draggable
+<Layer frame={Frame(Drag(160), Drag(160), 80, 80)} />`}
         </DescriptionCode>
       </Section>
       <Section>
         <Paragraph>
           While a layer is being dragged, its position is controlled by the
-          draggable. When the drag ends, the position control is returned to the
+          draggable. When the drag ends, the position control is returned to the{' '}
           <InlineCode>Drag</InlineCode>'s value (first argument).
         </Paragraph>
         <Paragraph>
           Try dragging the example layer. What happens when you finish dragging?
         </Paragraph>
+        <Paragraph>
+          If you want to animate this transition, just set the{' '}
+          <InlineCode>Drag</InlineCode>'s value to an{' '}
+          <InlineCode>AnimatedValue</InlineCode>.
+        </Paragraph>
+        <DescriptionCode>
+          {`Drag(Animated(160, spring()))`}
+        </DescriptionCode>
       </Section>
     </div>,
   App,
   Source,
-  folds: [9],
+  folds: [],
 };

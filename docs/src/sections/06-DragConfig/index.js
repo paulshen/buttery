@@ -17,15 +17,15 @@ export default {
     <div>
       <Section>
         <Paragraph>
-          <InlineCode>Drag</InlineCode> accepts an optional config property.
+          <InlineCode>Drag</InlineCode> accepts an optional config parameter.
         </Paragraph>
         <DescriptionCode>
           {`<Layer
   frame={Frame(
-    Drag(100, { min: 0, max: 200 }),
-    Drag(200, { min: 0, max: 200 }),
-    100,
-    100,
+    Drag(this.state.x, { min: 0, max: 200 }),
+    0, // y is not draggable
+    80,
+    80,
   )}
 />`}
         </DescriptionCode>
@@ -70,7 +70,7 @@ export default {
             <td>?boolean</td>
             <td>
               If <InlineCode>true</InlineCode>, the layer will move with
-              momentum after end of drag.
+              momentum after end of drag. See next section.
             </td>
           </tr>
         </Table>

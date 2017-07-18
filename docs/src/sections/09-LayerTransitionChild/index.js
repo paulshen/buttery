@@ -25,7 +25,9 @@ export default {
           <InlineCode>LayerTransitionChild</InlineCode> to make enter and leave
           transitions easy. <InlineCode>LayerTransitionChild</InlineCode> should
           be rendered as children of{' '}
-          <InlineCode>ReactTransitionGroup</InlineCode>.
+          <InlineCode>ReactTransitionGroup</InlineCode>. You will have to
+          install the node module{' '}
+          <InlineCode>react-addons-transition-group</InlineCode>.
         </Paragraph>
         <Paragraph>
           <InlineCode>LayerTransitionChild</InlineCode> operate just like{' '}
@@ -34,40 +36,24 @@ export default {
             enterFrame
           </InlineCode>, <InlineCode>exitFrame</InlineCode>,{' '}
           <InlineCode>enterStyle</InlineCode>, and{' '}
-          <InlineCode>exitStyle</InlineCode>.
+          <InlineCode>exitStyle</InlineCode>. These props are merged with the
+          usual <InlineCode>frame</InlineCode> and{' '}
+          <InlineCode>style</InlineCode> props.
         </Paragraph>
         <DescriptionCode>
-          {`import { LayerTransitionChild } from 'proto';
-import ReactTransitionGroup from 'react-addons-transition-group';
+          {`import ReactTransitionGroup from 'react-addons-transition-group';
 
-class TransitionChild extends React.Component {
-  state = {
-    numLayers: 0,
-  };
-
-  ...
-
-  render() {
-    let layers = [];
-    for (let i = 0; i < this.state.numLayers; i++) {
-      layers.push(
-        <Layer
-          frame={getFrame(i)}
-          enterStyle={{ opacity: 0 }}
-          style={{ opacity: Animated(1, timed(300)) }}
-          exitStyle={{ opacity: Animated(0, timed(300)) }}
-          key={i}
-        />
-      );
-    }
-
-    return (
-      <ReactTransitionGroup>
-        {layers}
-      </ReactTransitionGroup>
-    );
-  }
-}`}
+// This examples fades the layer as it is shown/hidden.
+<ReactTransitionGroup>
+  {shouldShowLayer &&
+    <Layer
+      frame={...}
+      enterStyle={{ opacity: 0 }}
+      style={{ opacity: Animated(1, timed(300)) }}
+      exitStyle={{ opacity: Animated(0, timed(300)) }}
+      key="1"
+    />}
+</ReactTransitionGroup>`}
         </DescriptionCode>
       </Section>
     </div>,
