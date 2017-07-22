@@ -22,11 +22,19 @@ export default class LayerTransitionChild extends React.Component {
   _enterCallback: ?Function;
   _exitCallback: ?Function;
 
+  componentWillAppear(callback: Function) {
+    this.componentWillEnter(callback);
+  }
+
   componentWillEnter(callback: Function) {
     this.setState({
       stage: 'show',
     });
     this._enterCallback = callback;
+  }
+
+  componentDidAppear() {
+    this.componentDidEnter();
   }
 
   componentDidEnter() {
