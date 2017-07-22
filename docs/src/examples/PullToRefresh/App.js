@@ -23,7 +23,7 @@ class SwipeableRow extends React.Component {
               bounce: true,
             }),
             16,
-            328,
+            375 - 16 * 2,
             70
           )}
           onDragRelease={this._onDragRelease}
@@ -65,27 +65,27 @@ export default class Example extends React.Component {
 
   render() {
     return (
-      <Layer frame={Frame(0, 0, 360, 360)} style={{ overflow: 'hidden' }}>
+      <Layer frame={Frame(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
         <Layer
           frame={Frame(
             0,
             Drag(Animated(this.state.y, spring(170, 26)), {
-              min: 360 - 856,
+              min: 667 - 856,
               max: this.state.refreshing ? 58 : 0,
               bounce: true,
               momentum: true,
             }),
-            360,
+            375,
             856
           )}
           onDragRelease={this._onDragRelease}
           onDragEnd={this._onDragEnd}
         >
           <Layer
-            frame={Frame(170, -30, 20, 20)}
+            frame={Frame(177, -30, 20, 20)}
             style={{
               backgroundColor: '#49c6ae',
-              rotate: this.state.refreshing ? Animated(360, timed(2000)) : 0,
+              rotate: this.state.refreshing ? Animated(375, timed(2000)) : 0,
             }}
           />
           <SwipeableRow />

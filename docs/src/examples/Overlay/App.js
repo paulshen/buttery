@@ -30,7 +30,7 @@ export default class Example extends React.Component {
   render() {
     let { method, index } = this.state;
     return (
-      <Layer frame={Frame(0, 0, 360, 360)} style={{ overflow: 'hidden' }}>
+      <Layer frame={Frame(0, 0, 375, 667)} style={{ overflow: 'hidden' }}>
         <div style={{ position: 'absolute' }}>
           <button onClick={() => this._toggleOverlay('slide')}>
             Slide Overlay
@@ -42,10 +42,10 @@ export default class Example extends React.Component {
         <ReactTransitionGroup>
           {this.state.showOverlay &&
             <LayerTransitionChild
-              frame={Frame(40, Animated(120, spring(170, 26)), 280, 200)}
-              enterFrame={method === 'slide' && { y: 360 }}
+              frame={Frame(20, Animated(447, spring(170, 26)), 335, 200)}
+              enterFrame={method === 'slide' && { y: 667 }}
               exitFrame={
-                method === 'slide' && { y: Animated(360, spring(170, 26)) }
+                method === 'slide' && { y: Animated(667, spring(170, 26)) }
               }
               style={{
                 backgroundColor: '#49c6ae',
