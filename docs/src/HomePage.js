@@ -34,10 +34,13 @@ class HomePage extends React.Component {
           </Paragraph>
           <Paragraph>
             <div><Link to="/docs">Documentation</Link></div>
+          </Paragraph>
+          <Paragraph>
             <div><Link to="/example/basic">Basic</Link></div>
             <div><Link to="/example/sidemenu">Side Menu</Link></div>
             <div><Link to="/example/pulltorefresh">Pull to Refresh</Link></div>
             <div><Link to="/example/overlay">Overlay</Link></div>
+            <div><Link to="/example/cards">Cards</Link></div>
           </Paragraph>
         </div>
         <div style={Styles.PhoneColumn}>
@@ -74,6 +77,8 @@ const Styles = {
   Example: {
     backgroundColor: '#ffffff',
     height: '667px',
+    overflow: 'hidden',
+    position: 'relative',
     width: '375px',
   },
 };
