@@ -14,6 +14,8 @@
     "react-scripts": "^0.9.5"
   },
   "dependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-preset-react-app": "^3.0.1",
     "radium": "^0.18.1",
     "react": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
@@ -25,6 +27,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "./node_modules/.bin/flow",
-    "lint": "./node_modules/.bin/eslint src"
+    "lint": "./node_modules/.bin/eslint src",
+    "prepublish": "rm -rf lib && NODE_ENV=production babel src --out-dir lib"
   }
 }
