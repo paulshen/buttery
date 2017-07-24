@@ -2,11 +2,12 @@
 .*/node_modules/fbjs/lib/partitionObjectByKey.js.flow
 .*/node_modules/radium/.*
 .*/docs/.*
+.*/old/.*
 
 [include]
 
 [libs]
-src/proto/types.js
+src/types.js
 
 [options]
 suppress_comment= \\(.\\|\n\\)*\\$FlowIgnore

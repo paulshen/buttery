@@ -1,9 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+/* @flow */
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+export { default as Layer } from './Layer';
+export { default as LayerTransitionChild } from './LayerTransitionChild';
+export { Frame, Animated, Drag, timed, spring } from './Markers';
