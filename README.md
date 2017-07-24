@@ -1,8 +1,8 @@
 # Buttery
 
-A React library for building animations and interactions.
+A React library for super smooth animations and interactions.
 
-If you're curious, check out the **EXTREMELY** work in progress [documentation](https://paulshen.github.io/react-prototyper/).
+If you're curious, check out the **EXTREMELY** work in progress [documentation](https://paulshen.github.io/buttery/).
 
 ### What is this?
 
