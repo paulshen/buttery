@@ -7,7 +7,7 @@ import {
   Drag,
   spring,
   timed
-} from '../../proto';
+} from 'buttery';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
 export default class Example extends React.Component {

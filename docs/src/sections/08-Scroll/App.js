@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DragConstraint, Layer, Frame, Drag } from '../../proto';
+import { DragConstraint, Layer, Frame, Drag } from 'buttery';
 
 function Row() {
   return (

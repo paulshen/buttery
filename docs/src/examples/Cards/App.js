@@ -5,7 +5,7 @@ import {
   Drag,
   spring,
   timed
-} from '../../proto';
+} from 'buttery';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
 const START_X = (375 - 200) / 2;

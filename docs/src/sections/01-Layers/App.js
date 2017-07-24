@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layer } from '../../proto';
+import { Layer } from 'buttery';
 
 export default class Example extends React.Component {
   render() {

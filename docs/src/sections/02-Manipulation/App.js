@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layer, Frame } from '../../proto';
+import { Layer, Frame } from 'buttery';
 
 const MyFrames = [
   Frame(160, 160, 80, 80),

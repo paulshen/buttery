@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer, Frame, Animated, Drag, spring, timed } from '../../proto';
+import { Layer, Frame, Animated, Drag, spring, timed } from 'buttery';
 
 class SwipeableRow extends React.Component {
   state = {

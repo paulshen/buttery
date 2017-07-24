@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, LayerTransitionChild, Frame, Animated, spring } from '../../proto';
+import { Layer, LayerTransitionChild, Frame, Animated, spring } from 'buttery';
 
 export default class App extends React.Component {
   state = {

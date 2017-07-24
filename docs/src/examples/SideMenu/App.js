@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer, Frame, Animated, Drag, spring } from '../../proto';
+import { Layer, Frame, Animated, Drag, spring } from 'buttery';
 
 export default class Example extends React.Component {
   state = {

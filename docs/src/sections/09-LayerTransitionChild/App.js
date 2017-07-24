@@ -7,7 +7,7 @@ import {
   Frame,
   Animated,
   timed
-} from '../../proto';
+} from 'buttery';
 
 function getFrame(i) {
   return {
