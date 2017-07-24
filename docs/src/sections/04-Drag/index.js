@@ -17,13 +17,15 @@ export default {
       <Section>
         <Paragraph>It's easy to make a layer draggable.</Paragraph>
         <DescriptionCode>
-          {`Drag(value: number | AnimatedValue, config?: DragConfig)
+          {`import { Drag } from 'buttery';
+
+Drag(value: number | AnimatedValue, config?: DragConfig)
 
 // X draggable (y is fixed at 160)
-<Layer frame={Frame(Drag(160), 160, 80, 80)} />
+<Layer frame={Frame(Drag(120), 160, 80, 80)} />
 
 // both X and Y draggable
-<Layer frame={Frame(Drag(160), Drag(160), 80, 80)} />`}
+<Layer frame={Frame(Drag(120), Drag(160), 80, 80)} />`}
         </DescriptionCode>
       </Section>
       <Section>

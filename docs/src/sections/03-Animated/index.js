@@ -12,7 +12,7 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Animator',
+  name: 'Animations',
   description: () =>
     <div>
       <Section>
@@ -21,11 +21,13 @@ export default {
           <InlineCode>AnimatedValue</InlineCode>. Use the{' '}
           <InlineCode>Animated</InlineCode> function, which takes a value and a
           required configuration. Whenever the scalar value of an{' '}
-          <InlineCode>AnimatedValue</InlineCode> changes, the transition will be
+          <InlineCode>AnimatedValue</InlineCode> changes, the update will be
           animated with the given configuration at the time of the value change.
         </Paragraph>
         <DescriptionCode>
-          {`Animated(value: number, config: AnimatorConfig, onEnd?: Function)
+          {`import { Animated, timed, spring } from 'buttery';
+
+Animated(value: number, config: AnimatorConfig, onEnd?: Function)
 
 <Layer
   frame={Frame(
@@ -43,7 +45,8 @@ export default {
       <Header>AnimatorConfig</Header>
       <Section>
         <Paragraph>
-          There are two included types of animator configurations.
+          There are two included types of animator configurations (used as
+          required second argument to <InlineCode>Animated</InlineCode>).
         </Paragraph>
       </Section>
       <Section>
@@ -54,7 +57,7 @@ export default {
         </Paragraph>
         <Table>
           <tr>
-            <td>Prop</td>
+            <td>Argument</td>
             <td>Notes</td>
           </tr>
           <tr>
@@ -73,7 +76,7 @@ export default {
         </Paragraph>
         <Table>
           <tr>
-            <td>Prop</td>
+            <td>Argument</td>
             <td>Notes</td>
           </tr>
           <tr>

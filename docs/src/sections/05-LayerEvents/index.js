@@ -11,7 +11,7 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Drag Events',
+  name: 'Layer Events',
   description: () =>
     <div>
       <Section>
@@ -28,8 +28,9 @@ export default {
           dragged position.
         </Paragraph>
         <Paragraph>
-          You can subscribe to changes to a layer's position with{' '}
-          <InlineCode>onMove</InlineCode>.
+          You can subscribe to every change to a layer's position with{' '}
+          <InlineCode>onMove</InlineCode>. If you only want position changes
+          from user interaction, use <InlineCode>onDrag</InlineCode>.
         </Paragraph>
         <DescriptionCode>
           {`class Example extends React.Component {

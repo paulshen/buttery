@@ -16,10 +16,10 @@ export default {
     <div>
       <Section>
         <Paragraph>
-          Layers are the building blocks of buttery. Use them as you would{' '}
-          <InlineCode>{`<div>`}</InlineCode>s. All layers must have the prop{' '}
-          <InlineCode>frame</InlineCode>, which is an object with properties{' '}
-          <InlineCode>x</InlineCode>, <InlineCode>y</InlineCode>,{' '}
+          Layers are the building blocks of buttery. Use them as you would divs;
+          they can be nested, contain other DOM elements, etc... All layers must
+          have the prop <InlineCode>frame</InlineCode>, which is an object with
+          properties <InlineCode>x</InlineCode>, <InlineCode>y</InlineCode>,{' '}
           <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>.
         </Paragraph>
         <Paragraph>
@@ -28,7 +28,9 @@ export default {
         </Paragraph>
       </Section>
       <DescriptionCode>
-        {`<Layer
+        {`import { Layer, Frame } from 'buttery';
+
+<Layer
   frame={{
     x: 100,
     y: 100,
@@ -45,8 +47,8 @@ export default {
           Layers support DOM inline styles. <InlineCode>transform</InlineCode>,{' '}
           <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>{' '}
           are controlled by buttery and should not be set in{' '}
-          <InlineCode>style</InlineCode>. The following properties are also
-          supported as properties of <InlineCode>style</InlineCode>:{' '}
+          <InlineCode>style</InlineCode>. However, the following properties are
+          supported special properties of <InlineCode>style</InlineCode>:{' '}
           <InlineCode>rotate</InlineCode>, <InlineCode>scale</InlineCode>,{' '}
           <InlineCode>scaleX</InlineCode>, <InlineCode>scaleY</InlineCode>.
         </Paragraph>

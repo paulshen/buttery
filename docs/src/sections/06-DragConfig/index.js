@@ -31,11 +31,11 @@ export default {
         </DescriptionCode>
       </Section>
       <Section>
-        <Header>DragConfig</Header>
+        <Header>Drag Configuration Object</Header>
         <Paragraph>All properties are optional.</Paragraph>
         <Table>
           <tr>
-            <td>Prop</td>
+            <td>Key</td>
             <td>Type</td>
             <td>Notes</td>
           </tr>
