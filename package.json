@@ -6,29 +6,24 @@
     "babel-eslint": "^7.1.1",
     "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
-    "eslint-plugin-flow": "^0.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-no-unused-vars-rest": "^1.0.4",
     "eslint-plugin-react": "^6.9.0",
-    "flow-bin": "^0.49.1",
-    "react-scripts": "^0.9.5"
+    "flow-bin": "^0.49.1"
   },
   "dependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-preset-react-app": "^3.0.1",
-    "radium": "^0.18.1",
+    "eslint-plugin-flowtype": "^2.35.0",
     "react": "^15.4.2",
-    "react-addons-transition-group": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.6.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "flow": "./node_modules/.bin/flow",
-    "lint": "./node_modules/.bin/eslint src",
+    "flow": "flow",
+    "lint": "eslint src",
     "prepublish": "rm -rf lib && NODE_ENV=production babel src --out-dir lib"
-  }
+  },
+  "author": "paulshen",
+  "license": "MIT"
 }
