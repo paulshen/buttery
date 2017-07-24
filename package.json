@@ -1,6 +1,7 @@
 {
   "name": "buttery",
   "version": "0.0.2",
+  "main": "lib/index.js",
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "eslint": "^3.14.0",
