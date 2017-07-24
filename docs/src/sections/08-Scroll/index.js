@@ -21,10 +21,10 @@ export default {
           scroll views, paging, and other behavior.
         </Paragraph>
         <Paragraph>
-          Unlike other libraries (e.g. UIKit), react-prototyper does not (yet)
-          provide scroll-specific APIs. Instead, one is easily created by
-          configuring drag. Remember you are constraining a layer's position and
-          will usually have to consider the parent layer's dimension.
+          Unlike other libraries (e.g. UIKit), buttery does not (yet) provide
+          scroll-specific APIs. Instead, one is easily created by configuring
+          drag. Remember you are constraining a layer's position and will
+          usually have to consider the parent layer's dimension.
         </Paragraph>
         <DescriptionCode>
           {`class App extends React.Component {

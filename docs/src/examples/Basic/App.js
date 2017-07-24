@@ -22,7 +22,7 @@ export default class Example extends React.Component {
         <Layer
           frame={{
             x: Animated(toggled ? 240 : 60, spring()),
-            y: 60,
+            y: 120,
             width: 60,
             height: 60,
           }}
@@ -33,7 +33,7 @@ export default class Example extends React.Component {
         <Layer
           frame={{
             x: Animated(toggled ? 240 : 60, spring()),
-            y: 180,
+            y: 240,
             width: 60,
             height: 60,
           }}

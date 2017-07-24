@@ -7,9 +7,9 @@ Section.Styles = {
 
 export const Header = (props) => <div {...props} style={Header.Styles} />;
 Header.Styles = {
-  fontSize: '20px',
+  fontSize: '18px',
   fontWeight: 400,
-  letterSpacing: '0.8px',
+  letterSpacing: '0.3px',
   marginBottom: '16px',
 };
 

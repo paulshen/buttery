@@ -16,16 +16,15 @@ export default {
     <div>
       <Section>
         <Paragraph>
-          Layers are the building blocks of react-prototyper. Use them as you
-          would <InlineCode>{`<div>`}</InlineCode>s. All layers must have the
-          prop <InlineCode>frame</InlineCode>, which is an object with
-          properties <InlineCode>x</InlineCode>, <InlineCode>y</InlineCode>,{' '}
+          Layers are the building blocks of buttery. Use them as you would{' '}
+          <InlineCode>{`<div>`}</InlineCode>s. All layers must have the prop{' '}
+          <InlineCode>frame</InlineCode>, which is an object with properties{' '}
+          <InlineCode>x</InlineCode>, <InlineCode>y</InlineCode>,{' '}
           <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>.
         </Paragraph>
         <Paragraph>
-          Layers are absolutely positioned by react-prototyper. This allows
-          react-prototyper to optimize performance by skipping the browser's
-          layout computations.
+          Layers are absolutely positioned by buttery. This allows buttery to
+          optimize performance by skipping the browser's layout computations.
         </Paragraph>
       </Section>
       <DescriptionCode>
@@ -45,7 +44,7 @@ export default {
         <Paragraph>
           Layers support DOM inline styles. <InlineCode>transform</InlineCode>,{' '}
           <InlineCode>width</InlineCode>, and <InlineCode>height</InlineCode>{' '}
-          are controlled by react-prototyper and should not be set in{' '}
+          are controlled by buttery and should not be set in{' '}
           <InlineCode>style</InlineCode>. The following properties are also
           supported as properties of <InlineCode>style</InlineCode>:{' '}
           <InlineCode>rotate</InlineCode>, <InlineCode>scale</InlineCode>,{' '}

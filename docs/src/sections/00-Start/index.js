@@ -11,15 +11,21 @@ import Source from '!!raw!./App';
 import App from './App';
 
 export default {
-  name: 'Manipulation',
+  name: 'Getting Started',
   description: () =>
     <div>
       <Section>
-        <Paragraph>
-          Layers can be updated just like any other React component. No
-          surprises here! buttery will watch for changes to a layer's frame and
-          style.
-        </Paragraph>
+        <Header>Install</Header>
+        <DescriptionCode>npm install buttery</DescriptionCode>
+      </Section>
+      <Section>
+        <Header>Use</Header>
+        <DescriptionCode>
+{`import { Layer, Frame } from 'buttery';
+
+render() {
+  return <Layer frame={Frame(0, 0, 80, 80)} />;
+}`}</DescriptionCode>
       </Section>
     </div>,
   App,

@@ -21,12 +21,11 @@ export default {
           in. A screen slides from the right.
         </Paragraph>
         <Paragraph>
-          react-prototyper provides{' '}
-          <InlineCode>LayerTransitionChild</InlineCode> to make enter and leave
-          transitions easy. <InlineCode>LayerTransitionChild</InlineCode> should
-          be rendered as children of{' '}
-          <InlineCode>ReactTransitionGroup</InlineCode>. You will have to
-          install the node module{' '}
+          buttery provides <InlineCode>LayerTransitionChild</InlineCode> to make
+          enter and leave transitions easy.{' '}
+          <InlineCode>LayerTransitionChild</InlineCode> should be rendered as
+          children of <InlineCode>ReactTransitionGroup</InlineCode>. You will
+          have to install the node module{' '}
           <InlineCode>react-addons-transition-group</InlineCode>.
         </Paragraph>
         <Paragraph>
