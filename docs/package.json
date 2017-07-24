@@ -7,7 +7,7 @@
     "react-scripts": "git+ssh://git@github.com/paulshen/create-react-app.git#f2d9904"
   },
   "dependencies": {
-    "buttery": "^0.0.2",
+    "buttery": "^0.0.4",
     "codemirror": "^5.24.2",
     "radium": "^0.18.1",
     "raw-loader": "^0.5.1",

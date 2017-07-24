@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, Frame } from '../proto';
+import { DragConstraint, Layer, Frame } from 'buttery';
 
 function Screen({
   index,

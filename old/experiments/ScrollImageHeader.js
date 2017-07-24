@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { DragConstraint, Layer, SpringAnimator, Frame } from '../proto';
+import { DragConstraint, Layer, SpringAnimator, Frame } from 'buttery';
 
 class App extends React.Component {
   state: {

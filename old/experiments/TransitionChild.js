@@ -3,7 +3,7 @@ import React from 'react';
 import Radium from 'radium';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import { Layer, Frame, LayerTransitionChild, Animated, spring } from '../proto';
+import { Layer, Frame, LayerTransitionChild, Animated, spring } from 'buttery';
 
 class App extends React.Component {
   state = {

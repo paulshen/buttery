@@ -1206,16 +1206,15 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-buttery@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/buttery/-/buttery-0.0.2.tgz#512302920c5273f0f91fbd13851f305101208a19"
+buttery@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/buttery/-/buttery-0.0.4.tgz#20c072e43c7349403c961f64166d508eaf586cc0"
   dependencies:
     babel-plugin-transform-es2015-modules-commonjs "^6.24.1"
     babel-preset-react-app "^3.0.1"
-    radium "^0.18.1"
+    eslint-plugin-flowtype "^2.35.0"
     react "^15.4.2"
-    react-addons-transition-group "^15.4.2"
-    react-dom "^15.4.2"
+    react-dom "^15.6.1"
 
 bytes@2.3.0:
   version "2.3.0"
@@ -2006,6 +2005,12 @@ eslint-module-utils@^1.0.0:
 eslint-plugin-flowtype@2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-2.21.0.tgz#a47e85abcdd181d37a336054bd552149ae387d9c"
+  dependencies:
+    lodash "^4.15.0"
+
+eslint-plugin-flowtype@^2.35.0:
+  version "2.35.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-2.35.0.tgz#d17494f0ae8b727c632d8b9d4b4a848e7e0c04af"
   dependencies:
     lodash "^4.15.0"
 
@@ -4309,7 +4314,7 @@ promise@7.1.1, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4:
+prop-types@^15.5.10, prop-types@^15.5.4:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -4428,6 +4433,15 @@ react-dom@^15.4.2:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+
+react-dom@^15.6.1:
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.10"
 
 react-router-dom@^4.1.2:
   version "4.1.2"

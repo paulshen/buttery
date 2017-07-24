@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, Frame, Animated, Drag, spring } from '../proto';
+import { Layer, Frame, Animated, Drag, spring } from 'buttery';
 
 function interpolate(x1, x2, y1, y2) {
   return function(input) {

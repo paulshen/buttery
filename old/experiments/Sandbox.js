@@ -10,7 +10,7 @@ import {
   Drag,
   timed,
   spring
-} from '../proto';
+} from 'buttery';
 
 class App extends React.Component {
   state = {

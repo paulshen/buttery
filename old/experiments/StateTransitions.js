@@ -2,7 +2,7 @@
 import React from 'react';
 import Radium from 'radium';
 
-import { Layer, SpringAnimator, TimedAnimator } from '../proto';
+import { Layer, SpringAnimator, TimedAnimator } from 'buttery';
 
 const Steps = [
   { width: 100, height: 100, x: 100, y: 100 },

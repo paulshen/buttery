@@ -9,7 +9,7 @@ import {
   LayerTransitionChild,
   SpringAnimator,
   Frame
-} from '../proto';
+} from 'buttery';
 
 class App extends React.Component {
   state = {
