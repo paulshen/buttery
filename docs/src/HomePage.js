@@ -33,27 +33,32 @@ class HomePage extends React.Component {
             a React library for super smooth animations and interactions.
           </Paragraph>
           <Paragraph>
-            <div>
-              <Link to="/docs">Documentation</Link>
-            </div>
+            WORK IN PROGRESS!!
           </Paragraph>
-          <Paragraph>
-            <div>
-              <Link to="/example/basic">Basic</Link>
-            </div>
-            <div>
-              <Link to="/example/sidemenu">Side Menu</Link>
-            </div>
-            <div>
-              <Link to="/example/pulltorefresh">Pull to Refresh</Link>
-            </div>
-            <div>
-              <Link to="/example/overlay">Overlay</Link>
-            </div>
-            <div>
-              <Link to="/example/cards">Cards</Link>
-            </div>
-          </Paragraph>
+          <Section>
+            <Paragraph>
+              <div>
+                <Link to="/docs">Documentation</Link>
+              </div>
+            </Paragraph>
+          </Section>
+          <Section>
+            <Header>Examples</Header>
+            <Paragraph>
+              <div>
+                <Link to="/example/sidemenu">Side Menu</Link>
+              </div>
+              <div>
+                <Link to="/example/pulltorefresh">Pull to Refresh</Link>
+              </div>
+              <div>
+                <Link to="/example/overlay">Overlay</Link>
+              </div>
+              <div>
+                <Link to="/example/cards">Tinder Cards</Link>
+              </div>
+            </Paragraph>
+          </Section>
         </div>
         <div style={Styles.RightColumn}>
           <div style={Styles.PhoneContainer}>
